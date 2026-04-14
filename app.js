@@ -3,6 +3,7 @@ const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
 const classificationFilter = document.querySelector('#classification-filter');
 const downloadButton = document.querySelector('#download-md');
+const downloadSpreadsheetButton = document.querySelector('#download-spreadsheet');
 const promptForm = document.querySelector('#prompt-form');
 const promptOutput = document.querySelector('#prompt-output');
 const copyPromptButton = document.querySelector('#copy-prompt');
@@ -333,11 +334,7 @@ function renderReport() {
 
 function summarizeReport(report) {
   const tasks = report.data.task_longlist || [];
-  const byClass = tasks.reduce((acc, task) => {
-    const key = task.classification || 'unknown';
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {});
+  const byClass = classifyCounts(tasks);
   const totalScore = tasks.reduce((sum, task) => sum + task.composite_score, 0);
   return {
     ...report,
@@ -345,7 +342,8 @@ function summarizeReport(report) {
     avgScore: tasks.length ? totalScore / tasks.length : 0,
     topTasks: byClass.top || 0,
     secondaryTasks: byClass.secondary || 0,
-    tinyTasks: byClass.tiny || 0
+    tinyTasks: byClass.tiny || 0,
+    unknownTasks: byClass.unknown || 0
   };
 }
 
@@ -388,6 +386,94 @@ function renderOverviewPage() {
       </tr>
     `)
     .join('');
+}
+
+
+function classifyCounts(tasks) {
+  return tasks.reduce((acc, task) => {
+    const key = task.classification || 'unknown';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+function toCsvCell(value) {
+  const safe = String(value ?? '');
+  return `"${safe.replace(/"/g, '""')}"`;
+}
+
+function buildPortfolioCsv() {
+  const summaries = reports.map(summarizeReport)
+    .sort((a, b) => b.avgScore - a.avgScore);
+  const summaryByFile = new Map(summaries.map((summary) => [summary.file, summary]));
+
+  const csvHeader = [
+    'Report',
+    'Report File',
+    'Status',
+    'Report URL',
+    'Audience',
+    'Scope',
+    'Analyzed At',
+    'Total Tasks (Report)',
+    'Average Score (Report)',
+    'Top Tasks (Report)',
+    'Secondary Tasks (Report)',
+    'Tiny Tasks (Report)',
+    'Unknown Tasks (Report)',
+    'Task Rank in Report',
+    'Task ID',
+    'Task Statement',
+    'Classification',
+    'Composite Score',
+    'Rationale'
+  ];
+
+  const taskRows = summaries.flatMap((summary) => {
+    const sortedTasks = [...(summary.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+    return sortedTasks.map((task, index) => ({
+      reportTitle: summary.title,
+      reportFile: summary.file,
+      reportStatus: reportStatus(summary),
+      rank: index + 1,
+      id: task.id || 'n/a',
+      taskStatement: task.task_statement || 'n/a',
+      classification: task.classification || 'unknown',
+      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : 0,
+      rationale: task.rationale || '',
+      url: summary.data.meta?.url || 'n/a',
+      audience: summary.data.meta?.audience || 'n/a',
+      scope: summary.data.meta?.scope || 'n/a',
+      analyzedAt: summary.data.meta?.analyzed_at || 'n/a'
+    }));
+  });
+
+  const csvRows = [
+    csvHeader.map(toCsvCell).join(','),
+    ...taskRows.map((task) => [
+      task.reportTitle,
+      task.reportFile,
+      task.reportStatus,
+      task.url,
+      task.audience,
+      task.scope,
+      task.analyzedAt,
+      summaryByFile.get(task.reportFile)?.totalTasks ?? 0,
+      round(summaryByFile.get(task.reportFile)?.avgScore ?? 0),
+      summaryByFile.get(task.reportFile)?.topTasks ?? 0,
+      summaryByFile.get(task.reportFile)?.secondaryTasks ?? 0,
+      summaryByFile.get(task.reportFile)?.tinyTasks ?? 0,
+      summaryByFile.get(task.reportFile)?.unknownTasks ?? 0,
+      task.rank,
+      task.id,
+      task.taskStatement,
+      task.classification,
+      task.compositeScore.toFixed(2),
+      task.rationale
+    ].map(toCsvCell).join(','))
+  ];
+
+  return `\uFEFF${csvRows.join('\n')}`;
 }
 
 function toMarkdown(report) {
@@ -453,3 +539,16 @@ loadReports().catch((error) => {
     overviewStats.innerHTML = `<p>Failed to load reports: ${error.message}</p>`;
   }
 });
+
+if (downloadSpreadsheetButton) {
+  downloadSpreadsheetButton.addEventListener('click', () => {
+    if (!reports.length) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const blob = new Blob([buildPortfolioCsv()], { type: 'text/csv;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `top-task-portfolio-${today}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+}
