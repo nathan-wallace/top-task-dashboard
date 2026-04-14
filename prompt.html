@@ -10,7 +10,7 @@
     <header class="site-header">
       <div class="brand">
         <h1>Top Task Dashboard</h1>
-        <p>Build a standardized federal page audit prompt.</p>
+        <p>Build a repeatable Top Task Identification research prompt.</p>
       </div>
       <nav class="site-nav" aria-label="Main">
         <a href="./index.html">Report Explorer</a>
@@ -22,35 +22,35 @@
     <main class="overview-layout">
       <section class="panel prompt-builder" aria-labelledby="prompt-builder-heading">
         <h2 id="prompt-builder-heading">Prompt Builder</h2>
-        <p>Fill in the inputs, then copy the complete audit prompt.</p>
+        <p>Fill in the inputs, then copy the complete Top Task research prompt.</p>
         <form id="prompt-form" class="prompt-form">
           <label>
-            Page URL
-            <input id="prompt-url" name="page_url" type="url" placeholder="https://agency.gov/page" />
+            URL
+            <input id="prompt-url" name="url" type="url" placeholder="https://agency.gov/page" />
           </label>
           <label>
-            Page Title / Purpose
-            <input id="prompt-title-purpose" name="page_title_and_stated_purpose" type="text" placeholder="Benefits Eligibility page for veterans" />
+            Audience
+            <input id="prompt-audience" name="audience" type="text" placeholder="Small business owners applying for SBA loans" />
           </label>
           <label>
-            Primary User Task(s)
-            <input id="prompt-user-jobs" name="top_1_to_3_user_jobs" type="text" placeholder="Check eligibility; submit application; track status" />
+            Scope
+            <input id="prompt-scope" name="scope" type="text" placeholder="entire site" />
           </label>
           <label>
-            Primary Business/Agency Goal
-            <input id="prompt-outcome" name="conversion_or_outcome" type="text" placeholder="Increase completed online applications" />
+            Business Context (optional)
+            <input id="prompt-business-context" name="business_context" type="text" placeholder="Org mission, known pain points, stakeholder goals" />
           </label>
           <label>
-            Audit Date
-            <input id="prompt-date" name="date" type="text" placeholder="YYYY-MM-DD" />
+            Existing Data (optional)
+            <input id="prompt-existing-data" name="existing_data" type="text" placeholder="Analytics, search logs, support tickets, prior research" />
           </label>
           <label>
-            Reviewer
-            <input id="prompt-reviewer" name="reviewer" type="text" placeholder="Analyst name" />
+            Constraints (optional)
+            <input id="prompt-constraints" name="constraints" type="text" placeholder="Compliance, tech stack, timeline" />
           </label>
           <label>
-            Audit Number (##)
-            <input id="prompt-audit-number" name="audit_number" type="text" placeholder="01" />
+            Max Tasks (optional, default 25)
+            <input id="prompt-max-tasks" name="max_tasks" type="number" min="1" placeholder="25" />
           </label>
           <div class="prompt-actions">
             <button id="copy-prompt" type="button">Copy Prompt</button>
