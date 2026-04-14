@@ -7,9 +7,10 @@
     "analyst_confidence": "medium",
     "evidence_gaps": [
       "No visibility into actual request/comment or interview form flows",
-      "No analytics or search data उपलब्ध to validate frequency",
+      "No analytics or search data available to validate frequency",
       "Limited navigation context beyond landing page"
-    ]
+    ],
+    "report_status": "Reviewed"
   },
   "task_longlist": [
     {

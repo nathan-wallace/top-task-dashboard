@@ -78,7 +78,8 @@ Return valid JSON matching this schema, followed by a brief prose summary.
     "scope": "",
     "analyzed_at": "",
     "analyst_confidence": "low|medium|high",
-    "evidence_gaps": []
+    "evidence_gaps": [],
+    "report_status": "Unreviewed|Reviewed|Approved"
   },
   "task_longlist": [
     {
