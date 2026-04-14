@@ -3,6 +3,10 @@ const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
 const classificationFilter = document.querySelector('#classification-filter');
 const downloadButton = document.querySelector('#download-md');
+const promptForm = document.querySelector('#prompt-form');
+const promptOutput = document.querySelector('#prompt-output');
+const copyPromptButton = document.querySelector('#copy-prompt');
+const copyStatus = document.querySelector('#copy-status');
 const overviewStats = document.querySelector('#overview-stats');
 const overviewCount = document.querySelector('#overview-count');
 const overviewTableBody = document.querySelector('#overview-table-body');
@@ -12,6 +16,49 @@ let selectedReport = null;
 
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
 const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
+
+function buildPrompt(values) {
+  const notes = values.notes?.trim() ? values.notes.trim() : 'None provided.';
+  return [
+    'You are a UX research and content strategy analyst. Produce a top-task analysis report for the website below.',
+    '',
+    `Website URL: ${values.url.trim()}`,
+    `Target audience: ${values.audience.trim()}`,
+    `Scope: ${values.scope.trim()}`,
+    `Product/domain context: ${values.context.trim()}`,
+    `Additional notes: ${notes}`,
+    '',
+    'Required output:',
+    '1) A concise summary of the product and audience intent.',
+    '2) A longlist of 12–20 candidate user tasks with IDs and clear task statements.',
+    '3) Classification for each task: top, secondary, or tiny.',
+    '4) Composite score per task (0–5) and short rationale.',
+    '5) Recommended next steps and prioritization guidance.'
+  ].join('\n');
+}
+
+function updatePromptOutput() {
+  if (!promptForm || !promptOutput) return;
+  const formData = new FormData(promptForm);
+  const values = Object.fromEntries(formData.entries());
+  promptOutput.value = buildPrompt(values);
+}
+
+async function copyPromptToClipboard() {
+  if (!promptOutput || !copyStatus) return;
+  const text = promptOutput.value.trim();
+  if (!text) {
+    copyStatus.textContent = 'Please complete the form first.';
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    copyStatus.textContent = 'Prompt copied.';
+  } catch (error) {
+    copyStatus.textContent = 'Copy failed. Select and copy manually.';
+  }
+}
 
 async function loadReports() {
   const response = await fetch('./reports/index.json');
@@ -239,6 +286,15 @@ if (classificationFilter) {
 
 if (reportSearch) {
   reportSearch.addEventListener('input', renderReportList);
+}
+
+if (promptForm) {
+  promptForm.addEventListener('input', updatePromptOutput);
+  updatePromptOutput();
+}
+
+if (copyPromptButton) {
+  copyPromptButton.addEventListener('click', copyPromptToClipboard);
 }
 
 loadReports().catch((error) => {

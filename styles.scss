@@ -135,6 +135,84 @@ footer {
   margin-bottom: 1rem;
 }
 
+.prompt-builder {
+  margin-bottom: 1.25rem;
+  border: 1px solid #e3e8f3;
+  border-radius: $radius-md;
+  padding: 1rem;
+  background: #fbfcff;
+
+  h2 {
+    margin: 0;
+  }
+
+  > p {
+    color: $muted;
+    margin: 0.4rem 0 0.9rem;
+  }
+}
+
+.prompt-form {
+  display: grid;
+  gap: 0.7rem;
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+    font-weight: 600;
+    color: #24406e;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid $border;
+    border-radius: 10px;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: $text;
+    background: #fff;
+  }
+}
+
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+
+  button {
+    background: $accent;
+    color: #fff;
+    border: 1px solid #1844aa;
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+#copy-status {
+  font-size: 0.9rem;
+  color: $muted;
+}
+
+.prompt-output-label {
+  display: block;
+  margin-top: 0.9rem;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #24406e;
+}
+
+#prompt-output {
+  width: 100%;
+  min-height: 170px;
+  border: 1px solid $border;
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: $text;
+  background: #fff;
+}
+
 .toolbar select,
 .toolbar button {
   padding: 0.5rem 0.75rem;

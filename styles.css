@@ -124,6 +124,78 @@ footer {
   margin-bottom: 1rem;
 }
 
+.prompt-builder {
+  margin-bottom: 1.25rem;
+  border: 1px solid #e3e8f3;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fbfcff;
+}
+
+.prompt-builder h2 {
+  margin: 0;
+}
+
+.prompt-builder > p {
+  color: #5d6b80;
+  margin: 0.4rem 0 0.9rem;
+}
+
+.prompt-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.prompt-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: #24406e;
+}
+
+.prompt-form input,
+.prompt-form textarea,
+#prompt-output {
+  width: 100%;
+  border: 1px solid #dce2ee;
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: #162338;
+  background: #fff;
+}
+
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.prompt-actions button {
+  background: #2359d2;
+  color: #fff;
+  border: 1px solid #1844aa;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+}
+
+#copy-status {
+  font-size: 0.9rem;
+  color: #5d6b80;
+}
+
+.prompt-output-label {
+  display: block;
+  margin-top: 0.9rem;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #24406e;
+}
+
+#prompt-output {
+  min-height: 170px;
+}
+
 .toolbar select,
 .toolbar button {
   padding: 0.5rem 0.75rem;
