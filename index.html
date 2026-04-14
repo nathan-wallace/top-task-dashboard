@@ -26,6 +26,39 @@
       </aside>
 
       <section class="panel content">
+        <section class="prompt-builder" aria-labelledby="prompt-builder-heading">
+          <h2 id="prompt-builder-heading">Prompt Builder</h2>
+          <p>Fill in the inputs, then copy a ready-to-use analysis prompt.</p>
+          <form id="prompt-form" class="prompt-form">
+            <label>
+              Website URL
+              <input id="prompt-url" name="url" type="url" placeholder="https://example.com" required />
+            </label>
+            <label>
+              Target audience
+              <input id="prompt-audience" name="audience" type="text" placeholder="e.g. SMB owners and operators" required />
+            </label>
+            <label>
+              Scope
+              <input id="prompt-scope" name="scope" type="text" placeholder="e.g. Homepage + pricing + docs" required />
+            </label>
+            <label>
+              Product / domain context
+              <textarea id="prompt-context" name="context" rows="3" placeholder="Describe what the product does, primary user goals, and constraints." required></textarea>
+            </label>
+            <label>
+              Additional notes
+              <textarea id="prompt-notes" name="notes" rows="2" placeholder="Optional: market, competitors, priorities, etc."></textarea>
+            </label>
+            <div class="prompt-actions">
+              <button id="copy-prompt" type="button">Copy Prompt</button>
+              <span id="copy-status" role="status" aria-live="polite"></span>
+            </div>
+          </form>
+          <label class="prompt-output-label" for="prompt-output">Generated prompt</label>
+          <textarea id="prompt-output" rows="10" readonly></textarea>
+        </section>
+
         <div class="toolbar">
           <label>
             Classification
