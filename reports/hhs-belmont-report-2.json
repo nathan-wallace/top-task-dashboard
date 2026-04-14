@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+    "audience": "Researchers and IRB members seeking ethical guidance on human subjects research",
+    "scope": "section: /ohrp/regulations-and-policy/belmont-report/",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "No behavioral analytics or search data उपलब्ध",
+      "No explicit user journeys or task completion pathways shown",
+      "Limited navigation depth (single-page hub)",
+      "No evidence of user success metrics or drop-off points"
+    ],
+    "report_status": "Unreviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Read the Belmont Report full text",
+      "user_intent_category": "information consumption",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Read the full text in English/Spanish links",
+          "note": "Primary CTA prominently displayed"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 5,
+        "completability": 5
+      },
+      "composite_score": 5,
+      "classification": "top",
+      "rationale": "Core purpose of the page; direct access to canonical document"
+    },
+    {
+      "id": "T02",
+      "task_statement": "Learn ethical principles for human research",
+      "user_intent_category": "education",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Introductory description of Belmont Report",
+          "note": "Explains ethical principles and purpose"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Primary user need underlying most visits; supported but requires reading"
+    },
+    {
+      "id": "T03",
+      "task_statement": "Access informed consent training materials",
+      "user_intent_category": "training",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Participant-Centered Informed Consent Training link",
+          "note": "Secondary CTA tied to Belmont principle of respect"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Actionable extension of Belmont principles for practitioners"
+    },
+    {
+      "id": "T04",
+      "task_statement": "Watch Belmont Report explainer video",
+      "user_intent_category": "education",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Video section",
+          "note": "Alternative learning format highlighted"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 4,
+      "classification": "secondary",
+      "rationale": "Helpful but not primary task for most expert users"
+    },
+    {
+      "id": "T05",
+      "task_statement": "Find related human subjects research reports",
+      "user_intent_category": "research",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Other Reports by the National Commission",
+          "note": "Links to additional reports (1974–1978)"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Relevant for deeper research but not core majority task"
+    },
+    {
+      "id": "T06",
+      "task_statement": "Explore Belmont Report historical context",
+      "user_intent_category": "education",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Introductory narrative about National Commission",
+          "note": "Describes origin and purpose of report"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Contextual learning; not required for task completion"
+    },
+    {
+      "id": "T07",
+      "task_statement": "Watch Belmont Report anniversary interviews",
+      "user_intent_category": "education",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "25th Anniversary Interviews section",
+          "note": "Supplementary video content"
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.25,
+      "classification": "tiny",
+      "rationale": "Low-frequency, archival interest content"
+    },
+    {
+      "id": "T08",
+      "task_statement": "Read Belmont Report in Spanish",
+      "user_intent_category": "accessibility",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Spanish version link",
+          "note": "Alternate language access"
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 4,
+        "findability": 5,
+        "completability": 5
+      },
+      "composite_score": 4,
+      "classification": "secondary",
+      "rationale": "Critical for subset of users but not majority"
+    }
+  ],
+  "top_tasks": [
+    "T01",
+    "T02",
+    "T03"
+  ],
+  "tiny_tasks": [
+    "T07"
+  ],
+  "recommended_survey": {
+    "instructions": "Select the 5 most important tasks you come to this page to complete.",
+    "task_list_for_voting": [
+      "Read the Belmont Report full text",
+      "Learn ethical principles for human research",
+      "Access informed consent training materials",
+      "Watch Belmont Report explainer video",
+      "Find related human subjects research reports",
+      "Explore Belmont Report historical context",
+      "Watch Belmont Report anniversary interviews",
+      "Read Belmont Report in Spanish"
+    ],
+    "recommended_sample_size": 100,
+    "target_segments": [
+      "Academic researchers",
+      "IRB members",
+      "Federal staff involved in research oversight",
+      "Clinical research coordinators"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks via survey with core user segments",
+    "Analyze site analytics to confirm task frequency (PDF downloads, training clicks)",
+    "Map task completion journeys for top 3 tasks",
+    "Evaluate whether training and report access should be more prominently separated",
+    "Test navigation improvements to reduce cognitive load on secondary content"
+  ]
+}
