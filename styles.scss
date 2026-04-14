@@ -179,6 +179,14 @@ h2 {
   margin-bottom: 1rem;
 }
 
+.overview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .prompt-builder {
   margin-bottom: 1.25rem;
   border: 1px solid #d7e2f0;
@@ -210,6 +218,7 @@ h2 {
 #report-search,
 .toolbar select,
 .toolbar button,
+.overview-toolbar button,
 .prompt-actions button {
   font: inherit;
 }
@@ -233,6 +242,7 @@ h2 {
 }
 
 .toolbar button,
+.overview-toolbar button,
 .prompt-actions button {
   background: $primary;
   color: #fff;

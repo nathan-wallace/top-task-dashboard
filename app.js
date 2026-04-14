@@ -3,6 +3,7 @@ const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
 const classificationFilter = document.querySelector('#classification-filter');
 const downloadButton = document.querySelector('#download-md');
+const downloadSpreadsheetButton = document.querySelector('#download-spreadsheet');
 const promptForm = document.querySelector('#prompt-form');
 const promptOutput = document.querySelector('#prompt-output');
 const copyPromptButton = document.querySelector('#copy-prompt');
@@ -333,11 +334,7 @@ function renderReport() {
 
 function summarizeReport(report) {
   const tasks = report.data.task_longlist || [];
-  const byClass = tasks.reduce((acc, task) => {
-    const key = task.classification || 'unknown';
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {});
+  const byClass = classifyCounts(tasks);
   const totalScore = tasks.reduce((sum, task) => sum + task.composite_score, 0);
   return {
     ...report,
@@ -345,7 +342,8 @@ function summarizeReport(report) {
     avgScore: tasks.length ? totalScore / tasks.length : 0,
     topTasks: byClass.top || 0,
     secondaryTasks: byClass.secondary || 0,
-    tinyTasks: byClass.tiny || 0
+    tinyTasks: byClass.tiny || 0,
+    unknownTasks: byClass.unknown || 0
   };
 }
 
@@ -388,6 +386,139 @@ function renderOverviewPage() {
       </tr>
     `)
     .join('');
+}
+
+
+function escapeXml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function classifyCounts(tasks) {
+  return tasks.reduce((acc, task) => {
+    const key = task.classification || 'unknown';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+function buildSpreadsheetXml(reportSummaries, taskRows) {
+  const summaryHeader = [
+    'Report',
+    'Report File',
+    'Status',
+    'URL',
+    'Audience',
+    'Scope',
+    'Analyzed At',
+    'Total Tasks',
+    'Average Score',
+    'Top Tasks',
+    'Secondary Tasks',
+    'Tiny Tasks',
+    'Unknown Tasks'
+  ];
+
+  const taskHeader = [
+    'Report',
+    'Report File',
+    'Status',
+    'Task Rank in Report',
+    'Task ID',
+    'Task Statement',
+    'Classification',
+    'Composite Score',
+    'Rationale',
+    'Report URL',
+    'Audience',
+    'Scope',
+    'Analyzed At'
+  ];
+
+  const makeCell = (value, type = 'String') => `<Cell><Data ss:Type="${type}">${escapeXml(value)}</Data></Cell>`;
+  const makeRow = (cells) => `<Row>${cells.join('')}</Row>`;
+
+  const summaryRows = reportSummaries.map((summary) => makeRow([
+    makeCell(summary.title),
+    makeCell(summary.file),
+    makeCell(reportStatus(summary)),
+    makeCell(summary.data.meta?.url || 'n/a'),
+    makeCell(summary.data.meta?.audience || 'n/a'),
+    makeCell(summary.data.meta?.scope || 'n/a'),
+    makeCell(summary.data.meta?.analyzed_at || 'n/a'),
+    makeCell(summary.totalTasks, 'Number'),
+    makeCell(Number(summary.avgScore.toFixed(4)), 'Number'),
+    makeCell(summary.topTasks, 'Number'),
+    makeCell(summary.secondaryTasks, 'Number'),
+    makeCell(summary.tinyTasks, 'Number'),
+    makeCell(summary.unknownTasks, 'Number')
+  ])).join('');
+
+  const detailRows = taskRows.map((task) => makeRow([
+    makeCell(task.reportTitle),
+    makeCell(task.reportFile),
+    makeCell(task.reportStatus),
+    makeCell(task.rank, 'Number'),
+    makeCell(task.id),
+    makeCell(task.taskStatement),
+    makeCell(task.classification),
+    makeCell(Number(task.compositeScore.toFixed(4)), 'Number'),
+    makeCell(task.rationale),
+    makeCell(task.url),
+    makeCell(task.audience),
+    makeCell(task.scope),
+    makeCell(task.analyzedAt)
+  ])).join('');
+
+  return `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+  <Worksheet ss:Name="Report Summary">
+    <Table>
+      ${makeRow(summaryHeader.map((header) => makeCell(header)))}
+      ${summaryRows}
+    </Table>
+  </Worksheet>
+  <Worksheet ss:Name="Task Inventory">
+    <Table>
+      ${makeRow(taskHeader.map((header) => makeCell(header)))}
+      ${detailRows}
+    </Table>
+  </Worksheet>
+</Workbook>`;
+}
+
+function buildPortfolioSpreadsheet() {
+  const summaries = reports.map(summarizeReport)
+    .sort((a, b) => b.avgScore - a.avgScore);
+
+  const taskRows = summaries.flatMap((summary) => {
+    const sortedTasks = [...(summary.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+    return sortedTasks.map((task, index) => ({
+      reportTitle: summary.title,
+      reportFile: summary.file,
+      reportStatus: reportStatus(summary),
+      rank: index + 1,
+      id: task.id || 'n/a',
+      taskStatement: task.task_statement || 'n/a',
+      classification: task.classification || 'unknown',
+      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : 0,
+      rationale: task.rationale || '',
+      url: summary.data.meta?.url || 'n/a',
+      audience: summary.data.meta?.audience || 'n/a',
+      scope: summary.data.meta?.scope || 'n/a',
+      analyzedAt: summary.data.meta?.analyzed_at || 'n/a'
+    }));
+  });
+
+  return buildSpreadsheetXml(summaries, taskRows);
 }
 
 function toMarkdown(report) {
@@ -453,3 +584,16 @@ loadReports().catch((error) => {
     overviewStats.innerHTML = `<p>Failed to load reports: ${error.message}</p>`;
   }
 });
+
+if (downloadSpreadsheetButton) {
+  downloadSpreadsheetButton.addEventListener('click', () => {
+    if (!reports.length) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const blob = new Blob([buildPortfolioSpreadsheet()], { type: 'application/xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `top-task-portfolio-${today}.xml`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+}
