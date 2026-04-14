@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+    "audience": "researchers, IRB members, and students seeking human subjects research ethics guidance",
+    "scope": "entire page",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "low",
+    "evidence_gaps": [
+      "Full page structure and navigation not directly verified",
+      "Exact labels of links, downloads, and sections inferred",
+      "No analytics or user behavior data available"
+    ]
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Understand core principles of human subjects research",
+      "user_intent_category": "learn",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Belmont Report overview text",
+          "note": "Page centers on ethical principles like respect, beneficence, justice"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Primary purpose of page is to communicate foundational ethics principles."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Read full Belmont Report document",
+      "user_intent_category": "consume_content",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Link to full report (HTML or PDF)",
+          "note": "Users likely directed to full report text"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 4.75,
+      "classification": "top",
+      "rationale": "Accessing the full report is a core user need with high importance."
+    },
+    {
+      "id": "T03",
+      "task_statement": "Download Belmont Report PDF for offline use",
+      "user_intent_category": "download",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "PDF download link",
+          "note": "Typical government page provides downloadable version"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Downloading is a common task for citation, training, and compliance."
+    },
+    {
+      "id": "T04",
+      "task_statement": "Find summary of Belmont Report principles",
+      "user_intent_category": "learn",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Introductory summary section",
+          "note": "Page likely includes summarized principles before full text"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 4,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Many users want a quick understanding rather than full report."
+    },
+    {
+      "id": "T05",
+      "task_statement": "Cite Belmont Report for research compliance",
+      "user_intent_category": "reference",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Official government publication context",
+          "note": "Used as authoritative citation in IRB and academic work"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Critical for compliance and academic referencing."
+    },
+    {
+      "id": "T06",
+      "task_statement": "Learn history behind Belmont Report creation",
+      "user_intent_category": "learn",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Historical context section",
+          "note": "Page typically includes background on commission and origins"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Useful but not primary for most users."
+    },
+    {
+      "id": "T07",
+      "task_statement": "Locate specific sections within the report",
+      "user_intent_category": "navigate",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Anchored sections or headings",
+          "note": "Report likely structured with headings for navigation"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Important for repeat users but less critical than access."
+    },
+    {
+      "id": "T08",
+      "task_statement": "Share Belmont Report with colleagues or students",
+      "user_intent_category": "share",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Public URL and downloadable assets",
+          "note": "Page designed for distribution and education"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Common but not core compared to understanding content."
+    },
+    {
+      "id": "T09",
+      "task_statement": "Find related research ethics regulations and policies",
+      "user_intent_category": "explore",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/",
+          "element": "Related policy navigation",
+          "note": "Page likely links to broader OHRP policies"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Adjacent need but not the main intent of this page."
+    },
+    {
+      "id": "T10",
+      "task_statement": "Print Belmont Report for training or review",
+      "user_intent_category": "download",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
+          "element": "Printable PDF format",
+          "note": "Government pages typically support printing via PDF"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.75,
+      "classification": "tiny",
+      "rationale": "Derivative of download task; lower independent importance."
+    }
+  ],
+  "top_tasks": ["T02", "T01", "T03", "T04", "T05"],
+  "tiny_tasks": ["T10"],
+  "recommended_survey": {
+    "instructions": "Select the 5 tasks that matter most to you when visiting this page.",
+    "task_list_for_voting": [
+      "Understand core principles of human subjects research",
+      "Read full Belmont Report document",
+      "Download Belmont Report PDF for offline use",
+      "Find summary of Belmont Report principles",
+      "Cite Belmont Report for research compliance",
+      "Learn history behind Belmont Report creation",
+      "Locate specific sections within the report",
+      "Share Belmont Report with colleagues or students",
+      "Find related research ethics regulations and policies",
+      "Print Belmont Report for training or review"
+    ],
+    "recommended_sample_size": 100,
+    "target_segments": [
+      "Academic researchers",
+      "IRB administrators and members",
+      "Students in research ethics courses",
+      "Clinical research professionals"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks through user voting survey",
+    "Analyze search logs to confirm high-frequency intents",
+    "Test findability of PDF and summary content",
+    "Evaluate page structure against top task prioritization",
+    "Identify opportunities to simplify access to core tasks"
+  ]
+}
