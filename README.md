@@ -35,6 +35,7 @@ python3 -m http.server 4173
 
 The app expects a JSON structure similar to:
 
-- `meta` object (`url`, `audience`, `scope`, `analyzed_at`)
+- `meta` object (`url`, `audience`, `scope`, `analyzed_at`, `report_status`)
+  - `report_status` must be one of `Unreviewed`, `Reviewed`, or `Approved`
 - `task_longlist` array with `id`, `task_statement`, `classification`, and numeric `composite_score`
 - optional `next_steps`

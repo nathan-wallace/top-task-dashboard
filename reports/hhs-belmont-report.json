@@ -9,7 +9,8 @@
       "Full page structure and navigation not directly verified",
       "Exact labels of links, downloads, and sections inferred",
       "No analytics or user behavior data available"
-    ]
+    ],
+    "report_status": "Reviewed"
   },
   "task_longlist": [
     {
@@ -223,8 +224,16 @@
       "rationale": "Derivative of download task; lower independent importance."
     }
   ],
-  "top_tasks": ["T02", "T01", "T03", "T04", "T05"],
-  "tiny_tasks": ["T10"],
+  "top_tasks": [
+    "T02",
+    "T01",
+    "T03",
+    "T04",
+    "T05"
+  ],
+  "tiny_tasks": [
+    "T10"
+  ],
   "recommended_survey": {
     "instructions": "Select the 5 tasks that matter most to you when visiting this page.",
     "task_list_for_voting": [

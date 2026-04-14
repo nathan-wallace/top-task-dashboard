@@ -16,6 +16,7 @@ let selectedReport = null;
 
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
 const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
+const reportStatus = (report) => report?.data?.meta?.report_status || 'Unreviewed';
 
 function buildPrompt(values) {
   const tokens = {
@@ -307,6 +308,7 @@ function renderReport() {
       <div class="card"><strong>Audience</strong><br>${data.meta.audience || 'n/a'}</div>
       <div class="card"><strong>Scope</strong><br>${data.meta.scope || 'n/a'}</div>
       <div class="card"><strong>Analyzed</strong><br>${data.meta.analyzed_at || 'n/a'}</div>
+      <div class="card"><strong>Status</strong><br>${reportStatus(selectedReport)}</div>
     </div>
 
     <h3>Score overview</h3>
@@ -374,6 +376,7 @@ function renderOverviewPage() {
     .map((report) => `
       <tr>
         <td><a href="./index.html">${report.title}</a></td>
+        <td>${reportStatus(report)}</td>
         <td>${report.data.meta?.audience || 'n/a'}</td>
         <td>${report.totalTasks}</td>
         <td>${round(report.avgScore)}</td>
@@ -392,6 +395,7 @@ function toMarkdown(report) {
     '',
     `- URL: ${data.meta?.url || 'n/a'}`,
     `- Audience: ${data.meta?.audience || 'n/a'}`,
+    `- Report status: ${data.meta?.report_status || 'Unreviewed'}`,
     `- Scope: ${data.meta?.scope || 'n/a'}`,
     `- Analyzed at: ${data.meta?.analyzed_at || 'n/a'}`,
     '',

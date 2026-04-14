@@ -1,5 +1,7 @@
 import { readFile } from 'node:fs/promises';
 
+const validReportStatuses = new Set(['Unreviewed', 'Reviewed', 'Approved']);
+
 const listRaw = await readFile(new URL('../reports/index.json', import.meta.url), 'utf8');
 const reportFiles = JSON.parse(listRaw);
 
@@ -13,6 +15,12 @@ for (const reportFile of reportFiles) {
 
   if (!report.meta?.url || !Array.isArray(report.task_longlist)) {
     throw new Error(`${reportFile} is missing required keys: meta.url and task_longlist.`);
+  }
+
+  if (!validReportStatuses.has(report.meta.report_status)) {
+    throw new Error(
+      `${reportFile} has invalid meta.report_status. Expected one of: ${[...validReportStatuses].join(', ')}.`
+    );
   }
 
   for (const task of report.task_longlist) {
