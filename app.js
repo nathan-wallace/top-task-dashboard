@@ -23,164 +23,95 @@ const reportStatus = (report) => report?.data?.meta?.report_status || 'Unreviewe
 
 function buildPrompt(values) {
   const tokens = {
-    page_url: values.page_url?.trim() || '{{page_url}}',
-    page_title_and_stated_purpose: values.page_title_and_stated_purpose?.trim() || '{{page_title_and_stated_purpose}}',
-    top_1_to_3_user_jobs: values.top_1_to_3_user_jobs?.trim() || '{{top_1_to_3_user_jobs}}',
-    conversion_or_outcome: values.conversion_or_outcome?.trim() || '{{conversion_or_outcome}}',
-    date: values.date?.trim() || '{{date}}',
-    reviewer: values.reviewer?.trim() || '{{reviewer}}',
-    audit_number: values.audit_number?.trim() || '##'
+    url: values.url?.trim() || '<string>',
+    audience: values.audience?.trim() || '<string>',
+    scope: values.scope?.trim() || '<string>',
+    business_context: values.business_context?.trim() || '<string>',
+    existing_data: values.existing_data?.trim() || '<string>',
+    constraints: values.constraints?.trim() || '<string>',
+    max_tasks: values.max_tasks?.trim() || '25'
   };
 
-  return `## Role and Objective
+  return `# Top Task Research Prompt
 
-You are a senior UX content strategist conducting a defensible, data-backed audit of a single high-impact federal web page. Your goal is to evaluate content effectiveness against user intent and agency objectives, then produce prioritized, evidence-linked recommendations that a project team can act on without further clarification. This audit is one of 50 and must follow a repeatable structure so findings can be compared across the portfolio.
-
----
-
-## Inputs (provided per page)
-
-Fill in before running the analysis:
-
-- **Page URL:** \`${tokens.page_url}\`
-- **Page Title / Purpose:** \`${tokens.page_title_and_stated_purpose}\`
-- **Primary User Task(s):** \`${tokens.top_1_to_3_user_jobs}\`
-- **Primary Business/Agency Goal:** \`${tokens.conversion_or_outcome}\`
-- **Audit Date / Reviewer:** \`${tokens.date} / ${tokens.reviewer}\`
-- **Audit ID:** \`HIP-${tokens.audit_number}-of-50\`
-
-### Quantitative data sources
-
-Paste raw values or attach exports.
-
-**Google Analytics (trailing 90 days)**
-- Pageviews, unique pageviews
-- Avg. time on page
-- Entrances, bounce rate, exit rate
-- Scroll depth
-- Top referrers
-- Device split (desktop / mobile / tablet)
-- Top in-page events
-- Internal search terms leading to and from the page
-
-**Siteimprove**
-- Section 508 / WCAG issues (count by severity)
-- Readability score (Flesch-Kincaid or equivalent)
-- Broken links
-- Misspellings
-- SEO score
-- Policy violations
-- Digital Certainty Index (DCI) sub-scores
-
-**Heatmap data** (Hotjar / Crazy Egg / FullStory / equivalent)
-- Click map summary
-- Scroll reach (25 / 50 / 75 / 100%)
-- Rage clicks
-- Dead clicks
-- Attention hotspots
-- Mobile vs. desktop divergence
-
-**Optional**
-- USWDS / M-24-08 compliance notes
-- Prior user feedback
-- Search Console queries
+A repeatable prompt for conducting Top Task Identification analysis (Gerry McGovern methodology) on any URL. Paste into LLM and fill in the structured input block.
 
 ---
 
-## Analysis Framework
+## Role
+You are a UX researcher conducting Top Task Identification analysis for a website. Your job is to identify the small number of tasks that matter most to users, separate them from the "tiny tasks" that clutter most sites, and produce a prioritized, evidence-backed list.
 
-Evaluate the page across these six dimensions. For each, cite the specific data point(s) that support your finding using the format \`[Source: GA | Siteimprove | Heatmap — metric: value]\`.
-
-1. **Findability & Intent Match** — Do entrances and search terms indicate users arrive with the intent this page is designed to serve? Is the page title/H1 aligned?
-2. **Information Architecture & Scannability** — Does scroll reach and heatmap attention match the intended content hierarchy? Where do users drop off?
-3. **Plain Language & Readability** — Siteimprove readability score vs. target (8th-grade or Plain Writing Act benchmark), jargon, sentence length, voice.
-4. **Accessibility & USWDS / 508 Compliance** — Severity-weighted issues, heading structure, link text quality, alt text, color contrast, form labels.
-5. **Task Completion & CTA Effectiveness** — Click map on primary CTAs, rage/dead clicks, exit rate relative to task completion, form abandonment if applicable.
-6. **Trust, Tone & Brand Consistency** — Voice alignment with agency style guide, currency of content, authorship/date signals, cross-links to authoritative sources.
-
----
-
-## Required Output Structure
-
-Produce the audit using **exactly** the following template. Do not omit sections; mark "N/A — data not provided" where inputs are missing.
-
-\`\`\`
-# Page Audit: {{page_title}}
-**URL:** {{page_url}}
-**Reviewed:** {{date}} by {{reviewer}}
-**Audit ID:** HIP-{{##}}-of-50
-
-## 1. Executive Summary
-- Overall Health Score: {{0–100}} (weighted: 25% task completion, 20% accessibility, 20% readability, 15% findability, 10% IA, 10% trust)
-- Top 3 Findings (one sentence each, each with a data citation)
-- Top 3 Recommendations (ranked by impact × effort)
-
-## 2. Page Context
-- Stated purpose, primary user task, primary agency goal
-- Traffic tier and strategic importance
-
-## 3. Quantitative Snapshot
-| Metric | Value | Source | Benchmark | Status |
-|---|---|---|---|---|
-(Include all GA, Siteimprove, and heatmap metrics listed in Inputs. Status = ✅ / ⚠️ / ❌ vs. benchmark.)
-
-## 4. Dimensional Findings
-For each of the six dimensions:
-### {{Dimension}}
-- **Finding:** {{what the data shows}}
-- **Evidence:** {{citations with values}}
-- **User impact:** {{who is affected and how}}
-- **Severity:** Critical / High / Medium / Low
-
-## 5. Prioritized Recommendations
-| # | Recommendation | Dimension | Evidence | Impact | Effort | Priority | Owner |
-|---|---|---|---|---|---|---|---|
-(Priority = Impact ÷ Effort, 1–5 scale each. Sort descending.)
-
-## 6. Suggested Content Revisions
-Show before/after for the top 3 text or structural changes. Keep revisions USWDS- and plain-language-compliant.
-
-## 7. Open Questions & Data Gaps
-List anything that blocked a confident finding, and what data would resolve it.
-
-## 8. Appendix
-- Raw data references / export filenames
-- Screenshots or heatmap overlays (linked)
-- Change log for this audit entry
+## Structured Input
+\`\`\`yaml
+url: ${tokens.url}                          # Required. Full URL of site/section to analyze
+audience: ${tokens.audience}                # Required. Primary user group (e.g., "small business owners applying for SBA loans")
+scope: ${tokens.scope}                      # Required. "entire site" | "section: /path" | "specific journey: X"
+business_context: ${tokens.business_context} # Optional. Org mission, known pain points, stakeholder goals
+existing_data: ${tokens.existing_data}      # Optional. Analytics, search logs, support tickets, prior research
+constraints: ${tokens.constraints}          # Optional. Compliance (e.g., Section 508, USWDS), tech stack, timeline
+max_tasks: ${tokens.max_tasks}              # Optional. Default 25. Target longlist size before voting
 \`\`\`
 
----
+## Process
+1. **Fetch and inventory** the URL. Catalog navigation, page types, CTAs, forms, and content themes.
+2. **Infer user intents** from visible content, metadata, and the stated audience. Do not invent tasks the site does not support or imply.
+3. **Generate a task longlist** of short, customer-voice statements (5–9 words each, verb-led, jargon-free, non-overlapping). Example: "Find out if I qualify for a loan."
+4. **Deduplicate and normalize** — merge near-duplicates, split compound tasks, flag ambiguous ones.
+5. **Score each task** on the dimensions below using evidence from the page (cite specific URLs/elements).
+6. **Rank** into Top Tasks (critical few) and Tiny Tasks (trivial many).
+7. **Recommend** a voting survey design for validation with real users.
 
-## Rules of Engagement
+## Scoring Dimensions (1–5 scale)
+- **Frequency** — how often the audience likely needs this
+- **Impact** — consequence of failure to the user
+- **Findability** — how easy it is to locate on the current site
+- **Completability** — whether the user can actually finish it end-to-end
 
-- **Every claim must cite data.** If you cannot cite a source, move it to Section 7 (Open Questions), not Findings.
-- **No generic advice.** "Improve readability" is not acceptable; "Reduce avg. sentence length from 24 to ≤15 words in the eligibility section (Siteimprove FK: 13.2)" is.
-- **Benchmarks are explicit.** State the target you are comparing against (e.g., bounce rate benchmark 40%, readability grade ≤8, WCAG 2.1 AA zero criticals).
-- **Severity is consistent across all 50 audits.**
-  - **Critical** — blocks task or violates 508
-  - **High** — measurably degrades completion
-  - **Medium** — friction
-  - **Low** — polish
-- **Tone of recommendations:** direct, specific, actionable in a single sprint where possible.
+## Structured Output
+Return valid JSON matching this schema, followed by a brief prose summary.
 
----
+\`\`\`json
+{
+  "meta": {
+    "url": "",
+    "audience": "",
+    "scope": "",
+    "analyzed_at": "",
+    "analyst_confidence": "low|medium|high",
+    "evidence_gaps": []
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "",
+      "user_intent_category": "",
+      "evidence": [{"source_url": "", "element": "", "note": ""}],
+      "scores": {"frequency": 0, "impact": 0, "findability": 0, "completability": 0},
+      "composite_score": 0.0,
+      "classification": "top|secondary|tiny",
+      "rationale": ""
+    }
+  ],
+  "top_tasks": ["T01", "T05"],
+  "tiny_tasks": ["T12", "T18"],
+  "recommended_survey": {
+    "instructions": "",
+    "task_list_for_voting": [],
+    "recommended_sample_size": 0,
+    "target_segments": []
+  },
+  "next_steps": []
+}
+\`\`\`
 
-## Repeatable Workflow (per page)
+**Summary (prose, ≤150 words):** Top 3–5 tasks, key risks, what to validate with users next.
 
-1. **Intake** — Create a new audit entry from the template; populate Inputs section. Confirm URL is live and matches the HIP list row.
-2. **Pull data** — Export GA (90d), Siteimprove page report, and heatmap snapshot on the same date. Save to \`/audits/HIP-##/raw/\` with ISO date in filename.
-3. **Set benchmarks** — Copy the standing benchmark row from the master audit sheet so comparisons are consistent across all 50 pages.
-4. **Run the analysis** — Feed this prompt plus the raw data into the model. Review output against the Rules of Engagement.
-5. **QA pass** — Verify every finding has a citation; confirm severity labels match the rubric; sanity-check the health score calculation.
-6. **Log to master tracker** — Append health score, top 3 findings, and top 3 recommendations to the portfolio spreadsheet with a link to the full audit file.
-7. **Stakeholder handoff** — Share Sections 1, 5, and 6 with the page owner; retain full audit as the defensible record.
-8. **Re-audit trigger** — Schedule a 90-day follow-up to measure movement on the same metrics.
-
----
-
-## Version
-
-- **v1.0** — Initial prompt for HIP 50-page review program.`;
+## Rules
+- Write tasks in the user's voice, not the org's. "Apply for benefits," not "Benefits application portal."
+- No task longer than 9 words.
+- Every score must cite evidence; if evidence is missing, mark it in \`evidence_gaps\` and lower \`analyst_confidence\`.
+- If the URL cannot be fetched or scope is unclear, return an \`error\` object with \`missing_inputs\` instead of guessing.
+- Deterministic: same inputs should yield substantively the same longlist and rankings.`;
 }
 
 function updatePromptOutput() {
