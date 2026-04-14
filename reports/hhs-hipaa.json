@@ -1,0 +1,290 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/hipaa/index.html",
+    "audience": "general public and healthcare professionals seeking HIPAA guidance",
+    "scope": "entire site",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "Full page navigation and IA not directly retrievable",
+      "Limited visibility into CTAs and user flows from homepage",
+      "No direct analytics/search data provided"
+    ],
+    "report_status": "Reviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Understand what HIPAA rules require",
+      "user_intent_category": "learn/compliance",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/hipaa/index.html",
+          "element": "Overview of HIPAA rules",
+          "note": "Site centers on Privacy, Security, and Breach Notification rules"
+        },
+        {
+          "source_url": "https://www.hhs.gov/hipaa/for-professionals/privacy/laws-regulations/index.html",
+          "element": "Privacy Rule explanation",
+          "note": "Explains national standards for protecting health information"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Core purpose of the site; high demand and high consequence if misunderstood."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Find out if HIPAA applies to me",
+      "user_intent_category": "eligibility/scope",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/hipaa/index.html",
+          "element": "Audience sections (individuals vs professionals)",
+          "note": "Site separates guidance by user type"
+        },
+        {
+          "source_url": "https://www.hhs.gov/hipaa/for-professionals/index.html",
+          "element": "Covered entities definition",
+          "note": "Explains who HIPAA applies to"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Fundamental entry question; unclear pathways reduce findability."
+    },
+    {
+      "id": "T03",
+      "task_statement": "Learn my rights to medical records",
+      "user_intent_category": "individual rights",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/hipaa/for-individuals/index.html",
+          "element": "Individuals section",
+          "note": "Includes rights to access and amend records"
+        },
+        {
+          "source_url": "turn0search1",
+          "element": "Privacy Rule summary",
+          "note": "States patients can examine and obtain copies of records"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "High-value consumer task tied directly to legal rights."
+    },
+    {
+      "id": "T04",
+      "task_statement": "Report a HIPAA privacy complaint",
+      "user_intent_category": "action/reporting",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/hipaa/index.html",
+          "element": "Complaint/report links",
+          "note": "Explicit call to report violations"
+        },
+        {
+          "source_url": "turn0search0",
+          "element": "Report a HIPAA Privacy Complaint",
+          "note": "Listed as key resource"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Less frequent but critical when needed; strong compliance impact."
+    },
+    {
+      "id": "T05",
+      "task_statement": "Get guidance for HIPAA compliance steps",
+      "user_intent_category": "how-to/compliance",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/hipaa/for-professionals/security/index.html",
+          "element": "Security rule guidance",
+          "note": "Provides safeguards and implementation guidance"
+        },
+        {
+          "source_url": "turn0search0",
+          "element": "Guidance materials",
+          "note": "Includes compliance resources and FAQs"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Primary professional need; complexity reduces completability."
+    },
+    {
+      "id": "T06",
+      "task_statement": "Understand HIPAA privacy and security rules",
+      "user_intent_category": "learn/compliance",
+      "evidence": [
+        {
+          "source_url": "turn0search1",
+          "element": "Privacy and Security Rule descriptions",
+          "note": "Explains safeguards and protections"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 4,
+        "findability": 4,
+        "completability": 3
+      },
+      "composite_score": 4,
+      "classification": "secondary",
+      "rationale": "Important but overlaps with broader understanding tasks."
+    },
+    {
+      "id": "T07",
+      "task_statement": "Check rules for sharing health information",
+      "user_intent_category": "decision support",
+      "evidence": [
+        {
+          "source_url": "turn0search3",
+          "element": "Data sharing guidance",
+          "note": "Explains when PHI can be disclosed"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "High impact but more situational."
+    },
+    {
+      "id": "T08",
+      "task_statement": "Find HIPAA training and guidance materials",
+      "user_intent_category": "resources",
+      "evidence": [
+        {
+          "source_url": "turn0search0",
+          "element": "Guidance and FAQs",
+          "note": "Lists educational materials"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Supportive but not primary task."
+    },
+    {
+      "id": "T09",
+      "task_statement": "Look up HIPAA laws and regulations",
+      "user_intent_category": "reference",
+      "evidence": [
+        {
+          "source_url": "turn0search1",
+          "element": "CFR references",
+          "note": "Links to full regulatory text"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 3,
+        "completability": 2
+      },
+      "composite_score": 3,
+      "classification": "tiny",
+      "rationale": "Niche/legal-heavy task for specialists."
+    },
+    {
+      "id": "T10",
+      "task_statement": "Learn about breach notification requirements",
+      "user_intent_category": "compliance",
+      "evidence": [
+        {
+          "source_url": "turn0search1",
+          "element": "Breach Notification Rule",
+          "note": "Explains obligations after data breaches"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Critical but event-driven."
+    }
+  ],
+  "top_tasks": [
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T05"
+  ],
+  "tiny_tasks": [
+    "T09"
+  ],
+  "recommended_survey": {
+    "instructions": "Select the 5 tasks that matter most to you when visiting this site.",
+    "task_list_for_voting": [
+      "Understand what HIPAA rules require",
+      "Find out if HIPAA applies to me",
+      "Learn my rights to medical records",
+      "Report a HIPAA privacy complaint",
+      "Get guidance for HIPAA compliance steps",
+      "Understand HIPAA privacy and security rules",
+      "Check rules for sharing health information",
+      "Find HIPAA training and guidance materials",
+      "Look up HIPAA laws and regulations",
+      "Learn about breach notification requirements"
+    ],
+    "recommended_sample_size": 200,
+    "target_segments": [
+      "Patients and general public",
+      "Healthcare providers",
+      "Compliance officers",
+      "Health IT professionals"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks with survey and analytics (search logs, top pages)",
+    "Map top tasks to current navigation and identify gaps",
+    "Simplify pathways for 'Does HIPAA apply to me?'",
+    "Improve task-based entry points for complaints and compliance guidance"
+  ]
+}
