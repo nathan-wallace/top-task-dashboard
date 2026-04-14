@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Reports Overview | Top Task Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <h1>Top Task Dashboard</h1>
+        <p>High-level overview of every available report.</p>
+      </div>
+      <nav class="site-nav" aria-label="Main">
+        <a href="./index.html">Report Explorer</a>
+        <a class="active" href="./overview.html">All Reports Overview</a>
+      </nav>
+    </header>
+
+    <main class="overview-layout">
+      <section class="panel">
+        <div class="overview-toolbar">
+          <h2>Portfolio Summary</h2>
+          <p id="overview-count" class="subtle"></p>
+        </div>
+        <div id="overview-stats" class="stat-grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Reports at a Glance</h2>
+        <div class="table-wrap">
+          <table class="task-table">
+            <thead>
+              <tr>
+                <th>Report</th>
+                <th>Audience</th>
+                <th>Total Tasks</th>
+                <th>Avg Score</th>
+                <th>Top Tasks</th>
+                <th>Secondary</th>
+                <th>Tiny</th>
+              </tr>
+            </thead>
+            <tbody id="overview-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Static build for GitHub Pages / nojekyll.</small>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -3,11 +3,15 @@ const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
 const classificationFilter = document.querySelector('#classification-filter');
 const downloadButton = document.querySelector('#download-md');
+const overviewStats = document.querySelector('#overview-stats');
+const overviewCount = document.querySelector('#overview-count');
+const overviewTableBody = document.querySelector('#overview-table-body');
 
 let reports = [];
 let selectedReport = null;
 
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
+const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
 
 async function loadReports() {
   const response = await fetch('./reports/index.json');
@@ -17,8 +21,16 @@ async function loadReports() {
     return { file, title: titleFromFile(file), data };
   }));
 
-  renderReportList();
-  if (reports.length > 0) selectReport(reports[0].file);
+  if (reportList) {
+    renderReportList();
+    if (reports.length > 0) {
+      selectReport(reports[0].file);
+    }
+  }
+
+  if (overviewStats && overviewTableBody) {
+    renderOverviewPage();
+  }
 }
 
 function renderReportList() {
@@ -67,6 +79,7 @@ function averageByClassification(tasks) {
 }
 
 function renderReport() {
+  if (!reportView) return;
   if (!selectedReport) {
     reportView.innerHTML = '<p>No report selected.</p>';
     return;
@@ -111,16 +124,76 @@ function renderReport() {
     <div class="meta-grid">${bars}</div>
 
     <h3>Tasks (${tasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})</h3>
-    <table class="task-table">
-      <thead>
-        <tr><th>ID</th><th>Task</th><th>Class</th><th>Score</th><th>Rationale</th></tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
+    <div class="table-wrap">
+      <table class="task-table">
+        <thead>
+          <tr><th>ID</th><th>Task</th><th>Class</th><th>Score</th><th>Rationale</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
 
     <h3>Next steps</h3>
     <ul>${(data.next_steps || []).map((step) => `<li>${step}</li>`).join('')}</ul>
   `;
+}
+
+function summarizeReport(report) {
+  const tasks = report.data.task_longlist || [];
+  const byClass = tasks.reduce((acc, task) => {
+    const key = task.classification || 'unknown';
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+  const totalScore = tasks.reduce((sum, task) => sum + task.composite_score, 0);
+  return {
+    ...report,
+    totalTasks: tasks.length,
+    avgScore: tasks.length ? totalScore / tasks.length : 0,
+    topTasks: byClass.top || 0,
+    secondaryTasks: byClass.secondary || 0,
+    tinyTasks: byClass.tiny || 0
+  };
+}
+
+function renderOverviewPage() {
+  const summaries = reports.map(summarizeReport);
+  const totalTasks = summaries.reduce((sum, report) => sum + report.totalTasks, 0);
+  const avgScore = summaries.length
+    ? summaries.reduce((sum, report) => sum + report.avgScore, 0) / summaries.length
+    : 0;
+  const topTasks = summaries.reduce((sum, report) => sum + report.topTasks, 0);
+  const secondaryTasks = summaries.reduce((sum, report) => sum + report.secondaryTasks, 0);
+  const tinyTasks = summaries.reduce((sum, report) => sum + report.tinyTasks, 0);
+
+  overviewCount.textContent = `${summaries.length} reports • ${totalTasks} tasks analyzed`;
+
+  overviewStats.innerHTML = [
+    ['Average Report Score', round(avgScore)],
+    ['Top Classified Tasks', topTasks],
+    ['Secondary Tasks', secondaryTasks],
+    ['Tiny Tasks', tinyTasks]
+  ].map(([label, value]) => `
+    <article class="card stat-card">
+      <p class="subtle">${label}</p>
+      <p class="big-number">${value}</p>
+    </article>
+  `).join('');
+
+  overviewTableBody.innerHTML = summaries
+    .sort((a, b) => b.avgScore - a.avgScore)
+    .map((report) => `
+      <tr>
+        <td><a href="./index.html">${report.title}</a></td>
+        <td>${report.data.meta?.audience || 'n/a'}</td>
+        <td>${report.totalTasks}</td>
+        <td>${round(report.avgScore)}</td>
+        <td>${report.topTasks}</td>
+        <td>${report.secondaryTasks}</td>
+        <td>${report.tinyTasks}</td>
+      </tr>
+    `)
+    .join('');
 }
 
 function toMarkdown(report) {
@@ -148,19 +221,31 @@ function toMarkdown(report) {
   return lines.join('\n');
 }
 
-downloadButton.addEventListener('click', () => {
-  if (!selectedReport) return;
-  const blob = new Blob([toMarkdown(selectedReport)], { type: 'text/markdown;charset=utf-8' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `${selectedReport.file.replace('.json', '')}.md`;
-  link.click();
-  URL.revokeObjectURL(link.href);
-});
+if (downloadButton) {
+  downloadButton.addEventListener('click', () => {
+    if (!selectedReport) return;
+    const blob = new Blob([toMarkdown(selectedReport)], { type: 'text/markdown;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${selectedReport.file.replace('.json', '')}.md`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
+}
 
-classificationFilter.addEventListener('change', renderReport);
-reportSearch.addEventListener('input', renderReportList);
+if (classificationFilter) {
+  classificationFilter.addEventListener('change', renderReport);
+}
+
+if (reportSearch) {
+  reportSearch.addEventListener('input', renderReportList);
+}
 
 loadReports().catch((error) => {
-  reportView.innerHTML = `<p>Failed to load reports: ${error.message}</p>`;
+  if (reportView) {
+    reportView.innerHTML = `<p>Failed to load reports: ${error.message}</p>`;
+  }
+  if (overviewStats) {
+    overviewStats.innerHTML = `<p>Failed to load reports: ${error.message}</p>`;
+  }
 });
