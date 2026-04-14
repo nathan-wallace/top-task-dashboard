@@ -2,6 +2,15 @@
 
 A static dashboard that reads report JSON files from `reports/`, visualizes task scoring, and exports any loaded report as Markdown.
 
+## Pages
+
+- `index.html`: report explorer with report-level drill-down.
+- `overview.html`: portfolio view showing summary stats across all reports.
+
+## Styling
+
+The UI is authored in `styles.scss` (Sass syntax) and committed as `styles.css` for static hosting.
+
 ## Add reports
 
 1. Drop one or more report files into `reports/` (e.g. `my-site.json`).
