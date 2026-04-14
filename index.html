@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top Task Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Top Task Dashboard</h1>
+      <p>Explore top-task analysis reports stored as JSON files.</p>
+    </header>
+
+    <main class="layout">
+      <aside class="panel">
+        <h2>Reports</h2>
+        <input id="report-search" type="search" placeholder="Search reports" />
+        <ul id="report-list"></ul>
+      </aside>
+
+      <section class="panel content">
+        <div class="toolbar">
+          <label>
+            Classification
+            <select id="classification-filter">
+              <option value="all">All</option>
+              <option value="top">Top</option>
+              <option value="secondary">Secondary</option>
+              <option value="tiny">Tiny</option>
+            </select>
+          </label>
+          <button id="download-md" type="button">Download Markdown</button>
+        </div>
+
+        <article id="report-view" aria-live="polite">
+          <p>Select a report to begin.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <small>Static build for GitHub Pages / nojekyll.</small>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

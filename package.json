@@ -1,0 +1,10 @@
+{
+  "name": "top-task-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:index": "node scripts/build-report-index.mjs",
+    "validate:reports": "node scripts/validate-reports.mjs",
+    "check": "npm run build:index && npm run validate:reports"
+  }
+}

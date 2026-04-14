@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "url": "https://akastage-www.hhs.gov/about/working-at-hhs/index.html",
+    "audience": "job seekers interested in careers at HHS (students, professionals, federal applicants)",
+    "scope": "entire site",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "Staging URL content not fully accessible; analysis based on live HHS careers pages",
+      "Limited visibility into deeper navigation, search behavior, and application flows",
+      "No analytics or user research provided"
+    ]
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Find open jobs at HHS",
+      "user_intent_category": "job search",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "How to apply and hiring paths section",
+          "note": "Primary entry point highlights job opportunities and hiring paths"
+        }
+      ],
+      "scores": {"frequency": 5, "impact": 5, "findability": 4, "completability": 3},
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Core reason users visit; strong visibility but completion depends on external systems (USAJOBS)."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Learn how to apply for jobs",
+      "user_intent_category": "application process",
+      "evidence": [
+        {
+          "source_url": "https://aspr.hhs.gov/careers/Pages/HiringProcess.aspx",
+          "element": "Step-by-step hiring process instructions",
+          "note": "Explains account creation and application via USAJOBS"
+        }
+      ],
+      "scores": {"frequency": 5, "impact": 5, "findability": 4, "completability": 4},
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Critical enabling task; strong supporting content improves completion."
+    },
+    {
+      "id": "T03",
+      "task_statement": "Understand HHS job benefits and perks",
+      "user_intent_category": "decision support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/careers/working-hhs/working-in-government",
+          "element": "Benefits and workplace flexibilities section",
+          "note": "Highlights telework, dependent care, and federal benefits"
+        }
+      ],
+      "scores": {"frequency": 4, "impact": 4, "findability": 3, "completability": 5},
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Key decision factor for applicants; easy to consume once found."
+    },
+    {
+      "id": "T04",
+      "task_statement": "Explore career paths and hiring programs",
+      "user_intent_category": "career exploration",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "Pathways Programs and hiring categories",
+          "note": "Lists student, veteran, disability, and public hiring paths"
+        }
+      ],
+      "scores": {"frequency": 4, "impact": 4, "findability": 4, "completability": 4},
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "Helps users identify eligibility routes; clearly surfaced."
+    },
+    {
+      "id": "T05",
+      "task_statement": "Check eligibility for HHS jobs",
+      "user_intent_category": "qualification",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/careers/how-apply/how-apply-hhs-student",
+          "element": "Eligibility requirements section",
+          "note": "Lists citizenship, age, and enrollment requirements"
+        }
+      ],
+      "scores": {"frequency": 4, "impact": 5, "findability": 3, "completability": 4},
+      "composite_score": 4,
+      "classification": "top",
+      "rationale": "High impact gatekeeping task; somewhat buried in subpages."
+    },
+    {
+      "id": "T06",
+      "task_statement": "Apply for internships or student programs",
+      "user_intent_category": "student opportunities",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/careers/how-apply/how-apply-hhs-student",
+          "element": "Internship Program description",
+          "note": "Dedicated pathway for students"
+        }
+      ],
+      "scores": {"frequency": 3, "impact": 4, "findability": 4, "completability": 4},
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Important for a segment (students) but not universal."
+    },
+    {
+      "id": "T07",
+      "task_statement": "Understand HHS mission and work impact",
+      "user_intent_category": "motivation",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "Employee testimonials and mission statements",
+          "note": "Emphasizes public service and impact"
+        }
+      ],
+      "scores": {"frequency": 3, "impact": 4, "findability": 5, "completability": 5},
+      "composite_score": 4.25,
+      "classification": "secondary",
+      "rationale": "Highly visible but less task-critical than applying."
+    },
+    {
+      "id": "T08",
+      "task_statement": "Find specific hiring paths for my background",
+      "user_intent_category": "personalization",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "Hiring categories (veterans, disabilities, etc.)",
+          "note": "Segmented entry points by audience"
+        }
+      ],
+      "scores": {"frequency": 4, "impact": 4, "findability": 4, "completability": 3},
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Important but may require cross-navigation to complete."
+    },
+    {
+      "id": "T09",
+      "task_statement": "Learn about federal hiring requirements",
+      "user_intent_category": "process understanding",
+      "evidence": [
+        {
+          "source_url": "https://aspr.hhs.gov/careers/Pages/HiringProcess.aspx",
+          "element": "USAJOBS and resume requirements",
+          "note": "Explains federal hiring specifics"
+        }
+      ],
+      "scores": {"frequency": 3, "impact": 4, "findability": 3, "completability": 3},
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Important but less prominent and more complex."
+    },
+    {
+      "id": "T10",
+      "task_statement": "Read employee stories and testimonials",
+      "user_intent_category": "inspiration",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "Employee quotes",
+          "note": "Promotional storytelling content"
+        }
+      ],
+      "scores": {"frequency": 2, "impact": 2, "findability": 5, "completability": 5},
+      "composite_score": 3.5,
+      "classification": "tiny",
+      "rationale": "Highly visible but low task value."
+    },
+    {
+      "id": "T11",
+      "task_statement": "Learn about workplace culture at HHS",
+      "user_intent_category": "decision support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/careers/index.html",
+          "element": "Workplace satisfaction statements",
+          "note": "Highlights positive culture claims"
+        }
+      ],
+      "scores": {"frequency": 3, "impact": 3, "findability": 4, "completability": 5},
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Supports decision-making but not primary task."
+    },
+    {
+      "id": "T12",
+      "task_statement": "Find agency-specific job opportunities",
+      "user_intent_category": "job search",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/careers/working-hhs/working-in-government",
+          "element": "Agencies section",
+          "note": "References multiple HHS agencies"
+        }
+      ],
+      "scores": {"frequency": 4, "impact": 4, "findability": 3, "completability": 3},
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Important but fragmented across agencies."
+    }
+  ],
+  "top_tasks": ["T01", "T02", "T03", "T04", "T05"],
+  "tiny_tasks": ["T10"],
+  "recommended_survey": {
+    "instructions": "Select the 5 tasks that matter most to you when visiting this site.",
+    "task_list_for_voting": [
+      "Find open jobs at HHS",
+      "Learn how to apply for jobs",
+      "Understand HHS job benefits and perks",
+      "Explore career paths and hiring programs",
+      "Check eligibility for HHS jobs",
+      "Apply for internships or student programs",
+      "Understand HHS mission and work impact",
+      "Find specific hiring paths for my background",
+      "Learn about federal hiring requirements",
+      "Find agency-specific job opportunities"
+    ],
+    "recommended_sample_size": 200,
+    "target_segments": [
+      "Recent graduates",
+      "Mid-career professionals",
+      "Federal job applicants",
+      "Veterans and special hiring authorities"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks with user voting survey",
+    "Analyze search logs and USAJOBS referrals",
+    "Conduct usability testing on application journey",
+    "Audit navigation for job search and eligibility clarity",
+    "Reduce prominence of low-value promotional content"
+  ]
+}
