@@ -33,9 +33,14 @@ python3 -m http.server 4173
 
 ## Expected report shape
 
-The app expects a JSON structure similar to:
+The app and validator enforce a shared data model aligned with the Prompt Builder output schema:
 
-- `meta` object (`url`, `audience`, `scope`, `analyzed_at`, `report_status`)
+- `meta` object with `url`, `audience`, `scope`, `analyzed_at`, `analyst_confidence`, `evidence_gaps`, and `report_status`
+  - `analyst_confidence` must be one of `low`, `medium`, or `high`
   - `report_status` must be one of `Unreviewed`, `Reviewed`, or `Approved`
-- `task_longlist` array with `id`, `task_statement`, `classification`, and numeric `composite_score`
-- optional `next_steps`
+- `task_longlist` non-empty array; each task must include:
+  - `id`, `task_statement`, `user_intent_category`, `evidence`, `scores`, `composite_score`, `classification`, `rationale`
+  - `classification` must be one of `top`, `secondary`, or `tiny`
+- `top_tasks` and `tiny_tasks` arrays of IDs that must exist in `task_longlist`
+- `recommended_survey` object with `instructions`, `task_list_for_voting`, `recommended_sample_size`, `target_segments`
+- `next_steps` array
