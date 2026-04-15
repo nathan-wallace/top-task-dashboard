@@ -125,6 +125,10 @@ footer {
   align-items: start;
 }
 
+.report-single-layout {
+  grid-template-columns: 1fr;
+}
+
 .overview-layout {
   display: grid;
   gap: 1rem;
@@ -374,7 +378,8 @@ h2 {
 .tasks-filter-label select,
 .toolbar button,
 .overview-toolbar button,
-.prompt-actions button {
+.prompt-actions button,
+.button-link {
   font: inherit;
 }
 
@@ -408,7 +413,8 @@ h2 {
 
 .toolbar button,
 .overview-toolbar button,
-.prompt-actions button {
+.prompt-actions button,
+.button-link {
   background: $primary;
   color: #fff;
   border: 1px solid #1a4480;

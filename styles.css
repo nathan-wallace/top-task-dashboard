@@ -106,6 +106,10 @@ footer {
   align-items: start;
 }
 
+.report-single-layout {
+  grid-template-columns: 1fr;
+}
+
 .overview-layout {
   display: grid;
   gap: 1rem;
@@ -349,7 +353,8 @@ h2 {
 .tasks-filter-label select,
 .toolbar button,
 .overview-toolbar button,
-.prompt-actions button {
+.prompt-actions button,
+.button-link {
   font: inherit;
 }
 
@@ -383,7 +388,8 @@ h2 {
 
 .toolbar button,
 .overview-toolbar button,
-.prompt-actions button {
+.prompt-actions button,
+.button-link {
   background: #005ea2;
   color: #fff;
   border: 1px solid #1a4480;
@@ -396,19 +402,22 @@ h2 {
 
 .toolbar button:hover,
 .overview-toolbar button:hover,
-.prompt-actions button:hover {
+.prompt-actions button:hover,
+.button-link:hover {
   background: #004b86;
 }
 .toolbar button:active,
 .overview-toolbar button:active,
-.prompt-actions button:active {
+.prompt-actions button:active,
+.button-link:active {
   background: #003e70;
   border-color: #123766;
   transform: translateY(1px);
 }
 .toolbar button:focus-visible,
 .overview-toolbar button:focus-visible,
-.prompt-actions button:focus-visible {
+.prompt-actions button:focus-visible,
+.button-link:focus-visible {
   outline: 3px solid #2491ff;
   outline-offset: 2px;
   box-shadow: 0 0 0 1px rgba(0, 94, 162, 0.2);
