@@ -1,0 +1,55 @@
+name: Submit report
+description: Submit a dashboard report payload for automated validation and PR creation.
+title: "[report] <slug>"
+labels:
+  - report-submission
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit a report
+        Fill out the fields below to submit a report payload.
+
+  - type: input
+    id: slug
+    attributes:
+      label: Report slug
+      description: |
+        Required. Use only lowercase letters, numbers, and hyphens (`[a-z0-9-]`).
+        Do **not** include a `.json` suffix.
+        Example: `weekly-sales-summary`
+      placeholder: weekly-sales-summary
+    validations:
+      required: true
+
+  - type: textarea
+    id: report_json
+    attributes:
+      label: Report JSON payload
+      description: |
+        Required. Paste the full JSON payload for the report.
+        The payload must match the existing dashboard report schema exactly.
+      placeholder: |
+        {
+          "slug": "weekly-sales-summary",
+          "title": "Weekly Sales Summary"
+        }
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: submitter_notes
+    attributes:
+      label: Submitter notes
+      description: Optional context, caveats, or links for reviewers.
+      placeholder: Add any extra context for maintainers (optional).
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## What happens next?
+        After submission, automation validates the slug and payload.
+        If validation succeeds, it automatically opens a pull request with your report changes.
