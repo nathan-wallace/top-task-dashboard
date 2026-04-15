@@ -15,7 +15,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.should_deploy == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            should_deploy:
+              - 'reports/**/*.json'
+              - 'scripts/**'
+              - 'src/**'
+              - 'styles/**'
+              - '_data/**'
+              - '_includes/**'
+              - '*.html'
+              - '*.njk'
+              - '.eleventy.js'
+              - 'app.js'
+              - 'package.json'
+              - 'package-lock.json'
+
   deploy:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.should_deploy == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -26,7 +54,8 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run build
+      - name: Regenerate site assets before deploy
+        run: npm run build
       - run: touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
