@@ -633,22 +633,69 @@ function renderReport() {
   }
   reportView.append(nextStepsList);
 
+  const recommendedSurvey = data.recommended_survey || {};
   const recommendedSurveys = Array.isArray(data.recommended_surveys)
     ? data.recommended_surveys
-    : (data.recommended_survey?.task_list_for_voting || []);
-  if (recommendedSurveys.length) {
+    : (recommendedSurvey.task_list_for_voting || []);
+  const surveyInstructions = recommendedSurvey.instructions || '';
+  const recommendedSampleSize = recommendedSurvey.recommended_sample_size;
+  const targetSegments = Array.isArray(recommendedSurvey.target_segments)
+    ? recommendedSurvey.target_segments
+    : [];
+
+  if (recommendedSurveys.length || surveyInstructions || targetSegments.length || recommendedSampleSize) {
     const recommendedSurveysHeading = document.createElement('h3');
     recommendedSurveysHeading.textContent = 'Recommended surveys';
     reportView.append(recommendedSurveysHeading);
 
     const recommendedSurveysGrid = document.createElement('div');
     recommendedSurveysGrid.className = 'recommended-survey-grid';
-    for (const survey of recommendedSurveys) {
+    for (const [index, survey] of recommendedSurveys.entries()) {
+      const surveyTask = typeof survey === 'string'
+        ? survey
+        : (survey?.task_statement || survey?.task || survey?.title || '');
       const surveyCard = document.createElement('article');
       surveyCard.className = 'card recommended-survey-card';
+
+      const surveyHeader = document.createElement('div');
+      surveyHeader.className = 'recommended-survey-header';
+      const surveyBadge = document.createElement('span');
+      surveyBadge.className = 'badge recommended-survey-badge';
+      surveyBadge.textContent = `Survey task ${index + 1}`;
+      surveyHeader.append(surveyBadge);
+
       const surveyText = document.createElement('p');
-      surveyText.textContent = survey;
-      surveyCard.append(surveyText);
+      surveyText.className = 'recommended-survey-task';
+      surveyText.textContent = surveyTask || `Survey item ${index + 1}`;
+
+      const surveyMeta = document.createElement('dl');
+      surveyMeta.className = 'recommended-survey-meta';
+
+      if (surveyInstructions) {
+        const instructionsTerm = document.createElement('dt');
+        instructionsTerm.textContent = 'Instructions';
+        const instructionsDesc = document.createElement('dd');
+        instructionsDesc.textContent = surveyInstructions;
+        surveyMeta.append(instructionsTerm, instructionsDesc);
+      }
+
+      if (recommendedSampleSize) {
+        const sampleSizeTerm = document.createElement('dt');
+        sampleSizeTerm.textContent = 'Recommended sample size';
+        const sampleSizeDesc = document.createElement('dd');
+        sampleSizeDesc.textContent = String(recommendedSampleSize);
+        surveyMeta.append(sampleSizeTerm, sampleSizeDesc);
+      }
+
+      if (targetSegments.length) {
+        const segmentsTerm = document.createElement('dt');
+        segmentsTerm.textContent = 'Target segments';
+        const segmentsDesc = document.createElement('dd');
+        segmentsDesc.textContent = targetSegments.join(', ');
+        surveyMeta.append(segmentsTerm, segmentsDesc);
+      }
+
+      surveyCard.append(surveyHeader, surveyText, surveyMeta);
       recommendedSurveysGrid.append(surveyCard);
     }
     reportView.append(recommendedSurveysGrid);
