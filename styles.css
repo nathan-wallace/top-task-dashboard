@@ -168,6 +168,8 @@ footer {
   justify-content: center;
   border-radius: 10px;
   padding: 0.5rem;
+}
+
 .load-warning {
   margin-bottom: 1rem;
 }
