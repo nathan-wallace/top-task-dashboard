@@ -562,6 +562,27 @@ function renderReport() {
     nextStepsList.append(item);
   }
   reportView.append(nextStepsList);
+
+  const recommendedSurveys = Array.isArray(data.recommended_surveys)
+    ? data.recommended_surveys
+    : (data.recommended_survey?.task_list_for_voting || []);
+  if (recommendedSurveys.length) {
+    const recommendedSurveysHeading = document.createElement('h3');
+    recommendedSurveysHeading.textContent = 'Recommended surveys';
+    reportView.append(recommendedSurveysHeading);
+
+    const recommendedSurveysGrid = document.createElement('div');
+    recommendedSurveysGrid.className = 'recommended-survey-grid';
+    for (const survey of recommendedSurveys) {
+      const surveyCard = document.createElement('article');
+      surveyCard.className = 'card recommended-survey-card';
+      const surveyText = document.createElement('p');
+      surveyText.textContent = survey;
+      surveyCard.append(surveyText);
+      recommendedSurveysGrid.append(surveyCard);
+    }
+    reportView.append(recommendedSurveysGrid);
+  }
 }
 
 function summarizeReport(report) {

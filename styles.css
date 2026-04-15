@@ -535,6 +535,17 @@ h2 {
   color: #11315d;
 }
 
+.recommended-survey-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.recommended-survey-card p {
+  margin: 0;
+  color: #143253;
+}
+
 .table-wrap {
   overflow-x: auto;
   overflow-y: visible;
