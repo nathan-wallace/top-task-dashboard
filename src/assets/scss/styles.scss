@@ -668,6 +668,68 @@ h2 {
   color: #1a3763;
 }
 
+.pdf-render-host {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 880px;
+  background: #fff;
+  padding: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.pdf-render-root {
+  background: #fff;
+  color: #1b1b1b;
+  padding: 0.25rem;
+
+  h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.72rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #0f2e5f;
+  }
+
+  h3 {
+    margin: 1.05rem 0 0.6rem;
+    font-size: 1.08rem;
+    color: #16345f;
+  }
+
+  p {
+    margin: 0;
+    color: #233d63;
+  }
+
+  .card strong {
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .card small {
+    color: #375885;
+  }
+}
+
+@media print {
+  .pdf-render-host {
+    position: static;
+    width: auto;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .pdf-render-root {
+    padding: 0;
+
+    .task-table {
+      font-size: 0.92rem;
+    }
+  }
+}
+
 .bar {
   background: #e7eef9;
   border-radius: 999px;

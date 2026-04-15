@@ -163,9 +163,9 @@ async function initReportExplorerPage() {
 
     reportSearch?.addEventListener('input', rerender);
 
-    downloadButton?.addEventListener('click', () => {
+    downloadButton?.addEventListener('click', async () => {
       if (!selectedReport) return;
-      const blob = buildReportPdfBlob(selectedReport);
+      const blob = await buildReportPdfBlob(selectedReport);
       triggerBlobDownload(blob, `${selectedReport.file.replace('.json', '')}-report.pdf`);
     });
 
