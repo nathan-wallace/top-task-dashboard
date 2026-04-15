@@ -886,13 +886,20 @@ function createPdfBlob(lines) {
   return new Blob([pdf], { type: 'application/pdf' });
 }
 
+function triggerBlobDownload(blob, fileName) {
+  const link = document.createElement('a');
+  const objectUrl = URL.createObjectURL(blob);
+  link.href = objectUrl;
+  link.download = fileName;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+}
+
 function downloadPdfReport(report) {
   const blob = createPdfBlob(collectReportPdfLines(report));
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = `${report.file.replace('.json', '')}-report.pdf`;
-  link.click();
-  URL.revokeObjectURL(link.href);
+  triggerBlobDownload(blob, `${report.file.replace('.json', '')}-report.pdf`);
 }
 
 if (downloadButton) {
@@ -907,11 +914,7 @@ if (downloadReportWorkbookButton) {
     if (!selectedReport) return;
     const workbook = buildSingleReportWorkbook(selectedReport);
     const blob = new Blob([workbook], { type: 'application/vnd.ms-excel;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${selectedReport.file.replace('.json', '')}-report-workbook.xls`;
-    link.click();
-    URL.revokeObjectURL(link.href);
+    triggerBlobDownload(blob, `${selectedReport.file.replace('.json', '')}-report-workbook.xls`);
   });
 }
 
@@ -950,10 +953,6 @@ if (downloadSpreadsheetButton) {
     if (!reports.length) return;
     const today = new Date().toISOString().slice(0, 10);
     const blob = new Blob([buildPortfolioCsv()], { type: 'text/csv;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `top-task-portfolio-${today}.csv`;
-    link.click();
-    URL.revokeObjectURL(link.href);
+    triggerBlobDownload(blob, `top-task-portfolio-${today}.csv`);
   });
 }
