@@ -41,7 +41,23 @@
                 <th>Status</th>
                 <th>Audience</th>
                 <th>Total Tasks</th>
-                <th>Avg Score</th>
+                <th>
+                  <span class="tooltip-label">
+                    Avg Score
+                    <button
+                      class="info-tooltip"
+                      type="button"
+                      aria-label="How Avg Score is calculated"
+                      aria-describedby="avg-score-tooltip"
+                    >
+                      i
+                    </button>
+                    <span id="avg-score-tooltip" class="tooltip-content" role="tooltip">
+                      Avg Score is the mean of each task's composite score in the report. Composite score is based on
+                      Frequency, Impact, Findability, and Completability (1–5 each).
+                    </span>
+                  </span>
+                </th>
                 <th>Top Tasks</th>
                 <th>Secondary</th>
                 <th>Tiny</th>
