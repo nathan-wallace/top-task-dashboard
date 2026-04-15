@@ -6,15 +6,16 @@ export default defineConfig({
     outDir: '_site',
     emptyOutDir: false,
     rollupOptions: {
-      input: {
-        index: resolve(__dirname, 'src/assets/js/index.js'),
-        overview: resolve(__dirname, 'src/assets/js/overview.js'),
-        prompt: resolve(__dirname, 'src/assets/js/prompt.js')
-      },
+      input: 'src/assets/js/main.js',
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        entryFileNames: 'app.js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'styles.css';
+          }
+
+          return 'assets/[name]-[hash][extname]';
+        }
       }
     }
   }
