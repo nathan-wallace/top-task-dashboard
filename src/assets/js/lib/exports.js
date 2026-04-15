@@ -165,18 +165,241 @@ function buildReportPrintDom(report) {
 }
 
 export async function buildReportPdfBlob(report) {
-  const container = document.createElement('div');
-  container.className = 'pdf-render-host';
-  container.append(buildReportPrintDom(report));
-  document.body.append(container);
+  return buildStructuredReportPdfBlob(report);
+}
 
-  try {
-    const root = container.querySelector('.pdf-render-root');
-    const canvas = await renderElementToCanvas(root);
-    return buildPdfBlobFromCanvas(canvas);
-  } finally {
-    container.remove();
+function buildStructuredReportPdfBlob(report) {
+  const sortedTasks = [...(report.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 36;
+  const contentWidth = pageWidth - margin * 2;
+  const tableColumns = [
+    { key: 'id', label: 'ID', width: 56 },
+    { key: 'task_statement', label: 'Task Statement', width: 180 },
+    { key: 'classification', label: 'Class', width: 66 },
+    { key: 'score', label: 'Score', width: 52, align: 'right' },
+    { key: 'rationale', label: 'Rationale', width: 186 }
+  ];
+  const bodyFontSize = 9;
+  const headerFontSize = 10;
+  const lineHeight = 12;
+  const cellPaddingX = 6;
+  const cellPaddingY = 6;
+  const tableHeaderHeight = lineHeight + cellPaddingY * 2;
+  const sectionGap = 12;
+  const measureText = createPdfTextMeasurer();
+
+  const pages = [];
+  const makePage = () => ({ contentParts: [] });
+  const ensurePage = () => {
+    const page = makePage();
+    pages.push(page);
+    return page;
+  };
+
+  const drawCellBorder = (page, x, topY, width, height) => {
+    const pdfY = pageHeight - topY - height;
+    page.contentParts.push(`${x.toFixed(2)} ${pdfY.toFixed(2)} ${width.toFixed(2)} ${height.toFixed(2)} re S`);
+  };
+
+  const drawText = (page, text, x, topY, fontName = 'F1', size = bodyFontSize) => {
+    const safeText = escapePdfText(text);
+    const baseline = pageHeight - topY - size;
+    page.contentParts.push(`BT /${fontName} ${size} Tf ${x.toFixed(2)} ${baseline.toFixed(2)} Td (${safeText}) Tj ET`);
+  };
+
+  const drawAlignedText = (page, text, x, topY, width, align = 'left', fontName = 'F1', size = bodyFontSize) => {
+    const safe = String(text ?? '');
+    if (align === 'right') {
+      const textWidth = measureText(safe, size);
+      const offset = Math.max(cellPaddingX, width - cellPaddingX - textWidth);
+      drawText(page, safe, x + offset, topY, fontName, size);
+      return;
+    }
+    drawText(page, safe, x + cellPaddingX, topY, fontName, size);
+  };
+
+  const drawTableHeader = (page, topY) => {
+    let cursorX = margin;
+    for (const column of tableColumns) {
+      drawCellBorder(page, cursorX, topY, column.width, tableHeaderHeight);
+      drawText(page, column.label, cursorX + cellPaddingX, topY + cellPaddingY, 'F2', headerFontSize);
+      cursorX += column.width;
+    }
+    return topY + tableHeaderHeight;
+  };
+
+  const wrapTextByColumnWidth = (value, width, fontSize) => {
+    const text = String(value ?? '').trim();
+    if (!text) return [''];
+    const maxWidth = Math.max(1, width - cellPaddingX * 2);
+    const lines = [];
+    for (const paragraph of text.split(/\r?\n/)) {
+      const words = paragraph.split(/\s+/).filter(Boolean);
+      if (!words.length) {
+        lines.push('');
+        continue;
+      }
+      let current = '';
+      for (const word of words) {
+        const candidate = current ? `${current} ${word}` : word;
+        if (measureText(candidate, fontSize) <= maxWidth) {
+          current = candidate;
+          continue;
+        }
+        if (current) lines.push(current);
+        current = '';
+        if (measureText(word, fontSize) <= maxWidth) {
+          current = word;
+          continue;
+        }
+        let part = '';
+        for (const glyph of word) {
+          const extended = `${part}${glyph}`;
+          if (measureText(extended, fontSize) <= maxWidth) {
+            part = extended;
+            continue;
+          }
+          if (part) lines.push(part);
+          part = glyph;
+        }
+        current = part;
+      }
+      lines.push(current);
+    }
+    return lines.length ? lines : [''];
+  };
+
+  let page = ensurePage();
+  let cursorY = margin;
+  drawText(page, titleFromFile(report.file), margin, cursorY, 'F2', 14);
+  cursorY += 20;
+  const summaryLines = wrapTextByColumnWidth(report.data.summary || 'No summary available for this report.', contentWidth, bodyFontSize);
+  for (const line of summaryLines) {
+    drawText(page, line, margin, cursorY, 'F1', bodyFontSize);
+    cursorY += lineHeight;
   }
+  cursorY += sectionGap;
+  cursorY = drawTableHeader(page, cursorY);
+
+  for (const task of sortedTasks) {
+    const cellLines = tableColumns.map((column) => {
+      const value = column.key === 'score'
+        ? round(task.composite_score)
+        : (task[column.key] || (column.key === 'id' ? 'n/a' : ''));
+      return wrapTextByColumnWidth(value, column.width, bodyFontSize);
+    });
+    const tallestCellLineCount = Math.max(...cellLines.map((lines) => lines.length));
+    const rowHeight = tallestCellLineCount * lineHeight + cellPaddingY * 2;
+
+    if (cursorY + rowHeight > pageHeight - margin) {
+      page = ensurePage();
+      cursorY = margin;
+      cursorY = drawTableHeader(page, cursorY);
+    }
+
+    let cursorX = margin;
+    tableColumns.forEach((column, index) => {
+      drawCellBorder(page, cursorX, cursorY, column.width, rowHeight);
+      cellLines[index].forEach((line, lineIndex) => {
+        const textY = cursorY + cellPaddingY + lineIndex * lineHeight;
+        drawAlignedText(page, line, cursorX, textY, column.width, column.align || 'left', 'F1', bodyFontSize);
+      });
+      cursorX += column.width;
+    });
+
+    cursorY += rowHeight;
+  }
+
+  return assembleTextPdfBlob({ pageWidth, pageHeight, pages });
+}
+
+function assembleTextPdfBlob({ pageWidth, pageHeight, pages }) {
+  const objectBytes = [];
+  const textEncoder = new TextEncoder();
+  const pushObject = (id, dict, stream) => {
+    const header = `${id} 0 obj\n${dict}\n`;
+    if (!stream) {
+      objectBytes[id] = textEncoder.encode(`${header}endobj\n`);
+      return;
+    }
+    const open = textEncoder.encode(`${header}stream\n`);
+    const close = textEncoder.encode(`\nendstream\nendobj\n`);
+    const merged = new Uint8Array(open.length + stream.length + close.length);
+    merged.set(open, 0);
+    merged.set(stream, open.length);
+    merged.set(close, open.length + stream.length);
+    objectBytes[id] = merged;
+  };
+
+  const catalogId = 1;
+  const pagesId = 2;
+  const fontRegularId = 3;
+  const fontBoldId = 4;
+  const firstPageObjectId = 5;
+  const pageRefs = [];
+
+  pages.forEach((page, index) => {
+    const pageId = firstPageObjectId + index * 2;
+    const contentId = pageId + 1;
+    pageRefs.push(`${pageId} 0 R`);
+    const pageContent = textEncoder.encode(page.contentParts.join('\n'));
+    pushObject(
+      pageId,
+      `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${fontRegularId} 0 R /F2 ${fontBoldId} 0 R >> >> /Contents ${contentId} 0 R >>`
+    );
+    pushObject(contentId, `<< /Length ${pageContent.length} >>`, pageContent);
+  });
+
+  pushObject(catalogId, `<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+  pushObject(pagesId, `<< /Type /Pages /Kids [${pageRefs.join(' ')}] /Count ${pageRefs.length} >>`);
+  pushObject(fontRegularId, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  pushObject(fontBoldId, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>');
+
+  const chunks = [textEncoder.encode('%PDF-1.4\n')];
+  const offsets = [0];
+  let offset = chunks[0].length;
+  for (let i = 1; i < objectBytes.length; i += 1) {
+    if (!objectBytes[i]) continue;
+    offsets[i] = offset;
+    chunks.push(objectBytes[i]);
+    offset += objectBytes[i].length;
+  }
+
+  const xrefStart = offset;
+  const xrefLines = [`xref\n0 ${objectBytes.length}\n0000000000 65535 f \n`];
+  for (let i = 1; i < objectBytes.length; i += 1) {
+    const entry = offsets[i] ?? 0;
+    const marker = offsets[i] ? 'n' : 'f';
+    xrefLines.push(`${String(entry).padStart(10, '0')} 00000 ${marker} \n`);
+  }
+  xrefLines.push(`trailer\n<< /Size ${objectBytes.length} /Root ${catalogId} 0 R >>\nstartxref\n${xrefStart}\n%%EOF`);
+  chunks.push(textEncoder.encode(xrefLines.join('')));
+
+  return new Blob(chunks, { type: 'application/pdf' });
+}
+
+function escapePdfText(value) {
+  return String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
+}
+
+function createPdfTextMeasurer() {
+  if (typeof document !== 'undefined') {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (context) {
+      return (text, fontSize) => {
+        context.font = `${fontSize}px Helvetica`;
+        return context.measureText(String(text ?? '')).width;
+      };
+    }
+  }
+
+  return (text, fontSize) => String(text ?? '').length * fontSize * 0.53;
 }
 
 async function renderElementToCanvas(element) {
