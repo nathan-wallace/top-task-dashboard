@@ -21,6 +21,37 @@ const reportsBase = document.body?.dataset?.reportsBase || './reports';
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
 const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
 const reportStatus = (report) => report?.data?.meta?.report_status || 'Unreviewed';
+const classificationDefinitions = {
+  top: 'Top tasks are the critical few user goals that matter most and should be easiest to find and complete.',
+  secondary: 'Secondary tasks are still important, but they support the top tasks and should not dominate the primary experience.',
+  tiny: 'Tiny tasks are low-frequency, low-impact needs that can add clutter if treated like primary navigation priorities.'
+};
+
+function buildClassificationLabel(classification) {
+  const normalized = (classification || '').toLowerCase();
+  const label = normalized ? `${normalized.charAt(0).toUpperCase()}${normalized.slice(1)}` : 'Unknown';
+  const description = classificationDefinitions[normalized];
+
+  if (!description) return label;
+  const tooltipId = `classification-tooltip-${normalized}`;
+
+  return `
+    <span class="tooltip-label">
+      ${label}
+      <button
+        class="info-tooltip"
+        type="button"
+        aria-label="What ${label} means in Top Task Analysis"
+        aria-describedby="${tooltipId}"
+      >
+        i
+      </button>
+      <span id="${tooltipId}" class="tooltip-content" role="tooltip">
+        In Top Task Analysis (developed by Gerry McGovern), ${description}
+      </span>
+    </span>
+  `;
+}
 
 function buildPrompt(values) {
   const tokens = {
@@ -224,7 +255,7 @@ function renderReport() {
   const bars = averageByClassification(allTasks)
     .map((entry) => `
       <div class="card">
-        <strong>${entry.classification}</strong>
+        <strong>${buildClassificationLabel(entry.classification)}</strong>
         <div class="bar"><span style="width:${(entry.average / 5) * 100}%"></span></div>
         <small>avg ${entry.average.toFixed(2)} across ${entry.count} tasks</small>
       </div>
