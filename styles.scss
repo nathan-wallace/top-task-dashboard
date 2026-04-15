@@ -61,6 +61,17 @@ footer {
     color: #0f2e5f;
   }
 
+
+  h1 a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+
   p {
     margin: 0.35rem 0 0;
     color: $muted;
