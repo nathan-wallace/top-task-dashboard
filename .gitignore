@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+_site/
+dist/
+
+# Temporary artifacts
+*.tmp
+*.temp
+*.log
+.DS_Store

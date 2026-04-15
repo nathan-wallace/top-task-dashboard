@@ -2,6 +2,15 @@
 
 A static dashboard that reads report JSON files from `reports/`, visualizes task scoring, and exports any loaded report as Markdown. The build step now generates one static page per report so each report has a direct URL.
 
+## Architecture
+
+- **Eleventy (`@11ty/eleventy`)**: builds static HTML pages from templates in `src/pages/` and shared includes/layouts in `src/_includes/`.
+- **Vite**: runs the front-end dev server and bundles browser-facing JavaScript/CSS for production assets.
+- **Project scripts (`scripts/`)**:
+  - `scripts/build-report-index.mjs` powers `npm run build:index` and regenerates `reports/index.json` from report files.
+  - `scripts/validate-reports.mjs` powers `npm run validate:reports` and enforces required schema/field validation.
+  - parser/summarizer helpers support report ingestion and transformation workflows.
+
 ## Pages
 
 - `index.html`: report explorer with report-level drill-down.
@@ -14,16 +23,26 @@ The UI is authored in `styles.scss` (Sass syntax) and committed as `styles.css` 
 ## Add reports
 
 1. Drop one or more report files into `reports/` (e.g. `my-site.json`).
-2. Run `npm run build:site` to regenerate `reports/index.json` and static report pages under `reports/<report-slug>/index.html`.
+2. Run `npm run build:index` to regenerate `reports/index.json`.
 3. Run `npm run validate:reports` to validate required fields.
+4. Run `npm run build:site` to regenerate static report pages under `reports/<report-slug>/index.html`.
 
 ## Local usage
 
-Because the dashboard loads JSON via `fetch`, serve it with a local static server.
+Use the project dev scripts instead of a standalone Python static server:
 
 ```bash
-python3 -m http.server 4173
-# open http://localhost:4173
+npm run dev
+```
+
+Optional split-mode commands:
+
+```bash
+# Eleventy templates/pages with live reload
+npm run dev:11ty
+
+# Vite JS/CSS dev server
+npm run dev:vite
 ```
 
 ## CI/CD (GitHub Pages + nojekyll)
