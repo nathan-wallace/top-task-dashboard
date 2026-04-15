@@ -87,6 +87,10 @@ footer {
   padding: 1rem 1.5rem 1.5rem;
 }
 
+.reports-layout {
+  align-items: start;
+}
+
 .overview-layout {
   display: grid;
   gap: 1rem;
@@ -99,6 +103,71 @@ footer {
   border-radius: 14px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(23, 43, 77, 0.08);
+}
+
+.report-panel {
+  transition: width 180ms ease, padding 180ms ease;
+  overflow: hidden;
+}
+
+.report-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid #9bb5d0;
+  border-radius: 999px;
+  background: #f4f8fd;
+  color: #173a69;
+  cursor: pointer;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.panel-toggle:hover {
+  background: #e7f2ff;
+  border-color: #7696b8;
+}
+
+.panel-toggle-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.report-panel-content {
+  margin-top: 0.7rem;
+}
+
+.reports-layout.sidebar-collapsed {
+  grid-template-columns: 76px 1fr;
+}
+
+.reports-layout.sidebar-collapsed .report-panel {
+  padding: 0.85rem 0.65rem;
+}
+
+.reports-layout.sidebar-collapsed .report-panel-header {
+  justify-content: center;
+}
+
+.reports-layout.sidebar-collapsed #report-panel-title,
+.reports-layout.sidebar-collapsed .panel-toggle-text,
+.reports-layout.sidebar-collapsed .report-panel-content {
+  display: none;
+}
+
+.reports-layout.sidebar-collapsed .panel-toggle {
+  width: 100%;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 0.5rem;
 }
 
 .content {
@@ -470,6 +539,24 @@ footer {
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .reports-layout.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-layout.sidebar-collapsed .report-panel {
+    padding: 1rem;
+  }
+
+  .reports-layout.sidebar-collapsed #report-panel-title,
+  .reports-layout.sidebar-collapsed .panel-toggle-text,
+  .reports-layout.sidebar-collapsed .report-panel-content {
+    display: initial;
+  }
+
+  .reports-layout.sidebar-collapsed .report-panel-content {
+    margin-top: 0.7rem;
   }
 
   .site-header {

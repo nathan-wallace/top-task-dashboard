@@ -11,6 +11,12 @@ const copyStatus = document.querySelector('#copy-status');
 const overviewStats = document.querySelector('#overview-stats');
 const overviewCount = document.querySelector('#overview-count');
 const overviewTableBody = document.querySelector('#overview-table-body');
+const reportsLayout = document.querySelector('#reports-layout');
+const reportPanel = document.querySelector('#report-panel');
+const reportPanelContent = document.querySelector('#report-panel-content');
+const toggleReportPanelButton = document.querySelector('#toggle-report-panel');
+
+const REPORT_PANEL_STORAGE_KEY = 'top-task-dashboard.report-panel-collapsed';
 
 let reports = [];
 let selectedReport = null;
@@ -160,6 +166,37 @@ function updatePromptOutput() {
   const formData = new FormData(promptForm);
   const values = Object.fromEntries(formData.entries());
   promptOutput.value = buildPrompt(values);
+}
+
+function setReportPanelCollapsed(collapsed) {
+  if (!reportsLayout || !toggleReportPanelButton) return;
+
+  reportsLayout.classList.toggle('sidebar-collapsed', collapsed);
+  reportPanel?.setAttribute('aria-expanded', String(!collapsed));
+  reportPanelContent?.setAttribute('aria-hidden', String(collapsed));
+  toggleReportPanelButton.setAttribute('aria-expanded', String(!collapsed));
+  toggleReportPanelButton.setAttribute('aria-label', collapsed ? 'Expand reports panel' : 'Collapse reports panel');
+  toggleReportPanelButton.title = collapsed ? 'Expand reports panel' : 'Collapse reports panel';
+
+  const icon = toggleReportPanelButton.querySelector('.panel-toggle-icon');
+  const text = toggleReportPanelButton.querySelector('.panel-toggle-text');
+  if (icon) icon.textContent = collapsed ? '→' : '←';
+  if (text) text.textContent = collapsed ? 'Expand' : 'Collapse';
+
+  localStorage.setItem(REPORT_PANEL_STORAGE_KEY, collapsed ? 'true' : 'false');
+}
+
+function initReportPanelToggle() {
+  if (!reportsLayout || !toggleReportPanelButton) return;
+
+  const stored = localStorage.getItem(REPORT_PANEL_STORAGE_KEY);
+  const startsCollapsed = stored === 'true' && window.matchMedia('(min-width: 901px)').matches;
+  setReportPanelCollapsed(startsCollapsed);
+
+  toggleReportPanelButton.addEventListener('click', () => {
+    const isCollapsed = reportsLayout.classList.contains('sidebar-collapsed');
+    setReportPanelCollapsed(!isCollapsed);
+  });
 }
 
 async function copyPromptToClipboard() {
@@ -1085,6 +1122,8 @@ if (promptForm) {
 if (copyPromptButton) {
   copyPromptButton.addEventListener('click', copyPromptToClipboard);
 }
+
+initReportPanelToggle();
 
 loadReports().catch((error) => {
   if (reportView) {

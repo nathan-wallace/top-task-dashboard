@@ -19,11 +19,28 @@
       </nav>
     </header>
 
-    <main class="layout">
-      <aside class="panel">
-        <h2>Reports</h2>
-        <input id="report-search" type="search" placeholder="Search reports" />
-        <ul id="report-list"></ul>
+    <main class="layout reports-layout" id="reports-layout">
+      <aside class="panel report-panel" id="report-panel" aria-label="Reports navigation">
+        <div class="report-panel-header">
+          <h2 id="report-panel-title">Reports</h2>
+          <button
+            id="toggle-report-panel"
+            class="panel-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="report-panel-content"
+            aria-label="Collapse reports panel"
+            title="Collapse reports panel"
+          >
+            <span class="panel-toggle-icon" aria-hidden="true">←</span>
+            <span class="panel-toggle-text">Collapse</span>
+          </button>
+        </div>
+
+        <div id="report-panel-content" class="report-panel-content">
+          <input id="report-search" type="search" placeholder="Search reports" />
+          <ul id="report-list"></ul>
+        </div>
       </aside>
 
       <section class="panel content">
