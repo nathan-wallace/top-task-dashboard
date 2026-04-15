@@ -159,12 +159,17 @@ async function loadReports() {
   }
 }
 
+function textMatchesQuery(value, query) {
+  if (!query) return true;
+  return String(value ?? '').toLowerCase().includes(query);
+}
+
 function renderReportList() {
-  const query = reportSearch.value.trim().toLowerCase();
+  const query = reportSearch?.value?.trim().toLowerCase() || '';
   const filtered = reports.filter((report) =>
-    report.title.toLowerCase().includes(query)
-    || report.data.meta?.url?.toLowerCase().includes(query)
-    || report.data.meta?.audience?.toLowerCase().includes(query)
+    textMatchesQuery(report.title, query)
+    || textMatchesQuery(report.data.meta?.url, query)
+    || textMatchesQuery(report.data.meta?.audience, query)
   );
 
   reportList.innerHTML = '';
@@ -213,7 +218,7 @@ function renderReport() {
 
   const { data } = selectedReport;
   const allTasks = data.task_longlist || [];
-  const filter = classificationFilter.value;
+  const filter = classificationFilter?.value || 'all';
   const tasks = filter === 'all' ? allTasks : allTasks.filter((task) => task.classification === filter);
   const bars = averageByClassification(allTasks)
     .map((entry) => `
@@ -232,7 +237,7 @@ function renderReport() {
         <td><strong>${task.id}</strong></td>
         <td>${task.task_statement}</td>
         <td><span class="badge">${task.classification}</span></td>
-        <td>${task.composite_score.toFixed(2)}</td>
+        <td>${round(task.composite_score)}</td>
         <td>${task.rationale || ''}</td>
       </tr>
     `).join('');
@@ -425,7 +430,7 @@ function toMarkdown(report) {
     '| ID | Task | Classification | Composite Score |',
     '|---|---|---|---|',
     ...(data.task_longlist || []).map((task) =>
-      `| ${task.id} | ${task.task_statement} | ${task.classification} | ${task.composite_score.toFixed(2)} |`),
+      `| ${task.id} | ${task.task_statement} | ${task.classification} | ${round(task.composite_score)} |`),
     '',
     '## Next steps',
     '',
