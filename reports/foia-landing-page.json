@@ -1,0 +1,457 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/foia/index.html",
+    "audience": "General Public",
+    "scope": "entire site",
+    "analyzed_at": "2026-04-15",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "No analytics, search logs, support tickets, or prior research were provided.",
+      "The end-to-end FOIA.gov submission and status-check experience was referenced but not fully audited from within this analysis.",
+      "Linked division FOIA libraries and external pages were sampled, not exhaustively reviewed.",
+      "Business context and operational constraints were not provided."
+    ],
+    "report_status": "Unreviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Submit a FOIA request online",
+      "user_intent_category": "Request initiation",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: New or Existing FOIA Requests",
+          "note": "Main landing page promotes submitting a FOIA request as a core action."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "New FOIA Requests",
+          "note": "Directs users to submit requests online at FOIA.gov after checking the FOIA Library."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.75,
+      "classification": "top",
+      "rationale": "This is the site's dominant task and the clearest end-user outcome. It is highly visible and strongly supported, though completion depends on an external FOIA.gov flow."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Check the status of my request",
+      "user_intent_category": "Request management",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: New or Existing FOIA Requests",
+          "note": "The top-level page explicitly groups status-checking with request submission."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "Existing FOIA Requests",
+          "note": "Explains control numbers, acknowledgement letters, and liaison contacts for status questions."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 3
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Status-checking is a likely repeat behavior for active requesters. It matters greatly, but current support is partly informational and notes a tracking-system migration, which may hinder completion."
+    },
+    {
+      "id": "T03",
+      "task_statement": "Find records already posted online",
+      "user_intent_category": "Self-service record discovery",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: FOIA Library",
+          "note": "Promotes the online repository of releases, policies, opinions, and frequently requested records."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/electronic-reading-room/index.html",
+          "element": "FOIA Library intro",
+          "note": "Explicitly tells users to search the library before submitting a new request."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 4,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "This is a high-value avoidance task: users can often get what they need without filing. The site gives it strong prominence and decent completion support."
+    },
+    {
+      "id": "T04",
+      "task_statement": "Appeal a denied FOIA request",
+      "user_intent_category": "Appeals and redress",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: FOIA Appeals",
+          "note": "Appeals are one of the primary task buckets on the landing page."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/appeals/index.html",
+          "element": "Appeal requirements",
+          "note": "Lists filing rules, timing, destination, and what to include."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Not every user needs this, but when needed it is critical. The task is well exposed and the page gives actionable next steps."
+    },
+    {
+      "id": "T05",
+      "task_statement": "Contact the right FOIA office",
+      "user_intent_category": "Help and routing",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: FOIA Contacts",
+          "note": "Contacting FOIA offices is a top-level navigation choice."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/contacts/index.html",
+          "element": "Contacts by HHS office/division",
+          "note": "Provides office-specific contact details, public liaisons, and alternate submission destinations."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 5,
+        "completability": 5
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Correct routing reduces failed or delayed requests. The site gives direct contact information and multiple division-specific paths."
+    },
+    {
+      "id": "T06",
+      "task_statement": "Request records that are about me",
+      "user_intent_category": "First-party access / Privacy Act",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "New FOIA Requests",
+          "note": "Directs users seeking records about themselves to Privacy Act request guidance and identity verification."
+        },
+        {
+          "source_url": "https://www.hhs.gov/privacy/how-make-privacy-act-request.html",
+          "element": "How to Make a Privacy Act Request",
+          "note": "Provides instructions, forms, routing options, and security guidance for records about oneself."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Important for a meaningful subset of users, but the path leaves the FOIA section and requires users to distinguish FOIA from Privacy Act requests."
+    },
+    {
+      "id": "T07",
+      "task_statement": "Learn what records FOIA covers",
+      "user_intent_category": "Eligibility / scope understanding",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "What information can I request under FOIA?",
+          "note": "Explains what FOIA covers and that some records are exempt or excluded."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Intro paragraph",
+          "note": "Defines FOIA at a high level and frames what records may be requested."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Many users need this before filing, but it is embedded inside supporting content rather than isolated as a primary decision aid."
+    },
+    {
+      "id": "T08",
+      "task_statement": "Understand why records may be withheld",
+      "user_intent_category": "Exemptions / denial understanding",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: FOIA Exemptions and Exclusions",
+          "note": "Makes withholding rules a dedicated top-level destination."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/exemptions-and-exclusions/index.html",
+          "element": "Exemptions and exclusions page",
+          "note": "Explains the legal bases for withholding and gives examples."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "This matters during request drafting and after denials. The content is available and reasonably findable, though it is explanatory rather than transactional."
+    },
+    {
+      "id": "T09",
+      "task_statement": "Estimate what my request could cost",
+      "user_intent_category": "Fees and cost planning",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "How much does it cost?",
+          "note": "Explains requester categories, page/search thresholds, and fee notification practices."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/fees/index.html",
+          "element": "FOIA Fees",
+          "note": "Provides fee schedule details, though the page appears older and redirects inconsistently when opened."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Users often want cost clarity before filing, but details are split across pages and the dedicated fees page appears less reliable than the request page."
+    },
+    {
+      "id": "T10",
+      "task_statement": "Ask for a FOIA fee waiver",
+      "user_intent_category": "Fees and waivers",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "Can I ask that any fees be waived?",
+          "note": "Explains the public-interest standard for requesting a waiver."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/fees/index.html",
+          "element": "Fee Waivers",
+          "note": "Repeats the waiver standard for users seeking reduced cost."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 4,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3,
+      "classification": "secondary",
+      "rationale": "Important for some requesters, but likely a narrower need than basic filing or status. The site explains the standard but offers limited handholding."
+    },
+    {
+      "id": "T11",
+      "task_statement": "Request expedited processing for my case",
+      "user_intent_category": "Urgency handling",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "Is there any way for me to speed up the response time?",
+          "note": "States that expedited processing may be requested under specific regulatory circumstances."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/request/index.html",
+          "element": "Link to regulations",
+          "note": "Completion depends on off-page regulatory details rather than a clear on-page workflow."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 4,
+        "findability": 2,
+        "completability": 2
+      },
+      "composite_score": 2.5,
+      "classification": "tiny",
+      "rationale": "High stakes for a few users, but comparatively infrequent and not strongly supported as a clear task flow on the site."
+    },
+    {
+      "id": "T12",
+      "task_statement": "Find my division's FOIA library",
+      "user_intent_category": "Division-specific record discovery",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/electronic-reading-room/index.html",
+          "element": "HHS Division FOIA Libraries",
+          "note": "Lists links to division-specific FOIA libraries for agencies like CDC, CMS, FDA, and NIH."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/contacts/index.html",
+          "element": "Division-specific FOIA offices",
+          "note": "Reinforces that records and processes vary by component."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Useful when users know the HHS component they need, but not as universal as searching the main FOIA Library or filing a request."
+    },
+    {
+      "id": "T13",
+      "task_statement": "See HHS FOIA performance reports",
+      "user_intent_category": "Oversight / transparency information",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage primary section: FOIA Reports",
+          "note": "The landing page offers annual, quarterly, and Chief FOIA Officer reports."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/reports/annual-reports/index.html",
+          "element": "FOIA Annual Reports",
+          "note": "Provides annual reports, raw data, and metrics such as requests processed, appeals, and fees."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.25,
+      "classification": "tiny",
+      "rationale": "Supported well, but likely matters to journalists, researchers, or watchdogs more than the average public requester."
+    },
+    {
+      "id": "T14",
+      "task_statement": "Find FOIA logs and prior releases",
+      "user_intent_category": "Pre-request research",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/electronic-reading-room/index.html",
+          "element": "FOIA Library contents",
+          "note": "Includes FOIA logs, litigation releases, and frequently requested records."
+        },
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "FOIA Library section",
+          "note": "Frames prior releases as material users should review before making a request."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "A practical research step for savvy users trying to avoid unnecessary requests. Strongly supported within the library."
+    },
+    {
+      "id": "T15",
+      "task_statement": "Learn HIPAA and Privacy Act rules",
+      "user_intent_category": "Adjacent privacy information",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/foia/index.html",
+          "element": "Homepage links: The Privacy Act and Health Information Privacy",
+          "note": "The landing page includes adjacent privacy topics beyond FOIA."
+        },
+        {
+          "source_url": "https://www.hhs.gov/privacy/how-make-privacy-act-request.html",
+          "element": "Privacy Act navigation",
+          "note": "Supports Privacy Act tasks, though this is adjacent to rather than central within FOIA."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 2.75,
+      "classification": "tiny",
+      "rationale": "Related, but peripheral to the main public FOIA journey. It risks diluting focus if treated as a core top task."
+    }
+  ],
+  "top_tasks": [
+    "T01",
+    "T05",
+    "T02",
+    "T03",
+    "T04"
+  ],
+  "tiny_tasks": [
+    "T11",
+    "T13",
+    "T15"
+  ],
+  "recommended_survey": {
+    "instructions": "Show respondents the full task list in randomized order. Ask them to pick the five tasks they came to the site to do most often or most urgently, then ask them to pick the single most important task. Do not show organizational labels like 'FOIA Library' unless needed for comprehension. Include one follow-up asking whether they expected to complete the task on HHS.gov, FOIA.gov, or by contacting a person.",
+    "task_list_for_voting": [
+      "Submit a FOIA request online",
+      "Check the status of my request",
+      "Find records already posted online",
+      "Appeal a denied FOIA request",
+      "Contact the right FOIA office",
+      "Request records that are about me",
+      "Learn what records FOIA covers",
+      "Understand why records may be withheld",
+      "Estimate what my request could cost",
+      "Ask for a FOIA fee waiver",
+      "Request expedited processing for my case",
+      "Find my division's FOIA library",
+      "See HHS FOIA performance reports",
+      "Find FOIA logs and prior releases",
+      "Learn HIPAA and Privacy Act rules"
+    ],
+    "recommended_sample_size": 200,
+    "target_segments": [
+      "First-time public requesters",
+      "Repeat FOIA requesters",
+      "Journalists and watchdog users",
+      "Researchers and attorneys",
+      "Individuals requesting records about themselves"
+    ]
+  },
+  "next_steps": [
+    "Validate the ranked task list with a Top Tasks survey using randomized task order and segment-level cuts.",
+    "Measure click-through and completion for the top five tasks, especially the handoff from HHS.gov to FOIA.gov.",
+    "Test whether users can distinguish FOIA requests from Privacy Act requests without assistance.",
+    "Reduce path ambiguity around status checks during the OS tracking-system migration.",
+    "Strengthen pre-request discovery by making FOIA Library, logs, and prior releases easier to search and compare.",
+    "Consolidate fee and expedited-processing guidance into clearer task-based instructions."
+  ],
+  "summary": "The HHS FOIA site is centered on five likely top tasks: submit a request, contact the correct FOIA office, check request status, find already-posted records, and appeal a denial. The strongest risk is journey fragmentation: key completion steps often hand off to FOIA.gov, division-specific destinations, or Privacy Act content outside the core FOIA section. A second risk is ambiguity between FOIA, Privacy Act, and division-specific pathways. Validation should test whether public users can choose the right path, especially for self-record requests, status checks, and pre-request record discovery, and whether the FOIA Library meaningfully prevents unnecessary new requests."
+}

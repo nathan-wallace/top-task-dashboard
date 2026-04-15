@@ -1,5 +1,11 @@
 [
   {
+    "file": "foia-landing-page.json",
+    "slug": "foia-landing-page",
+    "title": "FOIA Landing Page",
+    "path": "./foia-landing-page/"
+  },
+  {
     "file": "hhs-belmont-report-2.json",
     "slug": "hhs-belmont-report-2",
     "title": "HHS Belmont Report 2",
