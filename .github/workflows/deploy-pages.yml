@@ -1,7 +1,9 @@
 name: Deploy GitHub Pages
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -15,51 +17,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      should_deploy: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.should_deploy == 'true' }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            should_deploy:
-              - 'reports/**/*.json'
-              - 'scripts/**'
-              - 'src/**'
-              - 'styles/**'
-              - '_data/**'
-              - '_includes/**'
-              - '*.html'
-              - '*.njk'
-              - '.eleventy.js'
-              - 'app.js'
-              - 'package.json'
-              - 'package-lock.json'
-
   deploy:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.should_deploy == 'true'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - name: Regenerate site assets before deploy
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site for GitHub Pages
         run: npm run build
-      - run: touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Disable Jekyll processing
+        run: touch _site/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-      - id: deployment
+
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

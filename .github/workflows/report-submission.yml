@@ -4,12 +4,17 @@ on:
   issues:
     types: [opened, edited, labeled]
 
+concurrency:
+  group: report-submission-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
 jobs:
   report-submission:
     if: >-
       contains(github.event.issue.labels.*.name, 'report-submission') ||
       startsWith(github.event.issue.title, '[report]')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       pull-requests: write
