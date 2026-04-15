@@ -42,9 +42,9 @@
     "path": "./one-year-of-maha-page/"
   },
   {
-    "file": "press-room.json",
-    "slug": "press-room",
-    "title": "press room",
-    "path": "./press-room/"
+    "file": "radical-transparency.json",
+    "slug": "radical-transparency",
+    "title": "radical transparency",
+    "path": "./radical-transparency/"
   }
 ]

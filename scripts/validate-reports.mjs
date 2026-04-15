@@ -24,11 +24,19 @@ function ensureNumber(reportFile, value, fieldPath) {
   }
 }
 
+function ensureNumberInRange(reportFile, value, fieldPath, min, max) {
+  ensureNumber(reportFile, value, fieldPath);
+  if (value < min || value > max) {
+    fail(reportFile, `${fieldPath} must be between ${min} and ${max}.`);
+  }
+}
+
 if (!Array.isArray(reportFilesRaw)) {
   throw new Error('reports/index.json must be an array of report entries.');
 }
 
 for (const reportFile of reportFiles) {
+  ensureString('reports/index.json', reportFile, 'report entry file');
   const reportRaw = await readFile(new URL(`../reports/${reportFile}`, import.meta.url), 'utf8');
   const report = JSON.parse(reportRaw);
 
@@ -40,6 +48,9 @@ for (const reportFile of reportFiles) {
   ensureString(reportFile, report.meta.audience, 'meta.audience');
   ensureString(reportFile, report.meta.scope, 'meta.scope');
   ensureString(reportFile, report.meta.analyzed_at, 'meta.analyzed_at');
+  if (Number.isNaN(Date.parse(report.meta.analyzed_at))) {
+    fail(reportFile, 'meta.analyzed_at must be a valid ISO-8601 date or date-time string.');
+  }
 
   if (!validConfidenceLevels.has(report.meta.analyst_confidence)) {
     fail(reportFile, `meta.analyst_confidence must be one of: ${[...validConfidenceLevels].join(', ')}.`);
@@ -57,12 +68,18 @@ for (const reportFile of reportFiles) {
     fail(reportFile, `meta.report_status must be one of: ${[...validReportStatuses].join(', ')}.`);
   }
 
+  ensureString(reportFile, report.summary, 'summary');
+
   if (!Array.isArray(report.task_longlist) || report.task_longlist.length === 0) {
     fail(reportFile, 'task_longlist must be a non-empty array.');
   }
 
   const taskIds = new Set();
   const taskClassifications = new Map();
+  const taskIdsByClassification = {
+    top: new Set(),
+    tiny: new Set(),
+  };
 
   for (const [taskIndex, task] of report.task_longlist.entries()) {
     ensureString(reportFile, task.id, `task_longlist[${taskIndex}].id`);
@@ -86,7 +103,21 @@ for (const reportFile of reportFiles) {
     }
 
     for (const key of ['frequency', 'impact', 'findability', 'completability']) {
-      ensureNumber(reportFile, task.scores[key], `task_longlist[${taskIndex}].scores.${key}`);
+      ensureNumberInRange(reportFile, task.scores[key], `task_longlist[${taskIndex}].scores.${key}`, 1, 5);
+    }
+    ensureNumberInRange(reportFile, task.composite_score, `task_longlist[${taskIndex}].composite_score`, 1, 5);
+
+    const averageScore = (
+      task.scores.frequency
+      + task.scores.impact
+      + task.scores.findability
+      + task.scores.completability
+    ) / 4;
+    if (Math.abs(task.composite_score - averageScore) > 0.051) {
+      fail(
+        reportFile,
+        `task_longlist[${taskIndex}].composite_score (${task.composite_score}) must match the average of score dimensions (${averageScore.toFixed(2)}), allowing for rounding.`,
+      );
     }
 
     if (!Array.isArray(task.evidence) || task.evidence.length === 0) {
@@ -97,6 +128,10 @@ for (const reportFile of reportFiles) {
       ensureString(reportFile, evidence?.source_url, `task_longlist[${taskIndex}].evidence[${evidenceIndex}].source_url`);
       ensureString(reportFile, evidence?.element, `task_longlist[${taskIndex}].evidence[${evidenceIndex}].element`);
       ensureString(reportFile, evidence?.note, `task_longlist[${taskIndex}].evidence[${evidenceIndex}].note`);
+    }
+
+    if (task.classification === 'top' || task.classification === 'tiny') {
+      taskIdsByClassification[task.classification].add(task.id);
     }
   }
 
@@ -110,8 +145,13 @@ for (const reportFile of reportFiles) {
       fail(reportFile, `${fieldName} must be an array.`);
     }
 
+    const seenTaskIds = new Set();
     for (const [index, taskId] of report[fieldName].entries()) {
       ensureString(reportFile, taskId, `${fieldName}[${index}]`);
+      if (seenTaskIds.has(taskId)) {
+        fail(reportFile, `${fieldName}[${index}] (${taskId}) is duplicated in ${fieldName}.`);
+      }
+      seenTaskIds.add(taskId);
       if (!taskIds.has(taskId)) {
         fail(reportFile, `${fieldName}[${index}] (${taskId}) does not exist in task_longlist.`);
       }
@@ -124,6 +164,18 @@ for (const reportFile of reportFiles) {
           `${fieldName}[${index}] (${taskId}) must reference a "${expectedClassification}" task, but task_longlist classification is "${actualClassification}".`,
         );
       }
+    }
+  }
+
+  for (const topTaskId of taskIdsByClassification.top) {
+    if (!report.top_tasks.includes(topTaskId)) {
+      fail(reportFile, `task_longlist top task (${topTaskId}) is missing from top_tasks.`);
+    }
+  }
+
+  for (const tinyTaskId of taskIdsByClassification.tiny) {
+    if (!report.tiny_tasks.includes(tinyTaskId)) {
+      fail(reportFile, `task_longlist tiny task (${tinyTaskId}) is missing from tiny_tasks.`);
     }
   }
 
@@ -149,6 +201,12 @@ for (const reportFile of reportFiles) {
   }
 
   ensureNumber(reportFile, report.recommended_survey.recommended_sample_size, 'recommended_survey.recommended_sample_size');
+  if (
+    !Number.isInteger(report.recommended_survey.recommended_sample_size)
+    || report.recommended_survey.recommended_sample_size <= 0
+  ) {
+    fail(reportFile, 'recommended_survey.recommended_sample_size must be a positive integer.');
+  }
 
   if (!Array.isArray(report.recommended_survey.target_segments) || report.recommended_survey.target_segments.length === 0) {
     fail(reportFile, 'recommended_survey.target_segments must be a non-empty array.');
