@@ -13,6 +13,7 @@ const overviewCount = document.querySelector('#overview-count');
 const overviewTableBody = document.querySelector('#overview-table-body');
 
 let reports = [];
+let reportLoadFailures = [];
 let selectedReport = null;
 let selectedClassification = 'all';
 
@@ -181,10 +182,40 @@ async function copyPromptToClipboard() {
 async function loadReports() {
   const response = await fetch(`${reportsBase}/index.json`);
   const files = await response.json();
-  reports = await Promise.all(files.map(async (file) => {
-    const data = await fetch(`${reportsBase}/${file}`).then((r) => r.json());
+  const settledReports = await Promise.allSettled(files.map(async (file) => {
+    const reportResponse = await fetch(`${reportsBase}/${file}`);
+    if (!reportResponse.ok) {
+      throw new Error(`HTTP ${reportResponse.status}`);
+    }
+
+    const data = await reportResponse.json();
+    if (!data || typeof data !== 'object' || !Array.isArray(data.task_longlist)) {
+      throw new Error('Invalid report schema: expected an object with task_longlist array');
+    }
+
     return { file, title: titleFromFile(file), data };
   }));
+
+  reports = settledReports
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value)
+    .sort((a, b) => a.file.localeCompare(b.file));
+
+  reportLoadFailures = settledReports
+    .map((result, index) => {
+      if (result.status === 'fulfilled') return null;
+      const reason = result.reason instanceof Error
+        ? result.reason.message
+        : String(result.reason || 'Unknown error');
+      return { file: files[index], message: reason };
+    })
+    .filter(Boolean);
+
+  renderReportLoadWarnings();
+
+  if (!reports.length) {
+    throw new Error('No valid reports could be loaded.');
+  }
 
   if (reportList) {
     renderReportList();
@@ -196,6 +227,41 @@ async function loadReports() {
   if (overviewStats && overviewTableBody) {
     renderOverviewPage();
   }
+}
+
+function renderReportLoadWarnings() {
+  const warningHost = reportList?.closest('.panel') || overviewStats?.closest('.panel');
+  if (!warningHost) return;
+
+  let warningPanel = document.querySelector('#report-load-warning');
+  if (!reportLoadFailures.length) {
+    warningPanel?.remove();
+    return;
+  }
+
+  if (!warningPanel) {
+    warningPanel = document.createElement('section');
+    warningPanel.id = 'report-load-warning';
+    warningPanel.className = 'load-warning panel-warning';
+    warningPanel.setAttribute('role', 'status');
+    warningPanel.setAttribute('aria-live', 'polite');
+    warningHost.prepend(warningPanel);
+  }
+
+  warningPanel.innerHTML = '';
+  const heading = document.createElement('h3');
+  heading.textContent = 'Some reports were skipped';
+  const summary = document.createElement('p');
+  summary.className = 'subtle';
+  summary.textContent = `${reportLoadFailures.length} file(s) could not be loaded. Valid reports are still available below.`;
+  const list = document.createElement('ul');
+  for (const failure of reportLoadFailures) {
+    const item = document.createElement('li');
+    item.textContent = `${failure.file}: ${failure.message}`;
+    list.append(item);
+  }
+
+  warningPanel.append(heading, summary, list);
 }
 
 function textMatchesQuery(value, query) {

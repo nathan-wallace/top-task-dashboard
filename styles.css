@@ -101,6 +101,30 @@ footer {
   box-shadow: 0 2px 8px rgba(23, 43, 77, 0.08);
 }
 
+.load-warning {
+  margin-bottom: 1rem;
+}
+
+.panel-warning {
+  border-color: #f7c97f;
+  background: linear-gradient(180deg, #fff9ef 20%, #fff4df 100%);
+}
+
+.panel-warning h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #6f3b00;
+}
+
+.panel-warning p {
+  margin: 0.4rem 0 0;
+}
+
+.panel-warning ul {
+  margin: 0.55rem 0 0;
+  padding-left: 1.2rem;
+}
+
 .content {
   box-shadow: 0 8px 26px rgba(23, 43, 77, 0.12);
 }
