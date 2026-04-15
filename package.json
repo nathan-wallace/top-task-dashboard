@@ -13,8 +13,10 @@
     "build:assets": "vite build",
     "build": "npm run check && npm run build:site && npm run build:assets"
   },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2"
+  },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.2",
     "sass": "^1.93.2",
     "vite": "^7.1.10"
   }
