@@ -1,0 +1,143 @@
+name: Report Submission
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+jobs:
+  report-submission:
+    if: >-
+      contains(github.event.issue.labels.*.name, 'report-submission') ||
+      startsWith(github.event.issue.title, '[report]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Parse issue body and write report file
+        id: parse
+        continue-on-error: true
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -o pipefail
+          node scripts/parse-report-issue.mjs 2>&1 | tee /tmp/report-parse.log
+
+      - name: Build report index and validate reports
+        id: validate
+        if: steps.parse.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run build:index 2>&1 | tee /tmp/report-build.log
+          npm run validate:reports 2>&1 | tee /tmp/report-validate.log
+
+      - name: Comment actionable errors and mark invalid submission
+        if: steps.parse.outcome != 'success' || steps.validate.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+
+            const parseFailed = '${{ steps.parse.outcome }}' !== 'success';
+            const validateFailed = '${{ steps.validate.outcome }}' !== 'success' && '${{ steps.parse.outcome }}' === 'success';
+
+            let details = '';
+            if (parseFailed && fs.existsSync('/tmp/report-parse.log')) {
+              details = fs.readFileSync('/tmp/report-parse.log', 'utf8');
+            } else if (validateFailed) {
+              const parts = [];
+              if (fs.existsSync('/tmp/report-build.log')) parts.push(fs.readFileSync('/tmp/report-build.log', 'utf8'));
+              if (fs.existsSync('/tmp/report-validate.log')) parts.push(fs.readFileSync('/tmp/report-validate.log', 'utf8'));
+              details = parts.join('\n');
+            }
+
+            if (details.length > 55000) {
+              details = `${details.slice(0, 55000)}\n\n...truncated...`;
+            }
+
+            const body = [
+              '⚠️ Report submission validation failed.',
+              '',
+              'Please fix the issue payload and re-submit:',
+              '- Ensure the slug is lowercase/kebab-case (`[a-z0-9-]`).',
+              '- Ensure the JSON payload is valid JSON and matches the report schema.',
+              '- Include all required fields expected by `npm run validate:reports`.',
+              '',
+              '```text',
+              details || 'No logs were captured. Please check the workflow logs.',
+              '```',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['submission-invalid'],
+            });
+
+      - name: Stop workflow after invalid submission
+        if: steps.parse.outcome != 'success' || steps.validate.outcome != 'success'
+        run: exit 1
+
+      - name: Create pull request for valid report submission
+        id: create-pr
+        if: steps.parse.outcome == 'success' && steps.validate.outcome == 'success'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: report-submissions/${{ github.event.issue.number }}-${{ steps.parse.outputs.slug }}
+          commit-message: 'chore(reports): add report submission ${{ steps.parse.outputs.slug }}'
+          title: 'chore(reports): add submitted report ${{ steps.parse.outputs.slug }}'
+          body: |
+            Automated report submission from issue #${{ github.event.issue.number }}.
+
+            This PR was created by the report-submission workflow after parsing,
+            indexing, and validating the submitted payload.
+          add-paths: |
+            reports/${{ steps.parse.outputs.report_file }}
+            reports/index.json
+
+      - name: Comment with pull request link
+        if: steps.create-pr.outputs.pull-request-url != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prUrl = '${{ steps.create-pr.outputs.pull-request-url }}';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ Submission passed validation. Opened PR: ${prUrl}`,
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['submission-pr-opened'],
+            });
