@@ -69,7 +69,7 @@ for (const report of manifest) {
       </div>
       <nav class="site-nav" aria-label="Main">
         <a href="../../overview.html">Overview</a>
-        <a class="active" href="../">Reports</a>
+        <a class="active" href="../../index.html">Reports</a>
         <a href="../../prompt.html">Build a Prompt</a>
       </nav>
     </header>
@@ -77,7 +77,7 @@ for (const report of manifest) {
     <main class="layout reports-layout report-single-layout" id="reports-layout">
       <section class="panel content">
         <div class="toolbar">
-          <a class="button-link" href="../">Browse All Reports</a>
+          <a class="button-link" href="../../index.html">Browse All Reports</a>
           <button id="download-pdf" type="button">Download PDF</button>
           <button id="download-report-workbook" type="button">Download Report Workbook</button>
         </div>

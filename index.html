@@ -3,69 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>All Reports Overview | Top Task Dashboard</title>
+    <title>Top Task Dashboard</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-reports-base="./reports">
     <header class="site-header">
       <div class="brand">
         <h1><a href="./index.html">Top Task Dashboard</a></h1>
-        <p>High-level overview of every available report.</p>
+        <p>Explore top-task analysis reports stored as JSON files.</p>
       </div>
       <nav class="site-nav" aria-label="Main">
-        <a class="active" href="./overview.html">Overview</a>
-        <a href="./reports/">Reports</a>
+        <a href="./overview.html">Overview</a>
+        <a class="active" href="./index.html">Reports</a>
         <a href="./prompt.html">Build a Prompt</a>
       </nav>
     </header>
 
-    <main class="overview-layout">
-      <section class="panel">
-        <div class="overview-toolbar">
-          <h2>Portfolio Summary</h2>
-          <div class="overview-actions">
-            <p id="overview-count" class="subtle"></p>
-            <button id="download-spreadsheet" type="button">Download Portfolio CSV</button>
-          </div>
+    <main class="layout reports-layout" id="reports-layout">
+      <aside class="panel report-panel" id="report-panel" aria-label="Reports navigation">
+        <div class="report-panel-header">
+          <h2 id="report-panel-title">Reports</h2>
+          <button
+            id="toggle-report-panel"
+            class="panel-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="report-panel-content"
+            aria-label="Collapse reports panel"
+            title="Collapse reports panel"
+          >
+            <span class="panel-toggle-icon" aria-hidden="true">←</span>
+            <span class="panel-toggle-text">Collapse</span>
+          </button>
         </div>
-        <div id="overview-stats" class="stat-grid"></div>
-      </section>
 
-      <section class="panel">
-        <h2>Reports at a Glance</h2>
-        <div class="table-wrap">
-          <table class="task-table">
-            <thead>
-              <tr>
-                <th>Report</th>
-                <th>Status</th>
-                <th>Audience</th>
-                <th>Total Tasks</th>
-                <th>
-                  <span class="tooltip-label">
-                    Avg Score
-                    <button
-                      class="info-tooltip"
-                      type="button"
-                      aria-label="How Avg Score is calculated"
-                      aria-describedby="avg-score-tooltip"
-                    >
-                      i
-                    </button>
-                    <span id="avg-score-tooltip" class="tooltip-content" role="tooltip">
-                      Avg Score is the mean of each task's composite score in the report. Composite score is based on
-                      Frequency, Impact, Findability, and Completability (1–5 each).
-                    </span>
-                  </span>
-                </th>
-                <th>Top Tasks</th>
-                <th>Secondary</th>
-                <th>Tiny</th>
-              </tr>
-            </thead>
-            <tbody id="overview-table-body"></tbody>
-          </table>
+        <div id="report-panel-content" class="report-panel-content">
+          <input id="report-search" type="search" placeholder="Search reports" />
+          <ul id="report-list"></ul>
         </div>
+      </aside>
+
+      <section class="panel content">
+        <div class="toolbar">
+          <button id="download-pdf" type="button">Download PDF</button>
+          <button id="download-report-workbook" type="button">Download Report Workbook</button>
+        </div>
+
+        <article id="report-view" aria-live="polite">
+          <p>Select a report to begin.</p>
+        </article>
       </section>
     </main>
 
