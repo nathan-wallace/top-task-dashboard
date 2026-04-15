@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ pageTitle }}</title>
+    <link rel="stylesheet" href="{{ assetPrefix }}styles.css" />
+  </head>
+  <body{% if reportsBase %} data-reports-base="{{ reportsBase }}"{% endif %}>
+    <header class="site-header">
+      <div class="brand">
+        <h1><a href="{{ navPrefix }}index.html">Top Task Dashboard</a></h1>
+        <p>{{ brandDescription }}</p>
+      </div>
+      {% include "partials/site-nav.njk" %}
+    </header>
+
+    {{ content | safe }}
+
+    <footer>
+      <small>
+        Top Tasks Dashboard — HHS website top task repository. A WebFirst project.<br />
+        <a href="https://github.com/nathan-wallace-hhs/top-task-dashboard">View source on GitHub</a>
+        ·
+        <a href="https://github.com/nathan-wallace-hhs/top-task-dashboard/issues/new">Report an issue</a>
+      </small>
+    </footer>
+
+    <script type="module" src="{{ assetPrefix }}app.js"></script>
+  </body>
+</html>

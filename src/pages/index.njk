@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+permalink: /index.html
+pageTitle: Top Task Dashboard
+brandDescription: Explore top-task analysis reports stored as JSON files.
+assetPrefix: ./
+navPrefix: ./
+reportsBase: ./reports
+---
+<main class="layout reports-layout" id="reports-layout">
+  <aside class="panel report-panel" id="report-panel" aria-label="Reports navigation">
+    <div class="report-panel-header">
+      <h2 id="report-panel-title">Reports</h2>
+      <button
+        id="toggle-report-panel"
+        class="panel-toggle"
+        type="button"
+        aria-expanded="true"
+        aria-controls="report-panel-content"
+        aria-label="Collapse reports panel"
+        title="Collapse reports panel"
+      >
+        <span class="panel-toggle-icon" aria-hidden="true">←</span>
+        <span class="panel-toggle-text">Collapse</span>
+      </button>
+    </div>
+
+    <div id="report-panel-content" class="report-panel-content">
+      <input id="report-search" type="search" placeholder="Search reports" />
+      <ul id="report-list"></ul>
+    </div>
+  </aside>
+
+  <section class="panel content">
+    <div class="toolbar">
+      <button id="download-pdf" type="button">Download PDF</button>
+      <button id="download-report-workbook" type="button">Download Report Workbook</button>
+    </div>
+
+    <article id="report-view" aria-live="polite">
+      <p>Select a report to begin.</p>
+    </article>
+  </section>
+</main>
