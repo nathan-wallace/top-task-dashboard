@@ -313,6 +313,36 @@ h2 {
   background: linear-gradient(180deg, #fff 35%, #f8fbff 100%);
 }
 
+
+.report-meta-card {
+  margin-top: 0.75rem;
+}
+
+.report-meta-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem 1rem;
+}
+
+.report-meta-item {
+  margin: 0;
+}
+
+.report-meta-item dt {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #34557f;
+  font-weight: 700;
+}
+
+.report-meta-item dd {
+  margin: 0.15rem 0 0;
+  color: #143253;
+  overflow-wrap: anywhere;
+}
+
 .subtle {
   color: $muted;
   margin: 0;

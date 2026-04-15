@@ -1,7 +1,8 @@
 const reportList = document.querySelector('#report-list');
 const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
-const downloadButton = document.querySelector('#download-md');
+const downloadButton = document.querySelector('#download-pdf');
+const downloadReportWorkbookButton = document.querySelector('#download-report-workbook');
 const downloadSpreadsheetButton = document.querySelector('#download-spreadsheet');
 const promptForm = document.querySelector('#prompt-form');
 const promptOutput = document.querySelector('#prompt-output');
@@ -244,16 +245,34 @@ function renderReport() {
 
   reportView.innerHTML = `
     <h2>${selectedReport.title}</h2>
-    <div class="meta-grid">
-      <div class="card"><strong>URL</strong><br><a href="${data.meta.url}" target="_blank" rel="noreferrer">${data.meta.url}</a></div>
-      <div class="card"><strong>Audience</strong><br>${data.meta.audience || 'n/a'}</div>
-      <div class="card"><strong>Scope</strong><br>${data.meta.scope || 'n/a'}</div>
-      <div class="card"><strong>Analyzed</strong><br>${data.meta.analyzed_at || 'n/a'}</div>
-      <div class="card"><strong>Status</strong><br>${reportStatus(selectedReport)}</div>
+    <p>${data.summary || 'No summary available for this report.'}</p>
+    <div class="report-meta-card card">
+      <dl class="report-meta-list">
+        <div class="report-meta-item">
+          <dt>URL</dt>
+          <dd><a href="${data.meta.url}" target="_blank" rel="noreferrer">${data.meta.url}</a></dd>
+        </div>
+        <div class="report-meta-item">
+          <dt>Audience</dt>
+          <dd>${data.meta.audience || 'n/a'}</dd>
+        </div>
+        <div class="report-meta-item">
+          <dt>Scope</dt>
+          <dd>${data.meta.scope || 'n/a'}</dd>
+        </div>
+        <div class="report-meta-item">
+          <dt>Analyzed</dt>
+          <dd>${data.meta.analyzed_at || 'n/a'}</dd>
+        </div>
+        <div class="report-meta-item">
+          <dt>Status</dt>
+          <dd>${reportStatus(selectedReport)}</dd>
+        </div>
+      </dl>
     </div>
 
     <h3>Score overview</h3>
-    <div class="meta-grid">${bars}</div>
+    <div class="stat-grid">${bars}</div>
 
     <div class="tasks-header">
       <h3>Tasks (${tasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})</h3>
@@ -351,6 +370,183 @@ function toCsvCell(value) {
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
+function toJoinedList(items) {
+  if (!Array.isArray(items) || !items.length) return '';
+  return items.join(' | ');
+}
+
+function toWorkbookCell(value) {
+  const safe = String(value ?? '');
+  return safe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function toWorkbookRow(cells) {
+  return `<Row>${cells.map((cell) => `<Cell><Data ss:Type="String">${toWorkbookCell(cell)}</Data></Cell>`).join('')}</Row>`;
+}
+
+function buildSingleReportWorkbook(report) {
+  const { data, title } = report;
+  const meta = data.meta || {};
+  const allTasks = [...(data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+  const nowIso = new Date().toISOString();
+
+  const toolExplanationRows = [
+    ['Top Task Dashboard Report Workbook'],
+    [''],
+    ['Purpose', 'Provide a professional export of one report for stakeholders and archival.'],
+    ['Report', title],
+    ['Source JSON', report.file],
+    ['Generated At (UTC)', nowIso],
+    [''],
+    ['What this workbook contains'],
+    ['Sheet 1: Tool Explanation', 'Overview of the export and intended use.'],
+    ['Sheet 2: Prompt & Methodology', 'Prompt framing, research method, and scoring model used.'],
+    ['Sheet 3: Overview', 'Report metadata, recommendations, confidence, evidence gaps, and aggregate counts.'],
+    ['Sheet 4: Top Tasks', 'All ranked tasks with scores, evidence, and rationale.'],
+    ['Sheet 5: Raw JSON', 'Full report payload to ensure complete data transparency.']
+  ];
+
+  const promptMethodologyRows = [
+    ['Prompt & Methodology'],
+    [''],
+    ['Analysis Prompt'],
+    ['Use the Top Task Research Prompt to analyze the selected URL, audience, and scope.'],
+    ['The model inventories the site, infers user intent, creates a deduplicated longlist, scores tasks, and prioritizes Top vs Tiny tasks.'],
+    [''],
+    ['Methodology Steps'],
+    ['1. Fetch and inventory navigation, CTAs, and page types.'],
+    ['2. Infer user intents from observed on-site evidence.'],
+    ['3. Generate a task longlist in user voice.'],
+    ['4. Deduplicate overlapping tasks and normalize wording.'],
+    ['5. Score each task: Frequency, Impact, Findability, Completability (1-5).'],
+    ['6. Rank and classify tasks as top, secondary, or tiny.'],
+    ['7. Recommend a user voting survey for validation.'],
+    [''],
+    ['Scoring Notes'],
+    ['Composite score reflects the combined scoring dimensions and supports rank ordering.'],
+    ['Evidence gaps should reduce confidence and be validated through additional research.']
+  ];
+
+  const byClass = classifyCounts(allTasks);
+  const overviewRows = [
+    ['Overview'],
+    [''],
+    ['Report Status', reportStatus(report)],
+    ['URL', meta.url || 'n/a'],
+    ['Audience', meta.audience || 'n/a'],
+    ['Scope', meta.scope || 'n/a'],
+    ['Analyzed At', meta.analyzed_at || 'n/a'],
+    ['Analyst Confidence', meta.analyst_confidence || 'n/a'],
+    ['Evidence Gaps', toJoinedList(meta.evidence_gaps) || 'None noted'],
+    ['Summary', data.summary || ''],
+    [''],
+    ['Total Tasks', String(allTasks.length)],
+    ['Top Tasks', String(byClass.top || 0)],
+    ['Secondary Tasks', String(byClass.secondary || 0)],
+    ['Tiny Tasks', String(byClass.tiny || 0)],
+    ['Unknown Tasks', String(byClass.unknown || 0)],
+    ['Recommended Survey Instructions', data.recommended_survey?.instructions || ''],
+    ['Recommended Survey Task List For Voting', toJoinedList(data.recommended_survey?.task_list_for_voting) || ''],
+    ['Recommended Survey Sample Size', data.recommended_survey?.recommended_sample_size ?? ''],
+    ['Recommended Survey Target Segments', toJoinedList(data.recommended_survey?.target_segments) || ''],
+    ['Top Task IDs', toJoinedList(data.top_tasks) || ''],
+    ['Tiny Task IDs', toJoinedList(data.tiny_tasks) || ''],
+    ['Next Steps / Recommendations', toJoinedList(data.next_steps) || '']
+  ];
+
+  const topTaskHeader = [
+    'Rank',
+    'Task ID',
+    'Task Statement',
+    'User Intent Category',
+    'Classification',
+    'Composite Score',
+    'Frequency',
+    'Impact',
+    'Findability',
+    'Completability',
+    'Evidence Source URLs',
+    'Evidence Details (JSON)',
+    'Rationale'
+  ];
+  const topTaskRows = allTasks.length
+    ? allTasks.map((task, index) => [
+      String(index + 1),
+      task.id || 'n/a',
+      task.task_statement || 'n/a',
+      task.user_intent_category || '',
+      task.classification || 'top',
+      Number.isFinite(task.composite_score) ? task.composite_score.toFixed(2) : '',
+      task.scores?.frequency ?? '',
+      task.scores?.impact ?? '',
+      task.scores?.findability ?? '',
+      task.scores?.completability ?? '',
+      toJoinedList((task.evidence || []).map((item) => item.source_url).filter(Boolean)),
+      task.evidence?.length ? JSON.stringify(task.evidence) : '',
+      task.rationale || ''
+    ])
+    : [['', '', 'No tasks are available in this report.', '', '', '', '', '', '', '', '', '', '']];
+
+  const rawJsonRows = [
+    ['Raw JSON'],
+    [''],
+    [JSON.stringify(data, null, 2)]
+  ];
+
+  return `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Header">
+   <Font ss:Bold="1"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Tool Explanation">
+  <Table>
+   ${toolExplanationRows.map((row, index) => (index === 0
+    ? `<Row><Cell ss:StyleID="Header"><Data ss:Type="String">${toWorkbookCell(row[0])}</Data></Cell></Row>`
+    : toWorkbookRow(row))).join('')}
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Prompt &amp; Methodology">
+  <Table>
+   ${promptMethodologyRows.map((row, index) => (index === 0
+    ? `<Row><Cell ss:StyleID="Header"><Data ss:Type="String">${toWorkbookCell(row[0])}</Data></Cell></Row>`
+    : toWorkbookRow(row))).join('')}
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Overview">
+  <Table>
+   ${overviewRows.map((row, index) => (index === 0
+    ? `<Row><Cell ss:StyleID="Header"><Data ss:Type="String">${toWorkbookCell(row[0])}</Data></Cell></Row>`
+    : toWorkbookRow(row))).join('')}
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Top Tasks">
+  <Table>
+   <Row>${topTaskHeader.map((header) => `<Cell ss:StyleID="Header"><Data ss:Type="String">${toWorkbookCell(header)}</Data></Cell>`).join('')}</Row>
+   ${topTaskRows.map((row) => toWorkbookRow(row)).join('')}
+  </Table>
+ </Worksheet>
+ <Worksheet ss:Name="Raw JSON">
+  <Table>
+   ${rawJsonRows.map((row, index) => (index === 0
+    ? `<Row><Cell ss:StyleID="Header"><Data ss:Type="String">${toWorkbookCell(row[0])}</Data></Cell></Row>`
+    : toWorkbookRow(row))).join('')}
+  </Table>
+ </Worksheet>
+</Workbook>`;
+}
+
 function buildPortfolioCsv() {
   const summaries = reports.map(summarizeReport)
     .sort((a, b) => b.avgScore - a.avgScore);
@@ -364,6 +560,16 @@ function buildPortfolioCsv() {
     'Audience',
     'Scope',
     'Analyzed At',
+    'Analyst Confidence',
+    'Evidence Gaps',
+    'Report Summary',
+    'Top Task IDs',
+    'Tiny Task IDs',
+    'Next Steps',
+    'Survey Instructions',
+    'Survey Task List For Voting',
+    'Survey Recommended Sample Size',
+    'Survey Target Segments',
     'Total Tasks (Report)',
     'Average Score (Report)',
     'Top Tasks (Report)',
@@ -373,13 +579,60 @@ function buildPortfolioCsv() {
     'Task Rank in Report',
     'Task ID',
     'Task Statement',
+    'Task User Intent Category',
     'Classification',
+    'Score Frequency',
+    'Score Impact',
+    'Score Findability',
+    'Score Completability',
     'Composite Score',
+    'Evidence Source URLs',
+    'Evidence Details (JSON)',
     'Rationale'
   ];
 
   const taskRows = summaries.flatMap((summary) => {
     const sortedTasks = [...(summary.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+    const reportMeta = summary.data.meta || {};
+    const reportLevelFields = {
+      url: reportMeta.url || 'n/a',
+      audience: reportMeta.audience || 'n/a',
+      scope: reportMeta.scope || 'n/a',
+      analyzedAt: reportMeta.analyzed_at || 'n/a',
+      analystConfidence: reportMeta.analyst_confidence || 'n/a',
+      evidenceGaps: toJoinedList(reportMeta.evidence_gaps),
+      reportSummary: summary.data.summary || '',
+      topTaskIds: toJoinedList(summary.data.top_tasks),
+      tinyTaskIds: toJoinedList(summary.data.tiny_tasks),
+      nextSteps: toJoinedList(summary.data.next_steps),
+      surveyInstructions: summary.data.recommended_survey?.instructions || '',
+      surveyTaskList: toJoinedList(summary.data.recommended_survey?.task_list_for_voting),
+      surveySampleSize: summary.data.recommended_survey?.recommended_sample_size ?? '',
+      surveyTargetSegments: toJoinedList(summary.data.recommended_survey?.target_segments)
+    };
+
+    if (!sortedTasks.length) {
+      return [{
+        reportTitle: summary.title,
+        reportFile: summary.file,
+        reportStatus: reportStatus(summary),
+        rank: '',
+        id: '',
+        taskStatement: '',
+        userIntentCategory: '',
+        classification: '',
+        scoreFrequency: '',
+        scoreImpact: '',
+        scoreFindability: '',
+        scoreCompletability: '',
+        compositeScore: '',
+        evidenceSourceUrls: '',
+        evidenceDetails: '',
+        rationale: '',
+        ...reportLevelFields
+      }];
+    }
+
     return sortedTasks.map((task, index) => ({
       reportTitle: summary.title,
       reportFile: summary.file,
@@ -387,13 +640,17 @@ function buildPortfolioCsv() {
       rank: index + 1,
       id: task.id || 'n/a',
       taskStatement: task.task_statement || 'n/a',
+      userIntentCategory: task.user_intent_category || '',
       classification: task.classification || 'unknown',
-      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : 0,
+      scoreFrequency: task.scores?.frequency ?? '',
+      scoreImpact: task.scores?.impact ?? '',
+      scoreFindability: task.scores?.findability ?? '',
+      scoreCompletability: task.scores?.completability ?? '',
+      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : '',
+      evidenceSourceUrls: toJoinedList((task.evidence || []).map((item) => item.source_url).filter(Boolean)),
+      evidenceDetails: task.evidence?.length ? JSON.stringify(task.evidence) : '',
       rationale: task.rationale || '',
-      url: summary.data.meta?.url || 'n/a',
-      audience: summary.data.meta?.audience || 'n/a',
-      scope: summary.data.meta?.scope || 'n/a',
-      analyzedAt: summary.data.meta?.analyzed_at || 'n/a'
+      ...reportLevelFields
     }));
   });
 
@@ -407,6 +664,16 @@ function buildPortfolioCsv() {
       task.audience,
       task.scope,
       task.analyzedAt,
+      task.analystConfidence,
+      task.evidenceGaps,
+      task.reportSummary,
+      task.topTaskIds,
+      task.tinyTaskIds,
+      task.nextSteps,
+      task.surveyInstructions,
+      task.surveyTaskList,
+      task.surveySampleSize,
+      task.surveyTargetSegments,
       summaryByFile.get(task.reportFile)?.totalTasks ?? 0,
       round(summaryByFile.get(task.reportFile)?.avgScore ?? 0),
       summaryByFile.get(task.reportFile)?.topTasks ?? 0,
@@ -416,8 +683,15 @@ function buildPortfolioCsv() {
       task.rank,
       task.id,
       task.taskStatement,
+      task.userIntentCategory,
       task.classification,
-      task.compositeScore.toFixed(2),
+      task.scoreFrequency,
+      task.scoreImpact,
+      task.scoreFindability,
+      task.scoreCompletability,
+      Number.isFinite(task.compositeScore) ? task.compositeScore.toFixed(2) : '',
+      task.evidenceSourceUrls,
+      task.evidenceDetails,
       task.rationale
     ].map(toCsvCell).join(','))
   ];
@@ -425,39 +699,217 @@ function buildPortfolioCsv() {
   return `\uFEFF${csvRows.join('\n')}`;
 }
 
-function toMarkdown(report) {
+function formatTimestamp(value) {
+  if (!value) return 'n/a';
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString();
+}
+
+function escapePdfText(value) {
+  return String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
+}
+
+function wrapText(value, maxChars = 100) {
+  const words = String(value ?? '').split(/\s+/).filter(Boolean);
+  if (!words.length) return [''];
+
+  const lines = [];
+  let current = words[0];
+  for (let index = 1; index < words.length; index += 1) {
+    const next = `${current} ${words[index]}`;
+    if (next.length > maxChars) {
+      lines.push(current);
+      current = words[index];
+    } else {
+      current = next;
+    }
+  }
+  lines.push(current);
+  return lines;
+}
+
+function collectReportPdfLines(report) {
   const { file, data } = report;
+  const tasks = [...(data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+  const byClass = classifyCounts(tasks);
+  const averageScore = tasks.length
+    ? tasks.reduce((sum, task) => sum + (task.composite_score || 0), 0) / tasks.length
+    : 0;
   const lines = [
-    `# Top Task Report: ${titleFromFile(file)}`,
-    '',
-    `- URL: ${data.meta?.url || 'n/a'}`,
-    `- Audience: ${data.meta?.audience || 'n/a'}`,
-    `- Report status: ${data.meta?.report_status || 'Unreviewed'}`,
-    `- Scope: ${data.meta?.scope || 'n/a'}`,
-    `- Analyzed at: ${data.meta?.analyzed_at || 'n/a'}`,
-    '',
-    '## Tasks',
-    '',
-    '| ID | Task | Classification | Composite Score |',
-    '|---|---|---|---|',
-    ...(data.task_longlist || []).map((task) =>
-      `| ${task.id} | ${task.task_statement} | ${task.classification} | ${round(task.composite_score)} |`),
-    '',
-    '## Next steps',
-    '',
-    ...(data.next_steps || []).map((step) => `- ${step}`)
+    { type: 'title', text: `Top Task Research Report — ${titleFromFile(file)}` },
+    { type: 'body', text: `Report file: ${file}` },
+    { type: 'body', text: `Generated at: ${formatTimestamp(new Date().toISOString())}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Report Metadata' },
+    { type: 'body', text: `Status: ${data.meta?.report_status || 'Unreviewed'}` },
+    { type: 'body', text: `URL: ${data.meta?.url || 'n/a'}` },
+    { type: 'body', text: `Audience: ${data.meta?.audience || 'n/a'}` },
+    { type: 'body', text: `Scope: ${data.meta?.scope || 'n/a'}` },
+    { type: 'body', text: `Analyzed At: ${formatTimestamp(data.meta?.analyzed_at)}` },
+    { type: 'body', text: `Analyst Confidence: ${data.meta?.analyst_confidence || 'n/a'}` },
+    { type: 'body', text: `Evidence Gaps: ${(data.meta?.evidence_gaps || []).join('; ') || 'None listed'}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Executive Summary' },
+    ...wrapText(data.summary || 'No summary available.', 120).map((text) => ({ type: 'body', text })),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Portfolio Metrics' },
+    { type: 'body', text: `Total Tasks: ${tasks.length}` },
+    { type: 'body', text: `Average Composite Score: ${round(averageScore)}` },
+    { type: 'body', text: `Top: ${byClass.top || 0} | Secondary: ${byClass.secondary || 0} | Tiny: ${byClass.tiny || 0} | Unknown: ${byClass.unknown || 0}` },
+    { type: 'body', text: `Top Task IDs: ${(data.top_tasks || []).join(', ') || 'n/a'}` },
+    { type: 'body', text: `Tiny Task IDs: ${(data.tiny_tasks || []).join(', ') || 'n/a'}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Recommended Validation Survey' },
+    ...wrapText(`Instructions: ${data.recommended_survey?.instructions || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    ...wrapText(`Task List for Voting: ${(data.recommended_survey?.task_list_for_voting || []).join(', ') || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    { type: 'body', text: `Recommended Sample Size: ${data.recommended_survey?.recommended_sample_size ?? 'n/a'}` },
+    ...wrapText(`Target Segments: ${(data.recommended_survey?.target_segments || []).join(', ') || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Next Steps' },
+    ...((data.next_steps || []).length
+      ? data.next_steps.flatMap((step, index) =>
+        wrapText(`${index + 1}. ${step}`, 120).map((text) => ({ type: 'body', text })))
+      : [{ type: 'body', text: 'No next steps provided.' }]),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Detailed Task Register' }
   ];
 
-  return lines.join('\n');
+  if (!tasks.length) {
+    lines.push({ type: 'body', text: 'No tasks available for this report.' });
+    return lines;
+  }
+
+  tasks.forEach((task, index) => {
+    lines.push({ type: 'heading', text: `Task ${index + 1}: ${task.id || 'n/a'} — ${task.task_statement || 'Untitled task'}` });
+    lines.push({ type: 'body', text: `Classification: ${task.classification || 'unknown'} | Intent: ${task.user_intent_category || 'n/a'}` });
+    lines.push({
+      type: 'body',
+      text: `Scores — Frequency: ${task.scores?.frequency ?? 'n/a'}, Impact: ${task.scores?.impact ?? 'n/a'}, Findability: ${task.scores?.findability ?? 'n/a'}, Completability: ${task.scores?.completability ?? 'n/a'}, Composite: ${round(task.composite_score)}`
+    });
+    wrapText(`Rationale: ${task.rationale || 'n/a'}`, 120).forEach((text) => lines.push({ type: 'body', text }));
+
+    if ((task.evidence || []).length) {
+      lines.push({ type: 'body', text: 'Evidence:' });
+      task.evidence.forEach((item, evidenceIndex) => {
+        wrapText(
+          `  ${evidenceIndex + 1}) URL: ${item.source_url || 'n/a'} | Element: ${item.element || 'n/a'} | Note: ${item.note || 'No note'}`,
+          118
+        ).forEach((text) => lines.push({ type: 'body', text }));
+      });
+    } else {
+      lines.push({ type: 'body', text: 'Evidence: none provided.' });
+    }
+    lines.push({ type: 'spacer', text: '' });
+  });
+
+  return lines;
+}
+
+function createPdfBlob(lines) {
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const marginLeft = 42;
+  const marginTop = 40;
+  const marginBottom = 40;
+
+  const pages = [];
+  let pageCommands = [];
+  let y = pageHeight - marginTop;
+
+  function pushPage() {
+    if (pageCommands.length) {
+      pages.push(pageCommands.join('\n'));
+    }
+    pageCommands = [];
+    y = pageHeight - marginTop;
+  }
+
+  const style = (lineType) => {
+    if (lineType === 'title') return { fontSize: 18, leading: 24 };
+    if (lineType === 'heading') return { fontSize: 12, leading: 17 };
+    if (lineType === 'spacer') return { fontSize: 10, leading: 8 };
+    return { fontSize: 10, leading: 14 };
+  };
+
+  lines.forEach((line) => {
+    const { fontSize, leading } = style(line.type);
+    if (y - leading < marginBottom) {
+      pushPage();
+    }
+
+    if (line.type !== 'spacer') {
+      pageCommands.push(`BT /F1 ${fontSize} Tf ${marginLeft} ${y} Td (${escapePdfText(line.text)}) Tj ET`);
+    }
+    y -= leading;
+  });
+
+  pushPage();
+  if (!pages.length) pages.push('');
+
+  const objectContents = [];
+  objectContents.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+  const pageObjectIds = pages.map((_, index) => 4 + index * 2);
+  const contentObjectIds = pages.map((_, index) => 5 + index * 2);
+
+  objectContents.push(`2 0 obj\n<< /Type /Pages /Kids [${pageObjectIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pages.length} >>\nendobj\n`);
+  objectContents.push('3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
+
+  pages.forEach((pageStream, index) => {
+    const pageId = pageObjectIds[index];
+    const contentId = contentObjectIds[index];
+    objectContents.push(
+      `${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`
+    );
+    objectContents.push(`${contentId} 0 obj\n<< /Length ${pageStream.length} >>\nstream\n${pageStream}\nendstream\nendobj\n`);
+  });
+
+  let pdf = '%PDF-1.4\n';
+  const xrefOffsets = [0];
+  objectContents.forEach((content) => {
+    xrefOffsets.push(pdf.length);
+    pdf += content;
+  });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${xrefOffsets.length}\n`;
+  pdf += '0000000000 65535 f \n';
+  for (let i = 1; i < xrefOffsets.length; i += 1) {
+    pdf += `${String(xrefOffsets[i]).padStart(10, '0')} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${xrefOffsets.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: 'application/pdf' });
+}
+
+function downloadPdfReport(report) {
+  const blob = createPdfBlob(collectReportPdfLines(report));
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${report.file.replace('.json', '')}-report.pdf`;
+  link.click();
+  URL.revokeObjectURL(link.href);
 }
 
 if (downloadButton) {
   downloadButton.addEventListener('click', () => {
     if (!selectedReport) return;
-    const blob = new Blob([toMarkdown(selectedReport)], { type: 'text/markdown;charset=utf-8' });
+    downloadPdfReport(selectedReport);
+  });
+}
+
+if (downloadReportWorkbookButton) {
+  downloadReportWorkbookButton.addEventListener('click', () => {
+    if (!selectedReport) return;
+    const workbook = buildSingleReportWorkbook(selectedReport);
+    const blob = new Blob([workbook], { type: 'application/vnd.ms-excel;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `${selectedReport.file.replace('.json', '')}.md`;
+    link.download = `${selectedReport.file.replace('.json', '')}-report-workbook.xls`;
     link.click();
     URL.revokeObjectURL(link.href);
   });
