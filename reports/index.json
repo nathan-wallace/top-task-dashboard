@@ -36,6 +36,12 @@
     "path": "./hhs-press-room-media/"
   },
   {
+    "file": "one-year-of-maha-page.json",
+    "slug": "one-year-of-maha-page",
+    "title": "one year of maha page",
+    "path": "./one-year-of-maha-page/"
+  },
+  {
     "file": "press-room.json",
     "slug": "press-room",
     "title": "press room",

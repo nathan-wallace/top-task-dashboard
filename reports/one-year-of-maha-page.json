@@ -1,7 +1,6 @@
 {
 "meta": {
-"url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "audience": "General Public",
 "scope": "entire site",
 "analyzed_at": "2026-04-15T00:00:00-04:00",
@@ -21,8 +20,7 @@
 "user_intent_category": "orientation/status",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Page title, hero, and by-the-numbers section",
 "note": "The page is explicitly framed as a year-in-review summary and highlights major outcomes immediately."
 }
@@ -43,8 +41,7 @@
 "user_intent_category": "policy/topic lookup",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Making Our Children Healthy Again card",
 "note": "A prominently placed section highlights a strategy with more than 120 initiatives on childhood chronic disease."
 }
@@ -65,14 +62,12 @@
 "user_intent_category": "cost/benefit information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Lowering Prescription Drug Prices card",
 "note": "The card promises significantly reduced prescription costs and links to a press release."
 },
 {
-"source_url": "https://www.hhs.gov/press-room/cms-mfn-lower-us-drug-prices.html
-",
+"source_url": "https://www.hhs.gov/press-room/cms-mfn-lower-us-drug-prices.html",
 "element": "Press release body",
 "note": "The linked release explains the pricing action and gives users a deeper evidence path."
 }
@@ -93,14 +88,12 @@
 "user_intent_category": "safety/nutrition information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Real food, food dyes, dairy dyes, and GRAS sections",
 "note": "The page clusters multiple food-supply and ingredient reform topics, signaling strong user relevance."
 },
 {
-"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
-",
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html",
 "element": "Press release body",
 "note": "The linked release explains the GRAS rulemaking direction and transparency rationale."
 }
@@ -121,8 +114,7 @@
 "user_intent_category": "document/evidence access",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "The MAHA Report section",
 "note": "The page calls out the report as a flagship artifact and provides a press-release path."
 }
@@ -143,8 +135,7 @@
 "user_intent_category": "health guidance lookup",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Updating Childhood Vaccine Schedule and related vaccine sections",
 "note": "The page includes several vaccine-related cards, indicating likely public demand for policy-change information."
 }
@@ -165,8 +156,7 @@
 "user_intent_category": "product safety information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Making Infant Formula Safe card",
 "note": "The card addresses safety and supply options for infant formula, a focused but important family need."
 }
@@ -187,8 +177,7 @@
 "user_intent_category": "care access information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Fixing Prior Authorization System card",
 "note": "The card highlights reduced red tape and improved care, which are meaningful to patients navigating coverage."
 }
@@ -209,8 +198,7 @@
 "user_intent_category": "program/policy update",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Strengthening Rural Health card",
 "note": "The page explicitly highlights a $50 billion rural health transformation program."
 }
@@ -231,8 +219,7 @@
 "user_intent_category": "media consumption",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Repeated Watch the video links across cards",
 "note": "Video is the dominant interaction pattern after scanning summaries."
 }
@@ -253,14 +240,12 @@
 "user_intent_category": "site navigation/help-seeking",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Global search access and FAQ link in footer",
 "note": "The page exposes search and an Answers hub for users whose needs extend beyond the campaign content."
 },
 {
-"source_url": "https://www.hhs.gov/answers/index.html
-",
+"source_url": "https://www.hhs.gov/answers/index.html",
 "element": "Answers hub",
 "note": "The linked Answers page offers FAQ-style paths for common public questions."
 }
@@ -281,8 +266,7 @@
 "user_intent_category": "site navigation/exploration",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Global navigation links",
 "note": "Programs & Services, Laws & Regulations, and other sitewide nav options are visible from the page."
 }
@@ -303,14 +287,12 @@
 "user_intent_category": "subscription",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "HHS Email updates footer block",
 "note": "The page includes a clear subscribe CTA."
 },
 {
-"source_url": "https://cloud.connect.hhs.gov/subscriptioncenter
-",
+"source_url": "https://cloud.connect.hhs.gov/subscriptioncenter",
 "element": "Subscription form",
 "note": "The linked form asks for first name, email, and update preferences."
 }
@@ -331,8 +313,7 @@
 "user_intent_category": "social follow",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Follow @SecKennedy and Follow @HHSGov blocks",
 "note": "The footer offers multiple social follow links."
 }
@@ -353,8 +334,7 @@
 "user_intent_category": "support/contact",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
-",
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html",
 "element": "Contact HHS footer link and call center information",
 "note": "The page exposes generic contact options, but not MAHA-specific support flows."
 }
