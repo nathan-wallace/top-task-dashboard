@@ -20,14 +20,12 @@
 "user_intent_category": "lookup",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Learn More card: Chemical Contaminants Transparency Tool",
 "note": "Promoted as a core transparency destination for searching contaminant levels in foods."
 },
 {
-"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels
-",
+"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels",
 "element": "Search, advanced search, and downloadable Excel data",
 "note": "Tool supports direct lookup, filtering, browsing, and export."
 }
@@ -48,14 +46,12 @@
 "user_intent_category": "transparency lookup",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Learn More card: CDC’s ACIP Conflicts of Interest",
 "note": "One of the three main transparency promises in the hero and card area."
 },
 {
-"source_url": "https://www.cdc.gov/acip/disclosures/by-member.html
-",
+"source_url": "https://www.cdc.gov/acip/disclosures/by-member.html",
 "element": "Disclosure page overview and disclosure tool description",
 "note": "CDC page explains the disclosure history and that users can find prior disclosures by member."
 }
@@ -76,14 +72,12 @@
 "user_intent_category": "accountability lookup",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Ending Wasteful Spending section",
 "note": "Explicitly invites users to view contracts terminated in full or part since January 21, 2025."
 },
 {
-"source_url": "https://www.hhs.gov/radical-transparency/ending-wasteful-spending/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/ending-wasteful-spending/index.html",
 "element": "HHS Terminated Contracts PDF link",
 "note": "Dedicated page with direct link to the contract list and USAspending for additional detail."
 }
@@ -104,14 +98,12 @@
 "user_intent_category": "understanding",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Hero statement and Keeping Food Ingredients Safe section",
 "note": "Site explicitly frames transparency around contaminants and ingredients in food."
 },
 {
-"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
-",
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html",
 "element": "Press release on revising GRAS pathway",
 "note": "States the goal is to make sure Americans know what is in their food."
 }
@@ -132,14 +124,12 @@
 "user_intent_category": "request",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Explore Radical Transparency link to FOIA",
 "note": "FOIA is surfaced as a major related transparency path."
 },
 {
-"source_url": "https://www.hhs.gov/foia/index.html
-",
+"source_url": "https://www.hhs.gov/foia/index.html",
 "element": "New or Existing FOIA Requests section",
 "note": "FOIA page supports submitting a request and checking status."
 }
@@ -160,8 +150,7 @@
 "user_intent_category": "understanding",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/foia/index.html
-",
+"source_url": "https://www.hhs.gov/foia/index.html",
 "element": "FOIA overview, exemptions, library, and reports",
 "note": "The page explains what FOIA is and links to exemptions, contacts, and reports."
 }
@@ -182,14 +171,12 @@
 "user_intent_category": "policy understanding",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Keeping Food Ingredients Safe section",
 "note": "Featured as a major section with explanation of GRAS oversight changes."
 },
 {
-"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
-",
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html",
 "element": "Rulemaking announcement",
 "note": "Explains the self-affirmed GRAS pathway and proposed transparency changes."
 }
@@ -210,14 +197,12 @@
 "user_intent_category": "research",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Explore link to Open Government at HHS",
 "note": "Open Government is surfaced as a related transparency resource."
 },
 {
-"source_url": "https://www.hhs.gov/open/index.html
-",
+"source_url": "https://www.hhs.gov/open/index.html",
 "element": "Open Data and Plans and Policies sections",
 "note": "Provides links to HealthData.gov, Health IT Data, strategic plan, public access, and FOIA."
 }
@@ -238,14 +223,12 @@
 "user_intent_category": "news and policy",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Learn More card: Ending Anti-Semitism on College Campuses",
 "note": "Promoted on the landing page as a related transparency topic."
 },
 {
-"source_url": "https://www.hhs.gov/press-room/ending-anti-semitic-harassment-on-college-campuses.html
-",
+"source_url": "https://www.hhs.gov/press-room/ending-anti-semitic-harassment-on-college-campuses.html",
 "element": "Press release content",
 "note": "Provides details on interagency review actions tied to campus anti-Semitism."
 }
@@ -266,8 +249,7 @@
 "user_intent_category": "data access",
 "evidence": [
 {
-"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels
-",
+"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels",
 "element": "Download data link",
 "note": "The contaminant tool explicitly offers Excel download."
 }
@@ -288,8 +270,7 @@
 "user_intent_category": "subscription",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "HHS Email updates subscribe CTA",
 "note": "Persistent footer CTA offers email subscription."
 }
@@ -310,8 +291,7 @@
 "user_intent_category": "cross-navigation",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/radical-transparency/index.html
-",
+"source_url": "https://www.hhs.gov/radical-transparency/index.html",
 "element": "Featured Topics: MAHA In Action and RealFood.gov",
 "note": "Landing page promotes related initiatives via outbound CTAs."
 }
