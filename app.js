@@ -351,6 +351,11 @@ function toCsvCell(value) {
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
+function toJoinedList(items) {
+  if (!Array.isArray(items) || !items.length) return '';
+  return items.join(' | ');
+}
+
 function buildPortfolioCsv() {
   const summaries = reports.map(summarizeReport)
     .sort((a, b) => b.avgScore - a.avgScore);
@@ -364,6 +369,16 @@ function buildPortfolioCsv() {
     'Audience',
     'Scope',
     'Analyzed At',
+    'Analyst Confidence',
+    'Evidence Gaps',
+    'Report Summary',
+    'Top Task IDs',
+    'Tiny Task IDs',
+    'Next Steps',
+    'Survey Instructions',
+    'Survey Task List For Voting',
+    'Survey Recommended Sample Size',
+    'Survey Target Segments',
     'Total Tasks (Report)',
     'Average Score (Report)',
     'Top Tasks (Report)',
@@ -373,13 +388,60 @@ function buildPortfolioCsv() {
     'Task Rank in Report',
     'Task ID',
     'Task Statement',
+    'Task User Intent Category',
     'Classification',
+    'Score Frequency',
+    'Score Impact',
+    'Score Findability',
+    'Score Completability',
     'Composite Score',
+    'Evidence Source URLs',
+    'Evidence Details (JSON)',
     'Rationale'
   ];
 
   const taskRows = summaries.flatMap((summary) => {
     const sortedTasks = [...(summary.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+    const reportMeta = summary.data.meta || {};
+    const reportLevelFields = {
+      url: reportMeta.url || 'n/a',
+      audience: reportMeta.audience || 'n/a',
+      scope: reportMeta.scope || 'n/a',
+      analyzedAt: reportMeta.analyzed_at || 'n/a',
+      analystConfidence: reportMeta.analyst_confidence || 'n/a',
+      evidenceGaps: toJoinedList(reportMeta.evidence_gaps),
+      reportSummary: summary.data.summary || '',
+      topTaskIds: toJoinedList(summary.data.top_tasks),
+      tinyTaskIds: toJoinedList(summary.data.tiny_tasks),
+      nextSteps: toJoinedList(summary.data.next_steps),
+      surveyInstructions: summary.data.recommended_survey?.instructions || '',
+      surveyTaskList: toJoinedList(summary.data.recommended_survey?.task_list_for_voting),
+      surveySampleSize: summary.data.recommended_survey?.recommended_sample_size ?? '',
+      surveyTargetSegments: toJoinedList(summary.data.recommended_survey?.target_segments)
+    };
+
+    if (!sortedTasks.length) {
+      return [{
+        reportTitle: summary.title,
+        reportFile: summary.file,
+        reportStatus: reportStatus(summary),
+        rank: '',
+        id: '',
+        taskStatement: '',
+        userIntentCategory: '',
+        classification: '',
+        scoreFrequency: '',
+        scoreImpact: '',
+        scoreFindability: '',
+        scoreCompletability: '',
+        compositeScore: '',
+        evidenceSourceUrls: '',
+        evidenceDetails: '',
+        rationale: '',
+        ...reportLevelFields
+      }];
+    }
+
     return sortedTasks.map((task, index) => ({
       reportTitle: summary.title,
       reportFile: summary.file,
@@ -387,13 +449,17 @@ function buildPortfolioCsv() {
       rank: index + 1,
       id: task.id || 'n/a',
       taskStatement: task.task_statement || 'n/a',
+      userIntentCategory: task.user_intent_category || '',
       classification: task.classification || 'unknown',
-      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : 0,
+      scoreFrequency: task.scores?.frequency ?? '',
+      scoreImpact: task.scores?.impact ?? '',
+      scoreFindability: task.scores?.findability ?? '',
+      scoreCompletability: task.scores?.completability ?? '',
+      compositeScore: Number.isFinite(task.composite_score) ? task.composite_score : '',
+      evidenceSourceUrls: toJoinedList((task.evidence || []).map((item) => item.source_url).filter(Boolean)),
+      evidenceDetails: task.evidence?.length ? JSON.stringify(task.evidence) : '',
       rationale: task.rationale || '',
-      url: summary.data.meta?.url || 'n/a',
-      audience: summary.data.meta?.audience || 'n/a',
-      scope: summary.data.meta?.scope || 'n/a',
-      analyzedAt: summary.data.meta?.analyzed_at || 'n/a'
+      ...reportLevelFields
     }));
   });
 
@@ -407,6 +473,16 @@ function buildPortfolioCsv() {
       task.audience,
       task.scope,
       task.analyzedAt,
+      task.analystConfidence,
+      task.evidenceGaps,
+      task.reportSummary,
+      task.topTaskIds,
+      task.tinyTaskIds,
+      task.nextSteps,
+      task.surveyInstructions,
+      task.surveyTaskList,
+      task.surveySampleSize,
+      task.surveyTargetSegments,
       summaryByFile.get(task.reportFile)?.totalTasks ?? 0,
       round(summaryByFile.get(task.reportFile)?.avgScore ?? 0),
       summaryByFile.get(task.reportFile)?.topTasks ?? 0,
@@ -416,8 +492,15 @@ function buildPortfolioCsv() {
       task.rank,
       task.id,
       task.taskStatement,
+      task.userIntentCategory,
       task.classification,
-      task.compositeScore.toFixed(2),
+      task.scoreFrequency,
+      task.scoreImpact,
+      task.scoreFindability,
+      task.scoreCompletability,
+      Number.isFinite(task.compositeScore) ? task.compositeScore.toFixed(2) : '',
+      task.evidenceSourceUrls,
+      task.evidenceDetails,
       task.rationale
     ].map(toCsvCell).join(','))
   ];

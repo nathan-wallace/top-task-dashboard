@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/ocr/index.html",
+    "audience": "General Public, Professionals, Providers",
+    "scope": "single page",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "No direct analytics or search log data provided",
+      "Homepage lacks explicit user journey prioritization signals (e.g., primary CTA hierarchy)",
+      "No behavioral data on completion rates for complaint filing"
+    ],
+    "report_status": "Unreviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "File a discrimination complaint with OCR",
+      "user_intent_category": "Action / Legal remedy",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/index.html",
+          "element": "Primary navigation / CTA",
+          "note": "Prominent link to 'Filing a Complaint with OCR'"
+        },
+        {
+          "source_url": "https://www.hhs.gov/ocr/complaints/index.html",
+          "element": "Page section",
+          "note": "Detailed instructions for filing civil rights, HIPAA, and other complaints"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Core user need and primary service; clearly emphasized across homepage and subpages."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Understand my civil rights in healthcare",
+      "user_intent_category": "Information / Rights awareness",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "Main content section",
+          "note": "Explains protections against discrimination in health services"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Fundamental awareness task for all audiences; directly tied to OCR mission. :contentReference[oaicite:0]{index=0}"
+    },
+    {
+      "id": "T03",
+      "task_statement": "Find HIPAA privacy rights and rules",
+      "user_intent_category": "Information / Compliance",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "HIPAA section",
+          "note": "Dedicated section on privacy rule and protected information"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "High-volume, high-impact topic spanning public and providers. :contentReference[oaicite:1]{index=1}"
+    },
+    {
+      "id": "T04",
+      "task_statement": "Check if discrimination applies to my situation",
+      "user_intent_category": "Decision support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/civil-rights/for-individuals/index.html",
+          "element": "Rights categories",
+          "note": "Lists protected classes and scenarios (race, disability, age, etc.)"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.75,
+      "classification": "top",
+      "rationale": "Precursor to filing complaints; moderately harder to interpret due to legal framing. :contentReference[oaicite:2]{index=2}"
+    },
+    {
+      "id": "T05",
+      "task_statement": "Learn how to comply with civil rights laws",
+      "user_intent_category": "Professional / Compliance",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "Provider section",
+          "note": "Guidance for providers on compliance obligations"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.75,
+      "classification": "top",
+      "rationale": "Critical for providers but less clearly segmented from public content. :contentReference[oaicite:3]{index=3}"
+    },
+    {
+      "id": "T06",
+      "task_statement": "Submit a HIPAA privacy complaint",
+      "user_intent_category": "Action / Legal remedy",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/complaints/index.html",
+          "element": "Complaint types",
+          "note": "Specific pathway for HIPAA complaints"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Sub-task of complaint filing but distinct high-demand use case. :contentReference[oaicite:4]{index=4}"
+    },
+    {
+      "id": "T07",
+      "task_statement": "Contact OCR for help or questions",
+      "user_intent_category": "Support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/about-us/contact-us/index.html",
+          "element": "Contact page",
+          "note": "Phone, email, and regional office contacts provided"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 3,
+        "completability": 5
+      },
+      "composite_score": 4.0,
+      "classification": "secondary",
+      "rationale": "Important fallback task but not primary entry point. :contentReference[oaicite:5]{index=5}"
+    },
+    {
+      "id": "T08",
+      "task_statement": "Find resources in my language",
+      "user_intent_category": "Accessibility",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/index.html",
+          "element": "Language links",
+          "note": "Multiple language options listed prominently"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 5,
+        "completability": 5
+      },
+      "composite_score": 4.25,
+      "classification": "secondary",
+      "rationale": "Critical for LEP users; highly visible but narrower audience. :contentReference[oaicite:6]{index=6}"
+    },
+    {
+      "id": "T09",
+      "task_statement": "Learn about religious freedom protections",
+      "user_intent_category": "Information",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "Conscience and Religious Freedom section",
+          "note": "Dedicated topic area"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Important but more niche compared to general civil rights and HIPAA. :contentReference[oaicite:7]{index=7}"
+    },
+    {
+      "id": "T10",
+      "task_statement": "Read news and enforcement updates",
+      "user_intent_category": "Awareness",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "Newsroom",
+          "note": "News releases and updates section"
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 3,
+        "completability": 5
+      },
+      "composite_score": 3.0,
+      "classification": "tiny",
+      "rationale": "Low task criticality relative to action-oriented needs. :contentReference[oaicite:8]{index=8}"
+    },
+    {
+      "id": "T11",
+      "task_statement": "Explore special civil rights topics",
+      "user_intent_category": "Information",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/civilrights/index.html",
+          "element": "Special topics section",
+          "note": "Links to niche areas like HIV/AIDS and child welfare"
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 3,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.0,
+      "classification": "tiny",
+      "rationale": "Fragmented and niche content compared to core tasks. :contentReference[oaicite:9]{index=9}"
+    },
+    {
+      "id": "T12",
+      "task_statement": "Subscribe to OCR email updates",
+      "user_intent_category": "Engagement",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/ocr/index.html",
+          "element": "Email subscription",
+          "note": "Optional engagement feature"
+        }
+      ],
+      "scores": {
+        "frequency": 1,
+        "impact": 1,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 2.75,
+      "classification": "tiny",
+      "rationale": "Low-value compared to mission-critical tasks. :contentReference[oaicite:10]{index=10}"
+    }
+  ],
+  "top_tasks": ["T01", "T02", "T03", "T06", "T04", "T05"],
+  "tiny_tasks": ["T10", "T11", "T12"],
+  "recommended_survey": {
+    "instructions": "Please select the 5 tasks that are most important to you when visiting this website.",
+    "task_list_for_voting": [
+      "File a discrimination complaint with OCR",
+      "Understand my civil rights in healthcare",
+      "Find HIPAA privacy rights and rules",
+      "Check if discrimination applies to my situation",
+      "Learn how to comply with civil rights laws",
+      "Submit a HIPAA privacy complaint",
+      "Contact OCR for help or questions",
+      "Find resources in my language",
+      "Learn about religious freedom protections",
+      "Read news and enforcement updates",
+      "Explore special civil rights topics",
+      "Subscribe to OCR email updates"
+    ],
+    "recommended_sample_size": 300,
+    "target_segments": [
+      "Patients / general public",
+      "Healthcare providers",
+      "Legal and compliance professionals",
+      "Advocacy organizations",
+      "Limited English proficiency users"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks through a forced-choice survey with real users",
+    "Analyze search logs to confirm high-frequency intents (complaints, HIPAA, rights)",
+    "Audit complaint filing journey for drop-offs and friction",
+    "Segment navigation for public vs provider tasks",
+    "Prioritize homepage redesign around top 3–5 tasks"
+  ],
+  "summary": "The dominant user needs are filing complaints, understanding civil rights, and accessing HIPAA privacy information. These tasks are high-frequency and high-impact but not always clearly segmented by audience. A key risk is mixing public and provider content, making it harder for users to quickly determine next steps. Complaint filing is well supported but may require clearer pathways and guidance. Validation should focus on confirming task priority and improving findability for eligibility and compliance tasks."
+}
