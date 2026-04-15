@@ -2,7 +2,6 @@ const reportList = document.querySelector('#report-list');
 const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
 const downloadButton = document.querySelector('#download-pdf');
-const downloadReportWorkbookButton = document.querySelector('#download-report-workbook');
 const downloadSpreadsheetButton = document.querySelector('#download-spreadsheet');
 const promptForm = document.querySelector('#prompt-form');
 const promptOutput = document.querySelector('#prompt-output');
@@ -682,15 +681,6 @@ function buildPortfolioCsv() {
   return `\uFEFF${csvRows.join('\n')}`;
 }
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 function formatTimestamp(value) {
   if (!value) return 'n/a';
   const parsed = new Date(value);
@@ -698,259 +688,199 @@ function formatTimestamp(value) {
   return parsed.toLocaleString();
 }
 
-function buildReportPdfHtml(report) {
+function escapePdfText(value) {
+  return String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)');
+}
+
+function wrapText(value, maxChars = 100) {
+  const words = String(value ?? '').split(/\s+/).filter(Boolean);
+  if (!words.length) return [''];
+
+  const lines = [];
+  let current = words[0];
+  for (let index = 1; index < words.length; index += 1) {
+    const next = `${current} ${words[index]}`;
+    if (next.length > maxChars) {
+      lines.push(current);
+      current = words[index];
+    } else {
+      current = next;
+    }
+  }
+  lines.push(current);
+  return lines;
+}
+
+function collectReportPdfLines(report) {
   const { file, data } = report;
   const tasks = [...(data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
-  const topTaskSet = new Set(data.top_tasks || []);
-  const tinyTaskSet = new Set(data.tiny_tasks || []);
   const byClass = classifyCounts(tasks);
   const averageScore = tasks.length
     ? tasks.reduce((sum, task) => sum + (task.composite_score || 0), 0) / tasks.length
     : 0;
+  const lines = [
+    { type: 'title', text: `Top Task Research Report — ${titleFromFile(file)}` },
+    { type: 'body', text: `Report file: ${file}` },
+    { type: 'body', text: `Generated at: ${formatTimestamp(new Date().toISOString())}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Report Metadata' },
+    { type: 'body', text: `Status: ${data.meta?.report_status || 'Unreviewed'}` },
+    { type: 'body', text: `URL: ${data.meta?.url || 'n/a'}` },
+    { type: 'body', text: `Audience: ${data.meta?.audience || 'n/a'}` },
+    { type: 'body', text: `Scope: ${data.meta?.scope || 'n/a'}` },
+    { type: 'body', text: `Analyzed At: ${formatTimestamp(data.meta?.analyzed_at)}` },
+    { type: 'body', text: `Analyst Confidence: ${data.meta?.analyst_confidence || 'n/a'}` },
+    { type: 'body', text: `Evidence Gaps: ${(data.meta?.evidence_gaps || []).join('; ') || 'None listed'}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Executive Summary' },
+    ...wrapText(data.summary || 'No summary available.', 120).map((text) => ({ type: 'body', text })),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Portfolio Metrics' },
+    { type: 'body', text: `Total Tasks: ${tasks.length}` },
+    { type: 'body', text: `Average Composite Score: ${round(averageScore)}` },
+    { type: 'body', text: `Top: ${byClass.top || 0} | Secondary: ${byClass.secondary || 0} | Tiny: ${byClass.tiny || 0} | Unknown: ${byClass.unknown || 0}` },
+    { type: 'body', text: `Top Task IDs: ${(data.top_tasks || []).join(', ') || 'n/a'}` },
+    { type: 'body', text: `Tiny Task IDs: ${(data.tiny_tasks || []).join(', ') || 'n/a'}` },
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Recommended Validation Survey' },
+    ...wrapText(`Instructions: ${data.recommended_survey?.instructions || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    ...wrapText(`Task List for Voting: ${(data.recommended_survey?.task_list_for_voting || []).join(', ') || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    { type: 'body', text: `Recommended Sample Size: ${data.recommended_survey?.recommended_sample_size ?? 'n/a'}` },
+    ...wrapText(`Target Segments: ${(data.recommended_survey?.target_segments || []).join(', ') || 'n/a'}`, 120).map((text) => ({ type: 'body', text })),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Next Steps' },
+    ...((data.next_steps || []).length
+      ? data.next_steps.flatMap((step, index) =>
+        wrapText(`${index + 1}. ${step}`, 120).map((text) => ({ type: 'body', text })))
+      : [{ type: 'body', text: 'No next steps provided.' }]),
+    { type: 'spacer', text: '' },
+    { type: 'heading', text: 'Detailed Task Register' }
+  ];
 
-  const taskRows = tasks.map((task, index) => {
-    const evidenceText = (task.evidence || [])
-      .map((item) => `${item.source_url || 'n/a'} — ${item.element || 'n/a'} (${item.note || 'No note'})`)
-      .join('\n');
+  if (!tasks.length) {
+    lines.push({ type: 'body', text: 'No tasks available for this report.' });
+    return lines;
+  }
 
-    return `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${escapeHtml(task.id || '')}</td>
-        <td>${escapeHtml(task.task_statement || '')}</td>
-        <td>${escapeHtml(task.user_intent_category || '')}</td>
-        <td>${escapeHtml(task.classification || 'unknown')}</td>
-        <td>${task.scores?.frequency ?? ''}</td>
-        <td>${task.scores?.impact ?? ''}</td>
-        <td>${task.scores?.findability ?? ''}</td>
-        <td>${task.scores?.completability ?? ''}</td>
-        <td>${round(task.composite_score)}</td>
-        <td>${escapeHtml(task.rationale || '')}</td>
-        <td class="evidence-cell">${escapeHtml(evidenceText)}</td>
-      </tr>
-    `;
-  }).join('');
+  tasks.forEach((task, index) => {
+    lines.push({ type: 'heading', text: `Task ${index + 1}: ${task.id || 'n/a'} — ${task.task_statement || 'Untitled task'}` });
+    lines.push({ type: 'body', text: `Classification: ${task.classification || 'unknown'} | Intent: ${task.user_intent_category || 'n/a'}` });
+    lines.push({
+      type: 'body',
+      text: `Scores — Frequency: ${task.scores?.frequency ?? 'n/a'}, Impact: ${task.scores?.impact ?? 'n/a'}, Findability: ${task.scores?.findability ?? 'n/a'}, Completability: ${task.scores?.completability ?? 'n/a'}, Composite: ${round(task.composite_score)}`
+    });
+    wrapText(`Rationale: ${task.rationale || 'n/a'}`, 120).forEach((text) => lines.push({ type: 'body', text }));
 
-  const noTasksRow = `
-    <tr>
-      <td colspan="12">No tasks available for this report.</td>
-    </tr>
-  `;
+    if ((task.evidence || []).length) {
+      lines.push({ type: 'body', text: 'Evidence:' });
+      task.evidence.forEach((item, evidenceIndex) => {
+        wrapText(
+          `  ${evidenceIndex + 1}) URL: ${item.source_url || 'n/a'} | Element: ${item.element || 'n/a'} | Note: ${item.note || 'No note'}`,
+          118
+        ).forEach((text) => lines.push({ type: 'body', text }));
+      });
+    } else {
+      lines.push({ type: 'body', text: 'Evidence: none provided.' });
+    }
+    lines.push({ type: 'spacer', text: '' });
+  });
 
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Top Task Report: ${escapeHtml(titleFromFile(file))}</title>
-    <style>
-      :root {
-        --text: #14213d;
-        --muted: #4b5563;
-        --border: #d1d5db;
-        --background: #f8fafc;
-        --accent: #1d4ed8;
-      }
-      * { box-sizing: border-box; }
-      body {
-        font-family: "Inter", "Segoe UI", Arial, sans-serif;
-        color: var(--text);
-        line-height: 1.35;
-        margin: 0;
-        padding: 28px;
-        background: #fff;
-      }
-      h1, h2, h3 { margin: 0 0 8px; }
-      h1 { font-size: 24px; }
-      h2 {
-        margin-top: 22px;
-        font-size: 17px;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 4px;
-      }
-      p, li { font-size: 12px; }
-      .subtle { color: var(--muted); font-size: 11px; }
-      .meta-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 14px;
-      }
-      .card {
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--background);
-        padding: 10px 12px;
-      }
-      .card strong {
-        display: block;
-        margin-bottom: 2px;
-        font-size: 11px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-      .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 10px;
-      }
-      .kpi-value {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--accent);
-      }
-      .list {
-        margin: 6px 0 0;
-        padding-left: 18px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-      }
-      th, td {
-        border: 1px solid var(--border);
-        padding: 6px;
-        font-size: 10px;
-        vertical-align: top;
-        word-break: break-word;
-      }
-      th {
-        background: #eff6ff;
-        text-align: left;
-      }
-      .evidence-cell {
-        white-space: pre-wrap;
-      }
-      @media print {
-        @page {
-          size: A4 landscape;
-          margin: 10mm;
-        }
-        body {
-          padding: 0;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Top Task Research Report</h1>
-      <p class="subtle">Generated from dashboard export • ${escapeHtml(file)}</p>
-    </header>
+  return lines;
+}
 
-    <section>
-      <div class="meta-grid">
-        <div class="card"><strong>Report Title</strong>${escapeHtml(titleFromFile(file))}</div>
-        <div class="card"><strong>Report Status</strong>${escapeHtml(data.meta?.report_status || 'Unreviewed')}</div>
-        <div class="card"><strong>URL</strong>${escapeHtml(data.meta?.url || 'n/a')}</div>
-        <div class="card"><strong>Audience</strong>${escapeHtml(data.meta?.audience || 'n/a')}</div>
-        <div class="card"><strong>Scope</strong>${escapeHtml(data.meta?.scope || 'n/a')}</div>
-        <div class="card"><strong>Analyzed At</strong>${escapeHtml(formatTimestamp(data.meta?.analyzed_at))}</div>
-        <div class="card"><strong>Analyst Confidence</strong>${escapeHtml(data.meta?.analyst_confidence || 'n/a')}</div>
-        <div class="card"><strong>Generated At</strong>${escapeHtml(formatTimestamp(new Date().toISOString()))}</div>
-      </div>
-    </section>
+function createPdfBlob(lines) {
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const marginLeft = 42;
+  const marginTop = 40;
+  const marginBottom = 40;
 
-    <section>
-      <h2>Executive Summary</h2>
-      <p>${escapeHtml(data.summary || 'No summary available.')}</p>
-    </section>
+  const pages = [];
+  let pageCommands = [];
+  let y = pageHeight - marginTop;
 
-    <section>
-      <h2>Task Portfolio Metrics</h2>
-      <div class="kpi-grid">
-        <div class="card"><strong>Total Tasks</strong><div class="kpi-value">${tasks.length}</div></div>
-        <div class="card"><strong>Avg Composite</strong><div class="kpi-value">${round(averageScore)}</div></div>
-        <div class="card"><strong>Top Tasks</strong><div class="kpi-value">${byClass.top || 0}</div></div>
-        <div class="card"><strong>Tiny Tasks</strong><div class="kpi-value">${byClass.tiny || 0}</div></div>
-      </div>
-      <div class="meta-grid">
-        <div class="card"><strong>Top Task IDs</strong>${escapeHtml((data.top_tasks || []).join(', ') || 'n/a')}</div>
-        <div class="card"><strong>Tiny Task IDs</strong>${escapeHtml((data.tiny_tasks || []).join(', ') || 'n/a')}</div>
-      </div>
-    </section>
+  function pushPage() {
+    if (pageCommands.length) {
+      pages.push(pageCommands.join('\n'));
+    }
+    pageCommands = [];
+    y = pageHeight - marginTop;
+  }
 
-    <section>
-      <h2>Recommended Validation Survey</h2>
-      <div class="meta-grid">
-        <div class="card"><strong>Instructions</strong>${escapeHtml(data.recommended_survey?.instructions || 'n/a')}</div>
-        <div class="card"><strong>Recommended Sample Size</strong>${escapeHtml(data.recommended_survey?.recommended_sample_size ?? 'n/a')}</div>
-        <div class="card"><strong>Task List for Voting</strong>${escapeHtml((data.recommended_survey?.task_list_for_voting || []).join(', ') || 'n/a')}</div>
-        <div class="card"><strong>Target Segments</strong>${escapeHtml((data.recommended_survey?.target_segments || []).join(', ') || 'n/a')}</div>
-      </div>
-    </section>
+  const style = (lineType) => {
+    if (lineType === 'title') return { fontSize: 18, leading: 24 };
+    if (lineType === 'heading') return { fontSize: 12, leading: 17 };
+    if (lineType === 'spacer') return { fontSize: 10, leading: 8 };
+    return { fontSize: 10, leading: 14 };
+  };
 
-    <section>
-      <h2>Next Steps</h2>
-      <ul class="list">
-        ${(data.next_steps || []).map((step) => `<li>${escapeHtml(step)}</li>`).join('') || '<li>No next steps provided.</li>'}
-      </ul>
-    </section>
+  lines.forEach((line) => {
+    const { fontSize, leading } = style(line.type);
+    if (y - leading < marginBottom) {
+      pushPage();
+    }
 
-    <section>
-      <h2>Detailed Task Register</h2>
-      <p class="subtle">
-        Tasks flagged as top in report metadata: ${topTaskSet.size}. Tasks flagged as tiny in report metadata: ${tinyTaskSet.size}.
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>ID</th>
-            <th>Task Statement</th>
-            <th>Intent</th>
-            <th>Class</th>
-            <th>Freq</th>
-            <th>Impact</th>
-            <th>Findability</th>
-            <th>Completability</th>
-            <th>Composite</th>
-            <th>Rationale</th>
-            <th>Evidence</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${taskRows || noTasksRow}
-        </tbody>
-      </table>
-    </section>
-  </body>
-</html>`;
+    if (line.type !== 'spacer') {
+      pageCommands.push(`BT /F1 ${fontSize} Tf ${marginLeft} ${y} Td (${escapePdfText(line.text)}) Tj ET`);
+    }
+    y -= leading;
+  });
+
+  pushPage();
+  if (!pages.length) pages.push('');
+
+  const objectContents = [];
+  objectContents.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+  const pageObjectIds = pages.map((_, index) => 4 + index * 2);
+  const contentObjectIds = pages.map((_, index) => 5 + index * 2);
+
+  objectContents.push(`2 0 obj\n<< /Type /Pages /Kids [${pageObjectIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pages.length} >>\nendobj\n`);
+  objectContents.push('3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
+
+  pages.forEach((pageStream, index) => {
+    const pageId = pageObjectIds[index];
+    const contentId = contentObjectIds[index];
+    objectContents.push(
+      `${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`
+    );
+    objectContents.push(`${contentId} 0 obj\n<< /Length ${pageStream.length} >>\nstream\n${pageStream}\nendstream\nendobj\n`);
+  });
+
+  let pdf = '%PDF-1.4\n';
+  const xrefOffsets = [0];
+  objectContents.forEach((content) => {
+    xrefOffsets.push(pdf.length);
+    pdf += content;
+  });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${xrefOffsets.length}\n`;
+  pdf += '0000000000 65535 f \n';
+  for (let i = 1; i < xrefOffsets.length; i += 1) {
+    pdf += `${String(xrefOffsets[i]).padStart(10, '0')} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${xrefOffsets.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  return new Blob([pdf], { type: 'application/pdf' });
 }
 
 function downloadPdfReport(report) {
-  const pdfWindow = window.open('', '_blank', 'noopener,noreferrer');
-  if (!pdfWindow) {
-    window.alert('Unable to open PDF preview. Please allow pop-ups for this site.');
-    return;
-  }
-
-  pdfWindow.document.open();
-  pdfWindow.document.write(buildReportPdfHtml(report));
-  pdfWindow.document.close();
-  pdfWindow.focus();
-  pdfWindow.print();
+  const blob = createPdfBlob(collectReportPdfLines(report));
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${report.file.replace('.json', '')}-report.pdf`;
+  link.click();
+  URL.revokeObjectURL(link.href);
 }
 
 if (downloadButton) {
   downloadButton.addEventListener('click', () => {
     if (!selectedReport) return;
     downloadPdfReport(selectedReport);
-  });
-}
-
-if (downloadReportWorkbookButton) {
-  downloadReportWorkbookButton.addEventListener('click', () => {
-    if (!selectedReport) return;
-    const workbook = buildSingleReportWorkbook(selectedReport);
-    const blob = new Blob([workbook], { type: 'application/vnd.ms-excel;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${selectedReport.file.replace('.json', '')}-report-workbook.xls`;
-    link.click();
-    URL.revokeObjectURL(link.href);
   });
 }
 
