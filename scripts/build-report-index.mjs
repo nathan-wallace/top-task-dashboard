@@ -5,8 +5,19 @@ import { fileURLToPath } from 'node:url';
 const reportsDir = new URL('../reports/', import.meta.url);
 const reportsDirPath = fileURLToPath(reportsDir);
 
+const knownAcronyms = new Set(['hhs', 'ocr', 'hipaa', 'foia', 'maha']);
+
 function titleFromFile(name) {
-  return name.replace('.json', '').replace(/[-_]/g, ' ');
+  return name
+    .replace('.json', '')
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((part) => {
+      const lower = part.toLowerCase();
+      if (knownAcronyms.has(lower)) return lower.toUpperCase();
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(' ');
 }
 
 const entries = await readdir(reportsDirPath, { withFileTypes: true });
