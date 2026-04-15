@@ -216,7 +216,7 @@ h2 {
 .prompt-form textarea,
 #prompt-output,
 #report-search,
-.toolbar select,
+.tasks-filter-label select,
 .toolbar button,
 .overview-toolbar button,
 .prompt-actions button {
@@ -226,7 +226,7 @@ h2 {
 .prompt-form input,
 .prompt-form textarea,
 #prompt-output,
-.toolbar select {
+.tasks-filter-label select {
   width: 100%;
   border: 1px solid $border;
   border-radius: $radius-md;
@@ -273,9 +273,30 @@ h2 {
   min-height: 170px;
 }
 
-.toolbar select,
+.tasks-filter-label select,
 .toolbar button {
   padding: 0.5rem 0.75rem;
+}
+
+
+.tasks-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0.6rem;
+}
+
+.tasks-header h3 {
+  margin: 0;
+}
+
+.tasks-filter-label {
+  display: grid;
+  gap: 0.25rem;
+  color: #1f3f6b;
+  font-weight: 600;
 }
 
 .meta-grid,

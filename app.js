@@ -1,7 +1,6 @@
 const reportList = document.querySelector('#report-list');
 const reportSearch = document.querySelector('#report-search');
 const reportView = document.querySelector('#report-view');
-const classificationFilter = document.querySelector('#classification-filter');
 const downloadButton = document.querySelector('#download-md');
 const downloadSpreadsheetButton = document.querySelector('#download-spreadsheet');
 const promptForm = document.querySelector('#prompt-form');
@@ -14,6 +13,7 @@ const overviewTableBody = document.querySelector('#overview-table-body');
 
 let reports = [];
 let selectedReport = null;
+let selectedClassification = 'all';
 
 const reportsBase = document.body?.dataset?.reportsBase || './reports';
 
@@ -218,7 +218,7 @@ function renderReport() {
 
   const { data } = selectedReport;
   const allTasks = data.task_longlist || [];
-  const filter = classificationFilter?.value || 'all';
+  const filter = selectedClassification;
   const tasks = filter === 'all' ? allTasks : allTasks.filter((task) => task.classification === filter);
   const bars = averageByClassification(allTasks)
     .map((entry) => `
@@ -255,7 +255,18 @@ function renderReport() {
     <h3>Score overview</h3>
     <div class="meta-grid">${bars}</div>
 
-    <h3>Tasks (${tasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})</h3>
+    <div class="tasks-header">
+      <h3>Tasks (${tasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})</h3>
+      <label class="tasks-filter-label" for="classification-filter">
+        Classification
+        <select id="classification-filter" aria-label="Filter tasks by classification">
+          <option value="all" ${filter === 'all' ? 'selected' : ''}>All</option>
+          <option value="top" ${filter === 'top' ? 'selected' : ''}>Top</option>
+          <option value="secondary" ${filter === 'secondary' ? 'selected' : ''}>Secondary</option>
+          <option value="tiny" ${filter === 'tiny' ? 'selected' : ''}>Tiny</option>
+        </select>
+      </label>
+    </div>
     <div class="table-wrap">
       <table class="task-table">
         <thead>
@@ -452,8 +463,12 @@ if (downloadButton) {
   });
 }
 
-if (classificationFilter) {
-  classificationFilter.addEventListener('change', renderReport);
+if (reportView) {
+  reportView.addEventListener('change', (event) => {
+    if (event.target?.id !== 'classification-filter') return;
+    selectedClassification = event.target.value || 'all';
+    renderReport();
+  });
 }
 
 if (reportSearch) {
