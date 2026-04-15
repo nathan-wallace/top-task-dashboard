@@ -363,7 +363,14 @@ function renderReportList() {
     const btn = document.createElement('button');
     btn.textContent = report.title;
     btn.className = report.file === selectedReport?.file ? 'active' : '';
-    btn.addEventListener('click', () => selectReport(report.file));
+    btn.addEventListener('click', () => {
+      if (forcedReportFile) {
+        const reportPath = report.path?.startsWith('./') ? report.path.slice(2) : report.path || '';
+        window.location.href = `${reportsBase}/${reportPath}`;
+        return;
+      }
+      selectReport(report.file);
+    });
     li.append(btn);
     reportList.append(li);
   }

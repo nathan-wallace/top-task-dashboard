@@ -117,7 +117,16 @@ function renderReportList(reportList, reportSearch, reports, selectedReportFile,
     const btn = document.createElement('button');
     btn.textContent = report.title;
     btn.className = report.file === selectedReportFile ? 'active' : '';
-    btn.addEventListener('click', () => onSelect(report.file));
+    btn.addEventListener('click', () => {
+      const forcedReportFile = document.body?.dataset?.reportFile || '';
+      if (forcedReportFile) {
+        const reportsBase = document.body?.dataset?.reportsBase || './reports';
+        const reportPath = report.path?.startsWith('./') ? report.path.slice(2) : report.path || '';
+        window.location.href = `${reportsBase}/${reportPath}`;
+        return;
+      }
+      onSelect(report.file);
+    });
     li.append(btn);
     reportList.append(li);
   }

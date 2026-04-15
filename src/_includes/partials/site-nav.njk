@@ -1,6 +1,6 @@
 {% set currentUrl = page.url | default('/') %}
 <nav class="site-nav" aria-label="Main">
   <a{% if currentUrl == '/' or currentUrl == '/index.html' %} class="active"{% endif %} href="{{ navPrefix }}index.html">Overview</a>
-  <a{% if currentUrl == '/report/' or currentUrl == '/report/index.html' or currentUrl == '/reports/' or currentUrl == '/reports/index.html' %} class="active"{% endif %} href="{{ navPrefix }}report/">Reports</a>
+  <a{% if currentUrl == '/reports/' or currentUrl == '/reports/index.html' %} class="active"{% endif %} href="{{ navPrefix }}reports/">Reports</a>
   <a{% if currentUrl == '/prompt.html' %} class="active"{% endif %} href="{{ navPrefix }}prompt.html">Build a Prompt</a>
 </nav>
