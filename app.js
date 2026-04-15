@@ -106,7 +106,7 @@ Return valid JSON matching this schema.
 }
 \`\`\`
 
-Set `summary` to ≤150 words covering top 3–5 tasks, key risks, and what to validate with users next.
+Set \`summary\` to ≤150 words covering top 3–5 tasks, key risks, and what to validate with users next.
 
 ## Rules
 - Write tasks in the user's voice, not the org's. "Apply for benefits," not "Benefits application portal."
