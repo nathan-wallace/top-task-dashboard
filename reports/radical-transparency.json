@@ -1,0 +1,366 @@
+{
+"meta": {
+"url": "https://www.hhs.gov/radical-transparency/index.html",
+"audience": "General Public",
+"scope": "entire site",
+"analyzed_at": "2026-04-15",
+"analyst_confidence": "medium",
+"evidence_gaps": [
+"No analytics, search logs, support tickets, or prior user research were provided.",
+"The section mixes HHS pages with external CDC and FDA tools, so end-to-end completion varies by destination.",
+"The page is a hub with limited explanatory copy; user frequency and impact had to be inferred from visible IA and linked destinations.",
+"The provided business_context and constraints fields were not populated."
+],
+"report_status": "Unreviewed"
+},
+"task_longlist": [
+{
+"id": "T01",
+"task_statement": "Check contaminants in a food",
+"user_intent_category": "lookup",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Learn More card: Chemical Contaminants Transparency Tool",
+"note": "Promoted as a core transparency destination for searching contaminant levels in foods."
+},
+{
+"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels
+",
+"element": "Search, advanced search, and downloadable Excel data",
+"note": "Tool supports direct lookup, filtering, browsing, and export."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 5,
+"completability": 5
+},
+"composite_score": 4.8,
+"classification": "top",
+"rationale": "This is one of the site’s most explicit value propositions, tied to food safety and supported by a working searchable tool with download capability."
+},
+{
+"id": "T02",
+"task_statement": "See ACIP members' conflicts of interest",
+"user_intent_category": "transparency lookup",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Learn More card: CDC’s ACIP Conflicts of Interest",
+"note": "One of the three main transparency promises in the hero and card area."
+},
+{
+"source_url": "https://www.cdc.gov/acip/disclosures/by-member.html
+",
+"element": "Disclosure page overview and disclosure tool description",
+"note": "CDC page explains the disclosure history and that users can find prior disclosures by member."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 5,
+"findability": 5,
+"completability": 4
+},
+"composite_score": 4.3,
+"classification": "top",
+"rationale": "Highly prominent and mission-aligned. Frequency is likely lower than food lookup, but the trust and accountability stakes are high."
+},
+{
+"id": "T03",
+"task_statement": "See which HHS contracts were terminated",
+"user_intent_category": "accountability lookup",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Ending Wasteful Spending section",
+"note": "Explicitly invites users to view contracts terminated in full or part since January 21, 2025."
+},
+{
+"source_url": "https://www.hhs.gov/radical-transparency/ending-wasteful-spending/index.html
+",
+"element": "HHS Terminated Contracts PDF link",
+"note": "Dedicated page with direct link to the contract list and USAspending for additional detail."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 5,
+"completability": 4
+},
+"composite_score": 4.0,
+"classification": "top",
+"rationale": "This is a core promise of the section and is easy to find. Completion is slightly lower because the detailed list is a 54-page PDF."
+},
+{
+"id": "T04",
+"task_statement": "Learn what is in my food",
+"user_intent_category": "understanding",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Hero statement and Keeping Food Ingredients Safe section",
+"note": "Site explicitly frames transparency around contaminants and ingredients in food."
+},
+{
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
+",
+"element": "Press release on revising GRAS pathway",
+"note": "States the goal is to make sure Americans know what is in their food."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.8,
+"classification": "top",
+"rationale": "Likely a broad user need underlying several content areas, though the site partly informs rather than fully resolves the question end-to-end."
+},
+{
+"id": "T05",
+"task_statement": "Submit or check a FOIA request",
+"user_intent_category": "request",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Explore Radical Transparency link to FOIA",
+"note": "FOIA is surfaced as a major related transparency path."
+},
+{
+"source_url": "https://www.hhs.gov/foia/index.html
+",
+"element": "New or Existing FOIA Requests section",
+"note": "FOIA page supports submitting a request and checking status."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 4,
+"findability": 3,
+"completability": 4
+},
+"composite_score": 3.8,
+"classification": "top",
+"rationale": "For a general public audience, FOIA is a major transparency task with real stakes, but it is not presented as prominently as the three lead cards."
+},
+{
+"id": "T06",
+"task_statement": "Find out how FOIA works",
+"user_intent_category": "understanding",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/foia/index.html
+",
+"element": "FOIA overview, exemptions, library, and reports",
+"note": "The page explains what FOIA is and links to exemptions, contacts, and reports."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 3,
+"completability": 5
+},
+"composite_score": 3.8,
+"classification": "secondary",
+"rationale": "Important precursor task for requesters, but more informational than transactional."
+},
+{
+"id": "T07",
+"task_statement": "Learn about food ingredient safety rules",
+"user_intent_category": "policy understanding",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Keeping Food Ingredients Safe section",
+"note": "Featured as a major section with explanation of GRAS oversight changes."
+},
+{
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
+",
+"element": "Rulemaking announcement",
+"note": "Explains the self-affirmed GRAS pathway and proposed transparency changes."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.5,
+"classification": "secondary",
+"rationale": "Relevant to food-conscious consumers and policy watchers, but the destination is primarily explanatory news content."
+},
+{
+"id": "T08",
+"task_statement": "Review open government data and plans",
+"user_intent_category": "research",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Explore link to Open Government at HHS",
+"note": "Open Government is surfaced as a related transparency resource."
+},
+{
+"source_url": "https://www.hhs.gov/open/index.html
+",
+"element": "Open Data and Plans and Policies sections",
+"note": "Provides links to HealthData.gov, Health IT Data, strategic plan, public access, and FOIA."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 3,
+"findability": 3,
+"completability": 4
+},
+"composite_score": 3.0,
+"classification": "secondary",
+"rationale": "Useful for researchers and civically engaged users, but less likely to be a mass-audience need than the lead transparency tools."
+},
+{
+"id": "T09",
+"task_statement": "Read actions on campus anti-Semitism",
+"user_intent_category": "news and policy",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Learn More card: Ending Anti-Semitism on College Campuses",
+"note": "Promoted on the landing page as a related transparency topic."
+},
+{
+"source_url": "https://www.hhs.gov/press-room/ending-anti-semitic-harassment-on-college-campuses.html
+",
+"element": "Press release content",
+"note": "Provides details on interagency review actions tied to campus anti-Semitism."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.3,
+"classification": "secondary",
+"rationale": "Important to a narrower audience and currently framed as an informational update rather than a full service journey."
+},
+{
+"id": "T10",
+"task_statement": "Download contaminant data for analysis",
+"user_intent_category": "data access",
+"evidence": [
+{
+"source_url": "https://www.hfpappexternal.fda.gov/scripts/fdcc/index.cfm?set=contaminant-levels
+",
+"element": "Download data link",
+"note": "The contaminant tool explicitly offers Excel download."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 3,
+"findability": 3,
+"completability": 5
+},
+"composite_score": 3.3,
+"classification": "tiny",
+"rationale": "Valuable for a smaller subset of advanced users, but not likely to be a dominant public task."
+},
+{
+"id": "T11",
+"task_statement": "Sign up for HHS email updates",
+"user_intent_category": "subscription",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "HHS Email updates subscribe CTA",
+"note": "Persistent footer CTA offers email subscription."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 2,
+"findability": 3,
+"completability": 5
+},
+"composite_score": 3.0,
+"classification": "tiny",
+"rationale": "Easy to complete but not central to why most visitors would come to this section."
+},
+{
+"id": "T12",
+"task_statement": "Follow MAHA or RealFood updates",
+"user_intent_category": "cross-navigation",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/radical-transparency/index.html
+",
+"element": "Featured Topics: MAHA In Action and RealFood.gov",
+"note": "Landing page promotes related initiatives via outbound CTAs."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 2,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 3.0,
+"classification": "tiny",
+"rationale": "These are adjacent navigation paths rather than core transparency tasks for this section."
+}
+],
+"top_tasks": ["T01", "T02", "T03", "T04", "T05"],
+"tiny_tasks": ["T10", "T11", "T12"],
+"recommended_survey": {
+"instructions": "Ask respondents to pick and rank the five tasks that matter most to them when visiting this section or a section like it. Randomize task order for each respondent. Use plain-language task labels only, with no HHS jargon or explanations unless a task is ambiguous. Include one optional free-text question asking what important task is missing.",
+"task_list_for_voting": [
+"Check contaminants in a food",
+"See ACIP members' conflicts of interest",
+"See which HHS contracts were terminated",
+"Learn what is in my food",
+"Submit or check a FOIA request",
+"Find out how FOIA works",
+"Learn about food ingredient safety rules",
+"Review open government data and plans",
+"Read actions on campus anti-Semitism",
+"Download contaminant data for analysis",
+"Sign up for HHS email updates",
+"Follow MAHA or RealFood updates"
+],
+"recommended_sample_size": 200,
+"target_segments": [
+"General public visitors interested in food safety",
+"People seeking government transparency or accountability information",
+"Journalists, watchdogs, and civic researchers",
+"FOIA requesters or prospective FOIA requesters",
+"Parents and health-conscious consumers"
+]
+},
+"next_steps": [
+"Validate the top five tasks with a forced-choice Top Tasks survey using randomized order.",
+"Check analytics and on-site search logs to confirm whether FOIA tasks and food-related tasks dominate real demand.",
+"Test whether users can distinguish between 'food contaminants' and 'food ingredient safety rules' without confusion.",
+"Reduce cross-program distraction on the landing page if MAHA and RealFood links pull attention away from core transparency tasks.",
+"Improve task completion around terminated contracts by adding filterable HTML views or summaries instead of relying mainly on a long PDF.",
+"Consider clearer separation between transparency tools, policy announcements, and related-news content."
+],
+"summary": "The strongest user tasks are checking contaminants in food, viewing ACIP conflicts of interest, seeing terminated HHS contracts, understanding what is in food, and submitting or checking a FOIA request. The section’s biggest strength is prominence: the first three tasks are clearly surfaced on the landing page. The biggest risk is mixed interaction models—some destinations are external tools, one key artifact is a long PDF, and some featured content is news rather than task completion. Next, validate whether visitors primarily want food transparency, accountability records, or FOIA access, and test whether adjacent promotional content distracts from those core tasks."
+}
