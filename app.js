@@ -24,6 +24,7 @@ let selectedReport = null;
 let selectedClassification = 'all';
 
 const reportsBase = document.body?.dataset?.reportsBase || './reports';
+const forcedReportFile = document.body?.dataset?.reportFile || '';
 
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
 const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
@@ -218,9 +219,28 @@ async function copyPromptToClipboard() {
 
 async function loadReports() {
   const response = await fetch(`${reportsBase}/index.json`);
-  const files = await response.json();
-  const settledReports = await Promise.allSettled(files.map(async (file) => {
-    const reportResponse = await fetch(`${reportsBase}/${file}`);
+  const reportIndex = await response.json();
+  const indexEntries = reportIndex.map((entry) => {
+    if (typeof entry === 'string') {
+      return { file: entry, title: titleFromFile(entry), path: './' };
+    }
+    return {
+      file: entry.file,
+      title: entry.title || titleFromFile(entry.file),
+      path: entry.path || './'
+    };
+  });
+
+  const filesToLoad = forcedReportFile
+    ? indexEntries.filter((entry) => entry.file === forcedReportFile)
+    : indexEntries;
+
+  if (forcedReportFile && !filesToLoad.length) {
+    throw new Error(`Report not found in index: ${forcedReportFile}`);
+  }
+
+  const settledReports = await Promise.allSettled(filesToLoad.map(async (entry) => {
+    const reportResponse = await fetch(`${reportsBase}/${entry.file}`);
     if (!reportResponse.ok) {
       throw new Error(`HTTP ${reportResponse.status}`);
     }
@@ -230,7 +250,7 @@ async function loadReports() {
       throw new Error('Invalid report schema: expected an object with task_longlist array');
     }
 
-    return { file, title: titleFromFile(file), data };
+    return { ...entry, data };
   }));
 
   reports = settledReports
@@ -244,7 +264,7 @@ async function loadReports() {
       const reason = result.reason instanceof Error
         ? result.reason.message
         : String(result.reason || 'Unknown error');
-      return { file: files[index], message: reason };
+      return { file: filesToLoad[index].file, message: reason };
     })
     .filter(Boolean);
 
@@ -257,8 +277,10 @@ async function loadReports() {
   if (reportList) {
     renderReportList();
     if (reports.length > 0) {
-      selectReport(reports[0].file);
+      selectReport(forcedReportFile || reports[0].file);
     }
+  } else if (reportView && reports.length > 0) {
+    selectReport(forcedReportFile || reports[0].file);
   }
 
   if (overviewStats && overviewTableBody) {
@@ -567,7 +589,9 @@ function renderOverviewPage() {
 
     const titleCell = document.createElement('td');
     const reportLink = document.createElement('a');
-    reportLink.href = './reports/';
+    reportLink.href = report.path.startsWith('./')
+      ? `./reports/${report.path.slice(2)}`
+      : `./reports/${report.path}`;
     reportLink.textContent = report.title;
     titleCell.append(reportLink);
 

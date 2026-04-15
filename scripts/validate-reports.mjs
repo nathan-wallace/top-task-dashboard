@@ -5,7 +5,8 @@ const validConfidenceLevels = new Set(['low', 'medium', 'high']);
 const validClassifications = new Set(['top', 'secondary', 'tiny']);
 
 const listRaw = await readFile(new URL('../reports/index.json', import.meta.url), 'utf8');
-const reportFiles = JSON.parse(listRaw);
+const reportFilesRaw = JSON.parse(listRaw);
+const reportFiles = reportFilesRaw.map((entry) => typeof entry === 'string' ? entry : entry.file);
 
 function fail(reportFile, message) {
   throw new Error(`${reportFile}: ${message}`);
@@ -23,8 +24,8 @@ function ensureNumber(reportFile, value, fieldPath) {
   }
 }
 
-if (!Array.isArray(reportFiles)) {
-  throw new Error('reports/index.json must be an array of report filenames.');
+if (!Array.isArray(reportFilesRaw)) {
+  throw new Error('reports/index.json must be an array of report entries.');
 }
 
 for (const reportFile of reportFiles) {

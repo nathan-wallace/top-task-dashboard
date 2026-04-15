@@ -5,6 +5,7 @@
   "scripts": {
     "build:index": "node scripts/build-report-index.mjs",
     "validate:reports": "node scripts/validate-reports.mjs",
-    "check": "npm run build:index && npm run validate:reports"
+    "check": "npm run build:index && npm run validate:reports",
+    "build:site": "npm run build:index"
   }
 }

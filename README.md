@@ -1,6 +1,6 @@
 # Top Task Dashboard
 
-A static dashboard that reads report JSON files from `reports/`, visualizes task scoring, and exports any loaded report as Markdown.
+A static dashboard that reads report JSON files from `reports/`, visualizes task scoring, and exports any loaded report as Markdown. The build step now generates one static page per report so each report has a direct URL.
 
 ## Pages
 
@@ -14,7 +14,7 @@ The UI is authored in `styles.scss` (Sass syntax) and committed as `styles.css` 
 ## Add reports
 
 1. Drop one or more report files into `reports/` (e.g. `my-site.json`).
-2. Run `npm run build:index` to regenerate `reports/index.json`.
+2. Run `npm run build:site` to regenerate `reports/index.json` and static report pages under `reports/<report-slug>/index.html`.
 3. Run `npm run validate:reports` to validate required fields.
 
 ## Local usage
@@ -29,7 +29,7 @@ python3 -m http.server 4173
 ## CI/CD (GitHub Pages + nojekyll)
 
 - CI workflow (`.github/workflows/ci.yml`) validates the reports.
-- Deploy workflow (`.github/workflows/deploy-pages.yml`) publishes to GitHub Pages and creates `.nojekyll` in the artifact.
+- Deploy workflow (`.github/workflows/deploy-pages.yml`) runs `npm run build:site`, publishes to GitHub Pages, and creates `.nojekyll` in the artifact.
 
 ## Expected report shape
 
