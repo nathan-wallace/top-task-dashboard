@@ -170,6 +170,8 @@ export async function buildReportPdfBlob(report) {
 
 function buildStructuredReportPdfBlob(report) {
   const sortedTasks = [...(report.data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
+  const meta = report.data.meta || {};
+  const classificationSummaries = averageByClassification(report.data.task_longlist || []);
   const pageWidth = 612;
   const pageHeight = 792;
   const margin = 36;
@@ -189,6 +191,9 @@ function buildStructuredReportPdfBlob(report) {
   const tableHeaderHeight = lineHeight + cellPaddingY * 2;
   const sectionGap = 12;
   const measureText = createPdfTextMeasurer();
+  const titleSize = 16;
+  const sectionHeadingSize = 12;
+  const subheadingSize = 10;
 
   const pages = [];
   const makePage = () => ({ contentParts: [] });
@@ -219,6 +224,22 @@ function buildStructuredReportPdfBlob(report) {
     }
     drawText(page, safe, x + cellPaddingX, topY, fontName, size);
   };
+
+  const drawWrappedText = (page, text, x, topY, width, fontName = 'F1', size = bodyFontSize) => {
+    const lines = wrapTextByColumnWidth(text, width, size);
+    let textY = topY;
+    for (const line of lines) {
+      drawText(page, line, x, textY, fontName, size);
+      textY += lineHeight;
+    }
+    return textY;
+  };
+
+  const toPlainClassificationLabel = (classification) => buildClassificationLabelTemplate(classification)
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   const drawTableHeader = (page, topY) => {
     let cursorX = margin;
@@ -271,17 +292,106 @@ function buildStructuredReportPdfBlob(report) {
     return lines.length ? lines : [''];
   };
 
+  const ensureSectionSpace = (spaceNeeded) => {
+    if (cursorY + spaceNeeded <= pageHeight - margin) return;
+    page = ensurePage();
+    cursorY = margin;
+  };
+
+  const drawSectionHeading = (label) => {
+    ensureSectionSpace(lineHeight + sectionGap);
+    drawText(page, label, margin, cursorY, 'F2', sectionHeadingSize);
+    cursorY += lineHeight + 2;
+  };
+
+  const drawMetadataRow = (label, value) => {
+    const safeValue = value || 'n/a';
+    const labelWidth = 120;
+    const valueWidth = contentWidth - labelWidth;
+    const valueLines = wrapTextByColumnWidth(safeValue, valueWidth, bodyFontSize);
+    const rowHeight = Math.max(lineHeight, valueLines.length * lineHeight);
+    ensureSectionSpace(rowHeight);
+    drawText(page, `${label}:`, margin, cursorY, 'F2', bodyFontSize);
+    valueLines.forEach((line, index) => {
+      drawText(page, line, margin + labelWidth, cursorY + index * lineHeight, 'F1', bodyFontSize);
+    });
+    cursorY += rowHeight;
+  };
+
+  const drawClassificationSummaryCard = (entry) => {
+    const heading = toPlainClassificationLabel(entry.classification);
+    const countText = `${entry.count} tasks`;
+    const averageText = `avg score ${entry.average.toFixed(2)}`;
+    const lines = [
+      heading || 'Unknown',
+      countText,
+      averageText
+    ];
+    const wrapped = lines.map((line, index) => wrapTextByColumnWidth(line, contentWidth, index === 0 ? subheadingSize : bodyFontSize));
+    const cardLineCount = wrapped.reduce((max, group) => Math.max(max, group.length), 0);
+    const cardHeight = 8 + (cardLineCount * lineHeight * 3);
+    ensureSectionSpace(cardHeight);
+    wrapped[0].forEach((line, index) => drawText(page, line, margin, cursorY + (index * lineHeight), 'F2', subheadingSize));
+    const firstBlockHeight = wrapped[0].length * lineHeight;
+    wrapped[1].forEach((line, index) => drawText(page, line, margin + 10, cursorY + firstBlockHeight + (index * lineHeight), 'F1', bodyFontSize));
+    const secondBlockHeight = wrapped[1].length * lineHeight;
+    wrapped[2].forEach((line, index) => drawText(page, line, margin + 10, cursorY + firstBlockHeight + secondBlockHeight + (index * lineHeight), 'F2', bodyFontSize));
+    cursorY += firstBlockHeight + secondBlockHeight + (wrapped[2].length * lineHeight) + 6;
+  };
+
   let page = ensurePage();
   let cursorY = margin;
-  drawText(page, titleFromFile(report.file), margin, cursorY, 'F2', 14);
-  cursorY += 20;
-  const summaryLines = wrapTextByColumnWidth(report.data.summary || 'No summary available for this report.', contentWidth, bodyFontSize);
-  for (const line of summaryLines) {
-    drawText(page, line, margin, cursorY, 'F1', bodyFontSize);
+
+  drawText(page, titleFromFile(report.file), margin, cursorY, 'F2', titleSize);
+  cursorY += 24;
+
+  drawSectionHeading('Metadata');
+  drawMetadataRow('Status', reportStatus(report));
+  drawMetadataRow('URL', meta.url || 'n/a');
+  drawMetadataRow('Audience', meta.audience || 'n/a');
+  drawMetadataRow('Scope', meta.scope || 'n/a');
+  drawMetadataRow('Analyzed date', meta.analyzed_at || 'n/a');
+  drawMetadataRow('Analyst confidence', meta.analyst_confidence || 'n/a');
+  drawMetadataRow('Evidence gaps', toJoinedList(meta.evidence_gaps) || 'None noted');
+  cursorY += sectionGap;
+
+  drawSectionHeading('Score overview');
+  if (!classificationSummaries.length) {
+    ensureSectionSpace(lineHeight);
+    drawText(page, 'No tasks available.', margin, cursorY, 'F1', bodyFontSize);
     cursorY += lineHeight;
+  } else {
+    classificationSummaries.forEach(drawClassificationSummaryCard);
   }
   cursorY += sectionGap;
+
+  drawSectionHeading('Executive summary');
+  cursorY = drawWrappedText(
+    page,
+    report.data.summary || 'No summary available.',
+    margin,
+    cursorY,
+    contentWidth,
+    'F1',
+    bodyFontSize
+  );
+  cursorY += sectionGap;
+
+  drawSectionHeading('Ranked task register');
+  ensureSectionSpace(tableHeaderHeight);
   cursorY = drawTableHeader(page, cursorY);
+
+  if (!sortedTasks.length) {
+    const emptyRowHeight = lineHeight + cellPaddingY * 2;
+    if (cursorY + emptyRowHeight > pageHeight - margin) {
+      page = ensurePage();
+      cursorY = margin;
+      cursorY = drawTableHeader(page, cursorY);
+    }
+    drawCellBorder(page, margin, cursorY, contentWidth, emptyRowHeight);
+    drawText(page, 'No tasks available.', margin + cellPaddingX, cursorY + cellPaddingY, 'F1', bodyFontSize);
+    cursorY += emptyRowHeight;
+  }
 
   for (const task of sortedTasks) {
     const cellLines = tableColumns.map((column) => {
