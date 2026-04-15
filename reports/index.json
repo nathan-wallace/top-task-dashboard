@@ -2,49 +2,49 @@
   {
     "file": "hhs-belmont-report-2.json",
     "slug": "hhs-belmont-report-2",
-    "title": "hhs belmont report 2",
+    "title": "HHS Belmont Report 2",
     "path": "./hhs-belmont-report-2/"
   },
   {
     "file": "hhs-belmont-report.json",
     "slug": "hhs-belmont-report",
-    "title": "hhs belmont report",
+    "title": "HHS Belmont Report",
     "path": "./hhs-belmont-report/"
   },
   {
     "file": "hhs-careers.json",
     "slug": "hhs-careers",
-    "title": "hhs careers",
+    "title": "HHS Careers",
     "path": "./hhs-careers/"
   },
   {
     "file": "hhs-hipaa.json",
     "slug": "hhs-hipaa",
-    "title": "hhs hipaa",
+    "title": "HHS HIPAA",
     "path": "./hhs-hipaa/"
   },
   {
     "file": "hhs-ocr.json",
     "slug": "hhs-ocr",
-    "title": "hhs ocr",
+    "title": "HHS OCR",
     "path": "./hhs-ocr/"
   },
   {
     "file": "hhs-press-room-media.json",
     "slug": "hhs-press-room-media",
-    "title": "hhs press room media",
+    "title": "HHS Press Room Media",
     "path": "./hhs-press-room-media/"
   },
   {
     "file": "one-year-of-maha-page.json",
     "slug": "one-year-of-maha-page",
-    "title": "one year of maha page",
+    "title": "One Year Of MAHA Page",
     "path": "./one-year-of-maha-page/"
   },
   {
     "file": "radical-transparency.json",
     "slug": "radical-transparency",
-    "title": "radical transparency",
+    "title": "Radical Transparency",
     "path": "./radical-transparency/"
   }
 ]

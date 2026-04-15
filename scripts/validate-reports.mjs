@@ -1,12 +1,8 @@
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 
 const validReportStatuses = new Set(['Unreviewed', 'Reviewed', 'Approved']);
 const validConfidenceLevels = new Set(['low', 'medium', 'high']);
 const validClassifications = new Set(['top', 'secondary', 'tiny']);
-
-const listRaw = await readFile(new URL('../reports/index.json', import.meta.url), 'utf8');
-const reportFilesRaw = JSON.parse(listRaw);
-const reportFiles = reportFilesRaw.map((entry) => typeof entry === 'string' ? entry : entry.file);
 
 function fail(reportFile, message) {
   throw new Error(`${reportFile}: ${message}`);
@@ -31,13 +27,78 @@ function ensureNumberInRange(reportFile, value, fieldPath, min, max) {
   }
 }
 
-if (!Array.isArray(reportFilesRaw)) {
+const reportsDirUrl = new URL('../reports/', import.meta.url);
+const listRaw = await readFile(new URL('index.json', reportsDirUrl), 'utf8');
+const reportEntriesRaw = JSON.parse(listRaw);
+
+if (!Array.isArray(reportEntriesRaw)) {
   throw new Error('reports/index.json must be an array of report entries.');
 }
 
+const reportFiles = [];
+const indexedSlugs = new Set();
+const indexedFiles = new Set();
+
+for (const [entryIndex, entry] of reportEntriesRaw.entries()) {
+  if (typeof entry === 'string') {
+    ensureString('reports/index.json', entry, `entries[${entryIndex}]`);
+    if (indexedFiles.has(entry)) {
+      fail('reports/index.json', `entries[${entryIndex}] (${entry}) is duplicated.`);
+    }
+    indexedFiles.add(entry);
+    reportFiles.push(entry);
+    continue;
+  }
+
+  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+    fail('reports/index.json', `entries[${entryIndex}] must be a string or object.`);
+  }
+
+  ensureString('reports/index.json', entry.file, `entries[${entryIndex}].file`);
+  ensureString('reports/index.json', entry.slug, `entries[${entryIndex}].slug`);
+  ensureString('reports/index.json', entry.title, `entries[${entryIndex}].title`);
+  ensureString('reports/index.json', entry.path, `entries[${entryIndex}].path`);
+
+  const expectedFile = `${entry.slug}.json`;
+  if (entry.file !== expectedFile) {
+    fail('reports/index.json', `entries[${entryIndex}].file (${entry.file}) must match slug (${entry.slug}) as ${expectedFile}.`);
+  }
+
+  const expectedPath = `./${entry.slug}/`;
+  if (entry.path !== expectedPath) {
+    fail('reports/index.json', `entries[${entryIndex}].path (${entry.path}) must be ${expectedPath}.`);
+  }
+
+  if (indexedFiles.has(entry.file)) {
+    fail('reports/index.json', `entries[${entryIndex}].file (${entry.file}) is duplicated.`);
+  }
+  if (indexedSlugs.has(entry.slug)) {
+    fail('reports/index.json', `entries[${entryIndex}].slug (${entry.slug}) is duplicated.`);
+  }
+
+  indexedFiles.add(entry.file);
+  indexedSlugs.add(entry.slug);
+  reportFiles.push(entry.file);
+}
+
+const reportDirEntries = await readdir(reportsDirUrl, { withFileTypes: true });
+const reportJsonFiles = reportDirEntries
+  .filter((entry) => entry.isFile() && entry.name.endsWith('.json') && entry.name !== 'index.json')
+  .map((entry) => entry.name)
+  .sort((a, b) => a.localeCompare(b));
+
+for (const reportJsonFile of reportJsonFiles) {
+  if (!indexedFiles.has(reportJsonFile)) {
+    fail('reports/index.json', `Missing report entry for ${reportJsonFile}.`);
+  }
+}
+
 for (const reportFile of reportFiles) {
-  ensureString('reports/index.json', reportFile, 'report entry file');
-  const reportRaw = await readFile(new URL(`../reports/${reportFile}`, import.meta.url), 'utf8');
+  if (!reportJsonFiles.includes(reportFile)) {
+    fail('reports/index.json', `Entry references report file that does not exist: ${reportFile}.`);
+  }
+
+  const reportRaw = await readFile(new URL(reportFile, reportsDirUrl), 'utf8');
   const report = JSON.parse(reportRaw);
 
   if (!report.meta || typeof report.meta !== 'object') {
