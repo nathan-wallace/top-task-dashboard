@@ -1,8 +1,9 @@
 import {
+  averageByClassification,
+  buildClassificationLabelTemplate,
   classifyCounts,
-  formatTimestamp,
-  reportStatus,
   round,
+  reportStatus,
   summarizeReport,
   titleFromFile
 } from './formatting.js';
@@ -112,103 +113,217 @@ export function buildPortfolioCsv(reports) {
   return `\uFEFF${csvRows.join('\n')}`;
 }
 
-function escapePdfText(value) {
-  return String(value ?? '').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+function buildReportPrintDom(report) {
+  const allTasks = report.data.task_longlist || [];
+  const sortedTasks = [...allTasks].sort((a, b) => b.composite_score - a.composite_score);
+
+  const root = document.createElement('article');
+  root.className = 'pdf-render-root';
+
+  const heading = document.createElement('h2');
+  heading.textContent = titleFromFile(report.file);
+  root.append(heading);
+
+  const summary = document.createElement('p');
+  summary.textContent = report.data.summary || 'No summary available for this report.';
+  root.append(summary);
+
+  const scoreHeading = document.createElement('h3');
+  scoreHeading.textContent = 'Score overview';
+  root.append(scoreHeading);
+
+  const statGrid = document.createElement('div');
+  statGrid.className = 'stat-grid';
+  for (const entry of averageByClassification(allTasks)) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const strong = document.createElement('strong');
+    strong.innerHTML = buildClassificationLabelTemplate(entry.classification);
+    const small = document.createElement('small');
+    small.textContent = `avg ${entry.average.toFixed(2)} across ${entry.count} tasks`;
+    card.append(strong, small);
+    statGrid.append(card);
+  }
+  root.append(statGrid);
+
+  const tableWrap = document.createElement('div');
+  tableWrap.className = 'table-wrap';
+  const table = document.createElement('table');
+  table.className = 'task-table';
+  table.innerHTML = '<thead><tr><th>ID</th><th>Task</th><th>Class</th><th>Score</th><th>Rationale</th></tr></thead>';
+  const tbody = document.createElement('tbody');
+  for (const task of sortedTasks) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><strong>${task.id || 'n/a'}</strong></td><td>${task.task_statement || ''}</td><td><span class="badge">${task.classification || 'unknown'}</span></td><td>${round(task.composite_score)}</td><td>${task.rationale || ''}</td>`;
+    tbody.append(tr);
+  }
+  table.append(tbody);
+  tableWrap.append(table);
+  root.append(tableWrap);
+
+  return root;
 }
 
-function wrapText(value, maxChars = 100) {
-  const words = String(value ?? '').split(/\s+/).filter(Boolean);
-  if (!words.length) return [''];
-  const lines = [];
-  let current = words[0];
-  for (let index = 1; index < words.length; index += 1) {
-    const next = `${current} ${words[index]}`;
-    if (next.length > maxChars) {
-      lines.push(current);
-      current = words[index];
-    } else {
-      current = next;
+export async function buildReportPdfBlob(report) {
+  const container = document.createElement('div');
+  container.className = 'pdf-render-host';
+  container.append(buildReportPrintDom(report));
+  document.body.append(container);
+
+  try {
+    const root = container.querySelector('.pdf-render-root');
+    const canvas = await renderElementToCanvas(root);
+    return buildPdfBlobFromCanvas(canvas);
+  } finally {
+    container.remove();
+  }
+}
+
+async function renderElementToCanvas(element) {
+  await document.fonts?.ready;
+  const width = Math.ceil(element.scrollWidth || element.clientWidth || 880);
+  const height = Math.ceil(element.scrollHeight || element.clientHeight || 1000);
+
+  const cssRules = [];
+  for (const sheet of [...document.styleSheets]) {
+    try {
+      cssRules.push(...[...sheet.cssRules].map((rule) => rule.cssText));
+    } catch {
+      // Ignore non-readable cross-origin stylesheets.
     }
   }
-  lines.push(current);
-  return lines;
+
+  const html = new XMLSerializer().serializeToString(element);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+      <foreignObject width="100%" height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+          <style>${cssRules.join('\n')}</style>
+          ${html}
+        </div>
+      </foreignObject>
+    </svg>
+  `;
+  const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(svgBlob);
+
+  try {
+    const image = await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = url;
+    });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, width, height);
+    context.drawImage(image, 0, 0);
+    return canvas;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
 }
 
-function collectReportPdfLines(report) {
-  const { file, data } = report;
-  const tasks = [...(data.task_longlist || [])].sort((a, b) => b.composite_score - a.composite_score);
-  const lines = [
-    { type: 'title', text: `Top Task Research Report — ${titleFromFile(file)}` },
-    { type: 'body', text: `Report file: ${file}` },
-    { type: 'body', text: `Generated at: ${formatTimestamp(new Date().toISOString())}` },
-    { type: 'heading', text: 'Executive Summary' },
-    ...wrapText(data.summary || 'No summary available.', 120).map((text) => ({ type: 'body', text })),
-    { type: 'heading', text: 'Detailed Task Register' }
-  ];
-
-  tasks.forEach((task, index) => {
-    lines.push({ type: 'heading', text: `Task ${index + 1}: ${task.id || 'n/a'} — ${task.task_statement || 'Untitled task'}` });
-    lines.push({ type: 'body', text: `Classification: ${task.classification || 'unknown'} | Composite: ${round(task.composite_score)}` });
-  });
-
-  return lines;
-}
-
-function createPdfBlob(lines) {
+function buildPdfBlobFromCanvas(canvas) {
   const pageWidth = 612;
   const pageHeight = 792;
-  const marginLeft = 42;
-  const marginTop = 40;
-  const marginBottom = 40;
-  const pages = [];
-  let pageCommands = [];
-  let y = pageHeight - marginTop;
+  const margin = 36;
+  const drawableWidth = pageWidth - margin * 2;
+  const drawableHeight = pageHeight - margin * 2;
+  const pixelToPoint = drawableWidth / canvas.width;
+  const pageSliceHeight = Math.max(1, Math.floor(drawableHeight / pixelToPoint));
 
-  function pushPage() {
-    if (pageCommands.length) pages.push(pageCommands.join('\n'));
-    pageCommands = [];
-    y = pageHeight - marginTop;
+  const jpegSlices = [];
+  for (let sourceY = 0; sourceY < canvas.height; sourceY += pageSliceHeight) {
+    const sliceHeight = Math.min(pageSliceHeight, canvas.height - sourceY);
+    const pageCanvas = document.createElement('canvas');
+    pageCanvas.width = canvas.width;
+    pageCanvas.height = sliceHeight;
+    pageCanvas.getContext('2d').drawImage(
+      canvas,
+      0,
+      sourceY,
+      canvas.width,
+      sliceHeight,
+      0,
+      0,
+      canvas.width,
+      sliceHeight
+    );
+
+    const dataUrl = pageCanvas.toDataURL('image/jpeg', 0.92);
+    const base64 = dataUrl.split(',')[1] || '';
+    jpegSlices.push({
+      widthPx: pageCanvas.width,
+      heightPx: pageCanvas.height,
+      bytes: Uint8Array.from(atob(base64), (char) => char.charCodeAt(0))
+    });
   }
 
-  lines.forEach((line) => {
-    const fontSize = line.type === 'title' ? 18 : line.type === 'heading' ? 12 : 10;
-    const leading = line.type === 'title' ? 24 : line.type === 'heading' ? 17 : 14;
-    if (y - leading < marginBottom) pushPage();
-    pageCommands.push(`BT /F1 ${fontSize} Tf ${marginLeft} ${y} Td (${escapePdfText(line.text)}) Tj ET`);
-    y -= leading;
-  });
-  pushPage();
-  if (!pages.length) pages.push('');
+  const objectBytes = [];
+  const textEncoder = new TextEncoder();
+  const pushObject = (id, dict, stream) => {
+    const header = `${id} 0 obj\n${dict}\n`;
+    if (!stream) {
+      objectBytes[id] = textEncoder.encode(`${header}endobj\n`);
+      return;
+    }
+    const open = textEncoder.encode(`${header}stream\n`);
+    const close = textEncoder.encode(`\nendstream\nendobj\n`);
+    const merged = new Uint8Array(open.length + stream.length + close.length);
+    merged.set(open, 0);
+    merged.set(stream, open.length);
+    merged.set(close, open.length + stream.length);
+    objectBytes[id] = merged;
+  };
 
-  const objectContents = [];
-  objectContents.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
-  const pageObjectIds = pages.map((_, index) => 4 + index * 2);
-  const contentObjectIds = pages.map((_, index) => 5 + index * 2);
-  objectContents.push(`2 0 obj\n<< /Type /Pages /Kids [${pageObjectIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pages.length} >>\nendobj\n`);
-  objectContents.push('3 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n');
-  pages.forEach((pageStream, index) => {
-    const pageId = pageObjectIds[index];
-    const contentId = contentObjectIds[index];
-    objectContents.push(`${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentId} 0 R >>\nendobj\n`);
-    objectContents.push(`${contentId} 0 obj\n<< /Length ${pageStream.length} >>\nstream\n${pageStream}\nendstream\nendobj\n`);
+  const catalogId = 1;
+  const pagesId = 2;
+  const firstObjectId = 3;
+  const pageRefs = [];
+
+  jpegSlices.forEach((slice, index) => {
+    const pageId = firstObjectId + index * 3;
+    const imageId = pageId + 1;
+    const contentId = pageId + 2;
+    pageRefs.push(`${pageId} 0 R`);
+
+    const imageWidthPt = drawableWidth;
+    const imageHeightPt = slice.heightPx * (drawableWidth / slice.widthPx);
+    const yOffset = pageHeight - margin - imageHeightPt;
+    const commandBytes = textEncoder.encode(`q ${imageWidthPt} 0 0 ${imageHeightPt} ${margin} ${yOffset} cm /Im${index + 1} Do Q`);
+
+    pushObject(pageId, `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im${index + 1} ${imageId} 0 R >> >> /Contents ${contentId} 0 R >>`);
+    pushObject(imageId, `<< /Type /XObject /Subtype /Image /Width ${slice.widthPx} /Height ${slice.heightPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${slice.bytes.length} >>`, slice.bytes);
+    pushObject(contentId, `<< /Length ${commandBytes.length} >>`, commandBytes);
   });
 
-  let pdf = '%PDF-1.4\n';
-  const xrefOffsets = [0];
-  objectContents.forEach((content) => {
-    xrefOffsets.push(pdf.length);
-    pdf += content;
-  });
-  const xrefStart = pdf.length;
-  pdf += `xref\n0 ${xrefOffsets.length}\n0000000000 65535 f \n`;
-  for (let i = 1; i < xrefOffsets.length; i += 1) {
-    pdf += `${String(xrefOffsets[i]).padStart(10, '0')} 00000 n \n`;
+  pushObject(catalogId, `<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+  pushObject(pagesId, `<< /Type /Pages /Kids [${pageRefs.join(' ')}] /Count ${pageRefs.length} >>`);
+
+  const chunks = [textEncoder.encode('%PDF-1.4\n')];
+  const offsets = [0];
+  let offset = chunks[0].length;
+  for (let i = 1; i < objectBytes.length; i += 1) {
+    if (!objectBytes[i]) continue;
+    offsets[i] = offset;
+    chunks.push(objectBytes[i]);
+    offset += objectBytes[i].length;
   }
-  pdf += `trailer\n<< /Size ${xrefOffsets.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
 
-  return new Blob([pdf], { type: 'application/pdf' });
-}
+  const xrefStart = offset;
+  const xrefLines = [`xref\n0 ${objectBytes.length}\n0000000000 65535 f \n`];
+  for (let i = 1; i < objectBytes.length; i += 1) {
+    const entry = offsets[i] ?? 0;
+    const marker = offsets[i] ? 'n' : 'f';
+    xrefLines.push(`${String(entry).padStart(10, '0')} 00000 ${marker} \n`);
+  }
+  xrefLines.push(`trailer\n<< /Size ${objectBytes.length} /Root ${catalogId} 0 R >>\nstartxref\n${xrefStart}\n%%EOF`);
+  chunks.push(textEncoder.encode(xrefLines.join('')));
 
-export function buildReportPdfBlob(report) {
-  return createPdfBlob(collectReportPdfLines(report));
+  return new Blob(chunks, { type: 'application/pdf' });
 }
