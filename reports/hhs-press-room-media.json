@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/press-room/index.html",
+    "audience": "journalists and media professionals covering HHS",
+    "scope": "entire site",
+    "analyzed_at": "2026-04-14",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "No direct analytics or search data उपलब्ध",
+      "Limited visibility into downstream task completion (forms)",
+      "No explicit audience segmentation on page",
+      "Form UX (comment/interview requests) not inspected"
+    ],
+    "report_status": "Unreviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Find latest HHS press releases",
+      "user_intent_category": "information seeking",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Press release list with dates",
+          "note": "Primary content is a chronological list of recent press releases"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 5,
+        "completability": 5
+      },
+      "composite_score": 5.0,
+      "classification": "top",
+      "rationale": "Core purpose of page; immediately visible and continuously updated"
+    },
+    {
+      "id": "T02",
+      "task_statement": "Read details of a press release",
+      "user_intent_category": "information seeking",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Linked press release titles",
+          "note": "Each headline links to full release content"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.75,
+      "classification": "top",
+      "rationale": "Essential follow-on task after discovery; minor uncertainty about depth of content"
+    },
+    {
+      "id": "T03",
+      "task_statement": "Search older press releases by year",
+      "user_intent_category": "information seeking",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Press Release Archive links (1991–2025)",
+          "note": "Archive organized by year ranges"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.0,
+      "classification": "top",
+      "rationale": "Critical for research and background reporting"
+    },
+    {
+      "id": "T04",
+      "task_statement": "Submit a media request for comment",
+      "user_intent_category": "transactional",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Submit a request for comment CTA",
+          "note": "Prominent call-to-action for media inquiries"
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 5,
+        "completability": 3
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "High-stakes task for journalists; unclear form experience lowers completability"
+    },
+    {
+      "id": "T05",
+      "task_statement": "Request an interview with HHS officials",
+      "user_intent_category": "transactional",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Submit an interview request CTA",
+          "note": "Dedicated pathway for interview coordination"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 5,
+        "completability": 3
+      },
+      "composite_score": 4.0,
+      "classification": "top",
+      "rationale": "Less frequent but high importance; success depends on off-page process"
+    },
+    {
+      "id": "T06",
+      "task_statement": "Sign up for press release emails",
+      "user_intent_category": "subscription",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Sign up CTA",
+          "note": "Explicit option to receive press releases via email"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 3.75,
+      "classification": "secondary",
+      "rationale": "Useful for ongoing monitoring but not urgent per visit"
+    },
+    {
+      "id": "T07",
+      "task_statement": "Subscribe to RSS feed updates",
+      "user_intent_category": "subscription",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "RSS subscription link",
+          "note": "Alternative subscription mechanism"
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.0,
+      "classification": "tiny",
+      "rationale": "Niche usage compared to email subscriptions"
+    },
+    {
+      "id": "T08",
+      "task_statement": "Browse press releases by topic",
+      "user_intent_category": "information seeking",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Press release titles only",
+          "note": "No visible topic filters or categories"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 4,
+        "findability": 1,
+        "completability": 2
+      },
+      "composite_score": 2.5,
+      "classification": "tiny",
+      "rationale": "Likely user need but poorly supported by current design"
+    },
+    {
+      "id": "T09",
+      "task_statement": "Identify recent policy announcements quickly",
+      "user_intent_category": "information seeking",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Chronological headlines",
+          "note": "Headlines include policy and funding announcements"
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Key journalistic need; partially dependent on headline clarity"
+    },
+    {
+      "id": "T10",
+      "task_statement": "Navigate between pages of press releases",
+      "user_intent_category": "navigation",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/press-room/index.html",
+          "element": "Pagination controls",
+          "note": "Multiple pages (1–21) of press releases"
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 3,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Supports browsing but not a primary intent"
+    }
+  ],
+  "top_tasks": [
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T05",
+    "T09"
+  ],
+  "tiny_tasks": [
+    "T07",
+    "T08"
+  ],
+  "recommended_survey": {
+    "instructions": "Select the 5 tasks that matter most to you when visiting the HHS Press Room. Then rank those 5 in order of importance (1 = most important).",
+    "task_list_for_voting": [
+      "Find latest HHS press releases",
+      "Read details of a press release",
+      "Search older press releases by year",
+      "Submit a media request for comment",
+      "Request an interview with HHS officials",
+      "Sign up for press release emails",
+      "Subscribe to RSS feed updates",
+      "Browse press releases by topic",
+      "Identify recent policy announcements quickly",
+      "Navigate between pages of press releases"
+    ],
+    "recommended_sample_size": 100,
+    "target_segments": [
+      "national journalists",
+      "health policy reporters",
+      "trade press",
+      "local media outlets",
+      "communications professionals"
+    ]
+  },
+  "next_steps": [
+    "Validate top tasks with journalists using a voting survey",
+    "Analyze analytics and search logs to confirm frequency assumptions",
+    "Audit and test request/comment and interview forms for completion barriers",
+    "Explore adding topic filters or search to improve findability",
+    "Test headline clarity for rapid scanning of policy announcements"
+  ],
+  "summary": "The dominant user need is to find and quickly assess the latest HHS press releases, followed by accessing full release details and retrieving historical content. High-stakes transactional tasks—requesting comments and interviews—are also critical but depend on off-page processes that may hinder completion. A key risk is poor support for browsing by topic, which limits efficient scanning for relevant stories. Validation should focus on confirming the priority of discovery vs. contact tasks, and identifying friction in media request workflows."
+}
