@@ -1,6 +1,7 @@
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ reports: 'reports' });
   eleventyConfig.addPassthroughCopy({ 'prompt.html': 'prompt.html' });
+  eleventyConfig.addPassthroughCopy({ 'styles.css': 'styles.css' });
 
   return {
     dir: {

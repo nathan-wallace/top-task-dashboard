@@ -26,6 +26,8 @@
       </small>
     </footer>
 
-    <script type="module" src="{{ assetPrefix }}app.js"></script>
+    {% if pageScript %}
+    <script type="module" src="{{ assetPrefix }}assets/{{ pageScript }}"></script>
+    {% endif %}
   </body>
 </html>

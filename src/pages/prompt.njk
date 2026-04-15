@@ -1,0 +1,51 @@
+---
+layout: layouts/base.njk
+permalink: /prompt.html
+pageTitle: Prompt Builder | Top Task Dashboard
+brandDescription: Build a repeatable Top Task Identification research prompt.
+assetPrefix: ./
+navPrefix: ./
+pageScript: prompt.js
+---
+<main class="overview-layout">
+  <section class="panel prompt-builder" aria-labelledby="prompt-builder-heading">
+    <h2 id="prompt-builder-heading">Prompt Builder</h2>
+    <p>Fill in the inputs, then copy the complete Top Task research prompt.</p>
+    <form id="prompt-form" class="prompt-form">
+      <label>
+        URL
+        <input id="prompt-url" name="url" type="url" placeholder="https://agency.gov/page" />
+      </label>
+      <label>
+        Audience
+        <input id="prompt-audience" name="audience" type="text" placeholder="Small business owners applying for SBA loans" />
+      </label>
+      <label>
+        Scope
+        <input id="prompt-scope" name="scope" type="text" placeholder="entire site" />
+      </label>
+      <label>
+        Business Context (optional)
+        <input id="prompt-business-context" name="business_context" type="text" placeholder="Org mission, known pain points, stakeholder goals" />
+      </label>
+      <label>
+        Existing Data (optional)
+        <input id="prompt-existing-data" name="existing_data" type="text" placeholder="Analytics, search logs, support tickets, prior research" />
+      </label>
+      <label>
+        Constraints (optional)
+        <input id="prompt-constraints" name="constraints" type="text" placeholder="Compliance, tech stack, timeline" />
+      </label>
+      <label>
+        Max Tasks (optional, default 25)
+        <input id="prompt-max-tasks" name="max_tasks" type="number" min="1" placeholder="25" />
+      </label>
+      <div class="prompt-actions">
+        <button id="copy-prompt" type="button">Copy Prompt</button>
+        <span id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+    <label class="prompt-output-label" for="prompt-output">Generated prompt</label>
+    <textarea id="prompt-output" rows="24" readonly></textarea>
+  </section>
+</main>
