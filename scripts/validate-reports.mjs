@@ -61,6 +61,7 @@ for (const reportFile of reportFiles) {
   }
 
   const taskIds = new Set();
+  const taskClassifications = new Map();
 
   for (const [taskIndex, task] of report.task_longlist.entries()) {
     ensureString(reportFile, task.id, `task_longlist[${taskIndex}].id`);
@@ -77,6 +78,7 @@ for (const reportFile of reportFiles) {
     if (!validClassifications.has(task.classification)) {
       fail(reportFile, `task_longlist[${taskIndex}].classification must be one of: ${[...validClassifications].join(', ')}.`);
     }
+    taskClassifications.set(task.id, task.classification);
 
     if (!task.scores || typeof task.scores !== 'object') {
       fail(reportFile, `task_longlist[${taskIndex}].scores must be an object.`);
@@ -97,6 +99,11 @@ for (const reportFile of reportFiles) {
     }
   }
 
+  const expectedClassificationByField = {
+    top_tasks: 'top',
+    tiny_tasks: 'tiny',
+  };
+
   for (const fieldName of ['top_tasks', 'tiny_tasks']) {
     if (!Array.isArray(report[fieldName])) {
       fail(reportFile, `${fieldName} must be an array.`);
@@ -107,6 +114,22 @@ for (const reportFile of reportFiles) {
       if (!taskIds.has(taskId)) {
         fail(reportFile, `${fieldName}[${index}] (${taskId}) does not exist in task_longlist.`);
       }
+
+      const actualClassification = taskClassifications.get(taskId);
+      const expectedClassification = expectedClassificationByField[fieldName];
+      if (actualClassification !== expectedClassification) {
+        fail(
+          reportFile,
+          `${fieldName}[${index}] (${taskId}) must reference a "${expectedClassification}" task, but task_longlist classification is "${actualClassification}".`,
+        );
+      }
+    }
+  }
+
+  const tinyTaskIds = new Set(report.tiny_tasks);
+  for (const [index, taskId] of report.top_tasks.entries()) {
+    if (tinyTaskIds.has(taskId)) {
+      fail(reportFile, `top_tasks[${index}] (${taskId}) also appears in tiny_tasks; top_tasks and tiny_tasks must be disjoint.`);
     }
   }
 
