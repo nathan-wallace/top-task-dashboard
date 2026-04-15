@@ -19,8 +19,7 @@ const files = entries
 const manifest = [];
 for (const file of files) {
   const slug = basename(file, '.json');
-  const data = JSON.parse(await readFile(join(reportsDirPath, file), 'utf8'));
-  const title = data?.meta?.url ? new URL(data.meta.url).hostname.replace(/^www\./, '') : titleFromFile(file);
+  const title = titleFromFile(file);
   manifest.push({
     file,
     slug,

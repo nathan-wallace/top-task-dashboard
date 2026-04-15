@@ -229,7 +229,7 @@ async function loadReports() {
     }
     return {
       file: entry.file,
-      title: entry.title || titleFromFile(entry.file),
+      title: titleFromFile(entry.file),
       path: entry.path || './'
     };
   });

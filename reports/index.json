@@ -2,43 +2,43 @@
   {
     "file": "hhs-belmont-report-2.json",
     "slug": "hhs-belmont-report-2",
-    "title": "hhs.gov",
+    "title": "hhs belmont report 2",
     "path": "./hhs-belmont-report-2/"
   },
   {
     "file": "hhs-belmont-report.json",
     "slug": "hhs-belmont-report",
-    "title": "hhs.gov",
+    "title": "hhs belmont report",
     "path": "./hhs-belmont-report/"
   },
   {
     "file": "hhs-careers.json",
     "slug": "hhs-careers",
-    "title": "akastage-www.hhs.gov",
+    "title": "hhs careers",
     "path": "./hhs-careers/"
   },
   {
     "file": "hhs-hipaa.json",
     "slug": "hhs-hipaa",
-    "title": "hhs.gov",
+    "title": "hhs hipaa",
     "path": "./hhs-hipaa/"
   },
   {
     "file": "hhs-ocr.json",
     "slug": "hhs-ocr",
-    "title": "hhs.gov",
+    "title": "hhs ocr",
     "path": "./hhs-ocr/"
   },
   {
     "file": "hhs-press-room-media.json",
     "slug": "hhs-press-room-media",
-    "title": "hhs.gov",
+    "title": "hhs press room media",
     "path": "./hhs-press-room-media/"
   },
   {
     "file": "press-room.json",
     "slug": "press-room",
-    "title": "hhs.gov",
+    "title": "press room",
     "path": "./press-room/"
   }
 ]
