@@ -262,5 +262,6 @@
     "Test findability of PDF and summary content",
     "Evaluate page structure against top task prioritization",
     "Identify opportunities to simplify access to core tasks"
-  ]
+  ],
+  "summary": "Lorem Ispum"
 }

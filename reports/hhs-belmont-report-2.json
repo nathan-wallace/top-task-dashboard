@@ -6,7 +6,7 @@
     "analyzed_at": "2026-04-14",
     "analyst_confidence": "medium",
     "evidence_gaps": [
-      "No behavioral analytics or search data उपलब्ध",
+      "No behavioral analytics or search data \u0909\u092a\u0932\u092c\u094d\u0927",
       "No explicit user journeys or task completion pathways shown",
       "Limited navigation depth (single-page hub)",
       "No evidence of user success metrics or drop-off points"
@@ -106,7 +106,7 @@
         {
           "source_url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/index.html",
           "element": "Other Reports by the National Commission",
-          "note": "Links to additional reports (1974–1978)"
+          "note": "Links to additional reports (1974\u20131978)"
         }
       ],
       "scores": {
@@ -217,5 +217,6 @@
     "Map task completion journeys for top 3 tasks",
     "Evaluate whether training and report access should be more prominently separated",
     "Test navigation improvements to reduce cognitive load on secondary content"
-  ]
+  ],
+  "summary": "Lorem Ispum"
 }

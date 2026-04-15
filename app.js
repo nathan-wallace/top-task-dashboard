@@ -68,7 +68,7 @@ max_tasks: ${tokens.max_tasks}              # Optional. Default 25. Target longl
 - **Completability** — whether the user can actually finish it end-to-end
 
 ## Structured Output
-Return valid JSON matching this schema, followed by a brief prose summary.
+Return valid JSON matching this schema.
 
 \`\`\`json
 {
@@ -101,11 +101,12 @@ Return valid JSON matching this schema, followed by a brief prose summary.
     "recommended_sample_size": 0,
     "target_segments": []
   },
-  "next_steps": []
+  "next_steps": [],
+  "summary": ""
 }
 \`\`\`
 
-**Summary (prose, ≤150 words):** Top 3–5 tasks, key risks, what to validate with users next.
+Set `summary` to ≤150 words covering top 3–5 tasks, key risks, and what to validate with users next.
 
 ## Rules
 - Write tasks in the user's voice, not the org's. "Apply for benefits," not "Benefits application portal."
