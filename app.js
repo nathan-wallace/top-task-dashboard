@@ -244,6 +244,7 @@ function renderReport() {
 
   reportView.innerHTML = `
     <h2>${selectedReport.title}</h2>
+    <p>${data.summary || 'No summary available for this report.'}</p>
     <div class="meta-grid">
       <div class="card"><strong>URL</strong><br><a href="${data.meta.url}" target="_blank" rel="noreferrer">${data.meta.url}</a></div>
       <div class="card"><strong>Audience</strong><br>${data.meta.audience || 'n/a'}</div>
