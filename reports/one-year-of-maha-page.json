@@ -1,0 +1,422 @@
+{
+"meta": {
+"url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"audience": "General Public",
+"scope": "entire site",
+"analyzed_at": "2026-04-15T00:00:00-04:00",
+"analyst_confidence": "medium",
+"evidence_gaps": [
+"No analytics, site search logs, support tickets, or prior research were provided.",
+"Analysis is based on visible IA and page content only; real user frequency is inferred, not observed.",
+"The page is a campaign-style landing page with many outbound videos/press releases, so end-to-end task completion is limited on-page.",
+"No direct evidence was available on which audience segments arrive most often or from which channels."
+],
+"report_status": "Unreviewed"
+},
+"task_longlist": [
+{
+"id": "T01",
+"task_statement": "See what MAHA changed this year",
+"user_intent_category": "orientation/status",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Page title, hero, and by-the-numbers section",
+"note": "The page is explicitly framed as a year-in-review summary and highlights major outcomes immediately."
+}
+],
+"scores": {
+"frequency": 5,
+"impact": 5,
+"findability": 5,
+"completability": 3
+},
+"composite_score": 4.5,
+"classification": "top",
+"rationale": "This is the dominant page purpose and the clearest public-facing job-to-be-done. The site strongly supports scanning and understanding summary claims, but not always completing deeper verification without leaving the page."
+},
+{
+"id": "T02",
+"task_statement": "Find actions on children’s health",
+"user_intent_category": "policy/topic lookup",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Making Our Children Healthy Again card",
+"note": "A prominently placed section highlights a strategy with more than 120 initiatives on childhood chronic disease."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 5,
+"completability": 3
+},
+"composite_score": 4.25,
+"classification": "top",
+"rationale": "Children’s health is a central theme on the page and likely a high-interest topic for parents, caregivers, and general readers. The topic is easy to find but deeper completion depends on outbound content."
+},
+{
+"id": "T03",
+"task_statement": "See if drug prices may drop",
+"user_intent_category": "cost/benefit information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Lowering Prescription Drug Prices card",
+"note": "The card promises significantly reduced prescription costs and links to a press release."
+},
+{
+"source_url": "https://www.hhs.gov/press-room/cms-mfn-lower-us-drug-prices.html
+",
+"element": "Press release body",
+"note": "The linked release explains the pricing action and gives users a deeper evidence path."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 4.25,
+"classification": "top",
+"rationale": "Prescription affordability is a broad public concern with high stakes. The task is fairly easy to locate and can be pursued further through the linked release."
+},
+{
+"id": "T04",
+"task_statement": "Check changes to food ingredients",
+"user_intent_category": "safety/nutrition information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Real food, food dyes, dairy dyes, and GRAS sections",
+"note": "The page clusters multiple food-supply and ingredient reform topics, signaling strong user relevance."
+},
+{
+"source_url": "https://www.hhs.gov/press-room/revising-gras-pathway.html
+",
+"element": "Press release body",
+"note": "The linked release explains the GRAS rulemaking direction and transparency rationale."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 4,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 4.0,
+"classification": "top",
+"rationale": "Food ingredient transparency appears repeatedly and is likely important to families and health-conscious users. The site supports both overview and deeper reading via linked releases."
+},
+{
+"id": "T05",
+"task_statement": "Read the MAHA report",
+"user_intent_category": "document/evidence access",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "The MAHA Report section",
+"note": "The page calls out the report as a flagship artifact and provides a press-release path."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 3.75,
+"classification": "top",
+"rationale": "Evidence-seeking users, journalists, advocates, and policy followers will want the report itself. The report is clearly signposted, though the landing page does not surface all document details inline."
+},
+{
+"id": "T06",
+"task_statement": "Check childhood vaccine schedule changes",
+"user_intent_category": "health guidance lookup",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Updating Childhood Vaccine Schedule and related vaccine sections",
+"note": "The page includes several vaccine-related cards, indicating likely public demand for policy-change information."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 5,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.75,
+"classification": "top",
+"rationale": "The public stakes are high because vaccination guidance affects family health decisions. The topic is visible, but the page itself gives only brief summaries before users must navigate out."
+},
+{
+"id": "T07",
+"task_statement": "See what changed for infant formula",
+"user_intent_category": "product safety information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Making Infant Formula Safe card",
+"note": "The card addresses safety and supply options for infant formula, a focused but important family need."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.5,
+"classification": "secondary",
+"rationale": "Important for families with infants, but narrower than the top cross-cutting themes. The page supports awareness more than full completion."
+},
+{
+"id": "T08",
+"task_statement": "Learn about prior authorization changes",
+"user_intent_category": "care access information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Fixing Prior Authorization System card",
+"note": "The card highlights reduced red tape and improved care, which are meaningful to patients navigating coverage."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.5,
+"classification": "secondary",
+"rationale": "The topic matters to many insured users, but it is one of many equal-weight cards rather than a dominant page path."
+},
+{
+"id": "T09",
+"task_statement": "Find updates on rural health funding",
+"user_intent_category": "program/policy update",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Strengthening Rural Health card",
+"note": "The page explicitly highlights a $50 billion rural health transformation program."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.5,
+"classification": "secondary",
+"rationale": "Highly relevant to a smaller segment of users. The information is visible and clear but not developed into an end-to-end service path."
+},
+{
+"id": "T10",
+"task_statement": "Watch videos about MAHA actions",
+"user_intent_category": "media consumption",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Repeated Watch the video links across cards",
+"note": "Video is the dominant interaction pattern after scanning summaries."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 2,
+"findability": 5,
+"completability": 4
+},
+"composite_score": 3.5,
+"classification": "secondary",
+"rationale": "The site strongly supports this behavior, but it is usually a means of consuming campaign content rather than a high-consequence user need."
+},
+{
+"id": "T11",
+"task_statement": "Search HHS for related answers",
+"user_intent_category": "site navigation/help-seeking",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Global search access and FAQ link in footer",
+"note": "The page exposes search and an Answers hub for users whose needs extend beyond the campaign content."
+},
+{
+"source_url": "https://www.hhs.gov/answers/index.html
+",
+"element": "Answers hub",
+"note": "The linked Answers page offers FAQ-style paths for common public questions."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 3,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 3.25,
+"classification": "secondary",
+"rationale": "This is a fallback task when the landing page does not meet a user’s need. It is supported, but not the page’s main job."
+},
+{
+"id": "T12",
+"task_statement": "Explore broader HHS programs and services",
+"user_intent_category": "site navigation/exploration",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Global navigation links",
+"note": "Programs & Services, Laws & Regulations, and other sitewide nav options are visible from the page."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 3,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 3.25,
+"classification": "secondary",
+"rationale": "Useful when user intent broadens from MAHA to HHS services generally, but still a secondary site-navigation task."
+},
+{
+"id": "T13",
+"task_statement": "Subscribe for HHS email updates",
+"user_intent_category": "subscription",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "HHS Email updates footer block",
+"note": "The page includes a clear subscribe CTA."
+},
+{
+"source_url": "https://cloud.connect.hhs.gov/subscriptioncenter
+",
+"element": "Subscription form",
+"note": "The linked form asks for first name, email, and update preferences."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 2,
+"findability": 2,
+"completability": 5
+},
+"composite_score": 2.75,
+"classification": "tiny",
+"rationale": "The form is functional, but subscribing is peripheral to the core information-seeking purpose of this page."
+},
+{
+"id": "T14",
+"task_statement": "Follow HHS and Secretary updates",
+"user_intent_category": "social follow",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Follow @SecKennedy and Follow @HHSGov blocks",
+"note": "The footer offers multiple social follow links."
+}
+],
+"scores": {
+"frequency": 1,
+"impact": 1,
+"findability": 3,
+"completability": 5
+},
+"composite_score": 2.5,
+"classification": "tiny",
+"rationale": "Social following is easy to do but low-consequence and not central to the page’s public-service value."
+},
+{
+"id": "T15",
+"task_statement": "Contact HHS with my questions",
+"user_intent_category": "support/contact",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/one-year-of-maha/index.html
+",
+"element": "Contact HHS footer link and call center information",
+"note": "The page exposes generic contact options, but not MAHA-specific support flows."
+}
+],
+"scores": {
+"frequency": 1,
+"impact": 2,
+"findability": 2,
+"completability": 3
+},
+"composite_score": 2.0,
+"classification": "tiny",
+"rationale": "Generic contact is available, but it is buried in the footer and not tailored to the main content themes."
+}
+],
+"top_tasks": [
+"T01",
+"T02",
+"T03",
+"T04",
+"T05",
+"T06"
+],
+"tiny_tasks": [
+"T13",
+"T14",
+"T15"
+],
+"recommended_survey": {
+"instructions": "Show respondents the full task list in random order. Ask them to first choose the five tasks that matter most when visiting this page or section, then choose the five that matter least. Use plain-language task labels only, with no organizational jargon, and rotate order to reduce primacy bias.",
+"task_list_for_voting": [
+"See what MAHA changed this year",
+"Find actions on children’s health",
+"See if drug prices may drop",
+"Check changes to food ingredients",
+"Read the MAHA report",
+"Check childhood vaccine schedule changes",
+"See what changed for infant formula",
+"Learn about prior authorization changes",
+"Find updates on rural health funding",
+"Watch videos about MAHA actions",
+"Search HHS for related answers",
+"Explore broader HHS programs and services",
+"Subscribe for HHS email updates",
+"Follow HHS and Secretary updates",
+"Contact HHS with my questions"
+],
+"recommended_sample_size": 300,
+"target_segments": [
+"Parents and caregivers of children",
+"Adults concerned about prescription costs",
+"People interested in food, nutrition, and ingredient safety",
+"Rural residents and rural health stakeholders",
+"General public visitors arriving from news or social links"
+]
+},
+"next_steps": [
+"Validate the draft task list with a Top Tasks survey using forced-choice top-five and bottom-five selection.",
+"Compare survey winners against analytics, search logs, and referral data to confirm real demand.",
+"Turn the top 3-5 tasks into primary navigation or landing-page modules with stronger evidence paths.",
+"Reduce or group low-value campaign and social-follow elements so they do not compete with top tasks.",
+"For top tasks, add clearer end-to-end completion paths such as report downloads, FAQs, and action-specific guidance."
+],
+"summary": "The clearest top tasks are to understand what MAHA changed this year, find actions on children’s health, see whether drug prices may drop, check changes to food ingredients, read the MAHA report, and review vaccine schedule changes. The page strongly supports scanning campaign updates, but many deeper tasks require leaving the page for videos or press releases. Key risks are weak end-to-end completion, no visible prioritization among many equal cards, and limited evidence of real user demand. Next, validate the longlist with a Top Tasks survey and compare winners with analytics and search behavior."
+}
