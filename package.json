@@ -15,7 +15,8 @@
     "lint:js": "node --check app.js && node --check scripts/build-report-index.mjs && node --check scripts/validate-reports.mjs",
     "lint": "npm run lint:js",
     "test": "npm run check",
-    "audit": "npm audit --audit-level=high"
+    "audit": "npm audit --audit-level=high",
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2"
