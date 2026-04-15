@@ -329,6 +329,8 @@ function textMatchesQuery(value, query) {
 }
 
 function renderReportList() {
+  if (!reportList) return;
+
   const query = reportSearch?.value?.trim().toLowerCase() || '';
   const filtered = reports.filter((report) =>
     textMatchesQuery(report.title, query)
