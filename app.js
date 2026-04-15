@@ -21,27 +21,34 @@ const reportsBase = document.body?.dataset?.reportsBase || './reports';
 const titleFromFile = (name) => name.replace('.json', '').replace(/[-_]/g, ' ');
 const round = (value) => Number.isFinite(value) ? value.toFixed(2) : '0.00';
 const reportStatus = (report) => report?.data?.meta?.report_status || 'Unreviewed';
+const escapeHtml = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
 const classificationDefinitions = {
   top: 'Top tasks are the critical few user goals that matter most and should be easiest to find and complete.',
   secondary: 'Secondary tasks are still important, but they support the top tasks and should not dominate the primary experience.',
   tiny: 'Tiny tasks are low-frequency, low-impact needs that can add clutter if treated like primary navigation priorities.'
 };
 
-function buildClassificationLabel(classification) {
+function buildClassificationLabelTemplate(classification) {
   const normalized = (classification || '').toLowerCase();
   const label = normalized ? `${normalized.charAt(0).toUpperCase()}${normalized.slice(1)}` : 'Unknown';
   const description = classificationDefinitions[normalized];
 
   if (!description) return label;
-  const tooltipId = `classification-tooltip-${normalized}`;
+  const tooltipId = `classification-tooltip-${normalized.replace(/[^a-z0-9_-]/g, '-') || 'unknown'}`;
+  const safeLabel = escapeHtml(label);
 
   return `
     <span class="tooltip-label">
-      ${label}
+      ${safeLabel}
       <button
         class="info-tooltip"
         type="button"
-        aria-label="What ${label} means in Top Task Analysis"
+        aria-label="What ${safeLabel} means in Top Task Analysis"
         aria-describedby="${tooltipId}"
       >
         i
@@ -252,83 +259,156 @@ function renderReport() {
   const allTasks = data.task_longlist || [];
   const filter = selectedClassification;
   const tasks = filter === 'all' ? allTasks : allTasks.filter((task) => task.classification === filter);
-  const bars = averageByClassification(allTasks)
-    .map((entry) => `
-      <div class="card">
-        <strong>${buildClassificationLabel(entry.classification)}</strong>
-        <div class="bar"><span style="width:${(entry.average / 5) * 100}%"></span></div>
-        <small>avg ${entry.average.toFixed(2)} across ${entry.count} tasks</small>
-      </div>
-    `)
-    .join('');
+  const sortedTasks = [...tasks].sort((a, b) => b.composite_score - a.composite_score);
+  const meta = data.meta || {};
 
-  const rows = tasks
-    .sort((a, b) => b.composite_score - a.composite_score)
-    .map((task) => `
-      <tr>
-        <td><strong>${task.id}</strong></td>
-        <td>${task.task_statement}</td>
-        <td><span class="badge">${task.classification}</span></td>
-        <td>${round(task.composite_score)}</td>
-        <td>${task.rationale || ''}</td>
-      </tr>
-    `).join('');
+  reportView.replaceChildren();
 
-  reportView.innerHTML = `
-    <h2>${selectedReport.title}</h2>
-    <p>${data.summary || 'No summary available for this report.'}</p>
-    <div class="report-meta-card card">
-      <dl class="report-meta-list">
-        <div class="report-meta-item">
-          <dt>URL</dt>
-          <dd><a href="${data.meta.url}" target="_blank" rel="noreferrer">${data.meta.url}</a></dd>
-        </div>
-        <div class="report-meta-item">
-          <dt>Audience</dt>
-          <dd>${data.meta.audience || 'n/a'}</dd>
-        </div>
-        <div class="report-meta-item">
-          <dt>Scope</dt>
-          <dd>${data.meta.scope || 'n/a'}</dd>
-        </div>
-        <div class="report-meta-item">
-          <dt>Analyzed</dt>
-          <dd>${data.meta.analyzed_at || 'n/a'}</dd>
-        </div>
-        <div class="report-meta-item">
-          <dt>Status</dt>
-          <dd>${reportStatus(selectedReport)}</dd>
-        </div>
-      </dl>
-    </div>
+  const heading = document.createElement('h2');
+  heading.textContent = selectedReport.title;
+  reportView.append(heading);
 
-    <h3>Score overview</h3>
-    <div class="stat-grid">${bars}</div>
+  const summary = document.createElement('p');
+  summary.textContent = data.summary || 'No summary available for this report.';
+  reportView.append(summary);
 
-    <div class="tasks-header">
-      <h3>Tasks (${tasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})</h3>
-      <label class="tasks-filter-label" for="classification-filter">
-        Classification
-        <select id="classification-filter" aria-label="Filter tasks by classification">
-          <option value="all" ${filter === 'all' ? 'selected' : ''}>All</option>
-          <option value="top" ${filter === 'top' ? 'selected' : ''}>Top</option>
-          <option value="secondary" ${filter === 'secondary' ? 'selected' : ''}>Secondary</option>
-          <option value="tiny" ${filter === 'tiny' ? 'selected' : ''}>Tiny</option>
-        </select>
-      </label>
-    </div>
-    <div class="table-wrap">
-      <table class="task-table">
-        <thead>
-          <tr><th>ID</th><th>Task</th><th>Class</th><th>Score</th><th>Rationale</th></tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
+  const metaCard = document.createElement('div');
+  metaCard.className = 'report-meta-card card';
+  const metaList = document.createElement('dl');
+  metaList.className = 'report-meta-list';
+  const metaItems = [
+    ['URL', meta.url || 'n/a'],
+    ['Audience', meta.audience || 'n/a'],
+    ['Scope', meta.scope || 'n/a'],
+    ['Analyzed', meta.analyzed_at || 'n/a'],
+    ['Status', reportStatus(selectedReport)]
+  ];
+  for (const [label, value] of metaItems) {
+    const item = document.createElement('div');
+    item.className = 'report-meta-item';
+    const dt = document.createElement('dt');
+    dt.textContent = label;
+    const dd = document.createElement('dd');
+    if (label === 'URL' && meta.url) {
+      const link = document.createElement('a');
+      link.href = meta.url;
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+      link.textContent = meta.url;
+      dd.append(link);
+    } else {
+      dd.textContent = value;
+    }
+    item.append(dt, dd);
+    metaList.append(item);
+  }
+  metaCard.append(metaList);
+  reportView.append(metaCard);
 
-    <h3>Next steps</h3>
-    <ul>${(data.next_steps || []).map((step) => `<li>${step}</li>`).join('')}</ul>
+  const scoreHeading = document.createElement('h3');
+  scoreHeading.textContent = 'Score overview';
+  reportView.append(scoreHeading);
+
+  const statGrid = document.createElement('div');
+  statGrid.className = 'stat-grid';
+  for (const entry of averageByClassification(allTasks)) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const strong = document.createElement('strong');
+    strong.innerHTML = buildClassificationLabelTemplate(entry.classification);
+    card.append(strong);
+
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const span = document.createElement('span');
+    span.style.width = `${(entry.average / 5) * 100}%`;
+    bar.append(span);
+    card.append(bar);
+
+    const small = document.createElement('small');
+    small.textContent = `avg ${entry.average.toFixed(2)} across ${entry.count} tasks`;
+    card.append(small);
+    statGrid.append(card);
+  }
+  reportView.append(statGrid);
+
+  const tasksHeader = document.createElement('div');
+  tasksHeader.className = 'tasks-header';
+  const tasksHeading = document.createElement('h3');
+  tasksHeading.textContent = `Tasks (${sortedTasks.length}${filter === 'all' ? '' : ` filtered: ${filter}`})`;
+  tasksHeader.append(tasksHeading);
+
+  const label = document.createElement('label');
+  label.className = 'tasks-filter-label';
+  label.htmlFor = 'classification-filter';
+  label.append(document.createTextNode('Classification'));
+  const select = document.createElement('select');
+  select.id = 'classification-filter';
+  select.setAttribute('aria-label', 'Filter tasks by classification');
+  const filterOptions = ['all', 'top', 'secondary', 'tiny'];
+  for (const optionValue of filterOptions) {
+    const option = document.createElement('option');
+    option.value = optionValue;
+    option.textContent = optionValue === 'all'
+      ? 'All'
+      : `${optionValue.charAt(0).toUpperCase()}${optionValue.slice(1)}`;
+    option.selected = optionValue === filter;
+    select.append(option);
+  }
+  label.append(select);
+  tasksHeader.append(label);
+  reportView.append(tasksHeader);
+
+  const tableWrap = document.createElement('div');
+  tableWrap.className = 'table-wrap';
+  const table = document.createElement('table');
+  table.className = 'task-table';
+  table.innerHTML = `
+    <thead>
+      <tr><th>ID</th><th>Task</th><th>Class</th><th>Score</th><th>Rationale</th></tr>
+    </thead>
   `;
+  const tbody = document.createElement('tbody');
+  for (const task of sortedTasks) {
+    const tr = document.createElement('tr');
+    const idCell = document.createElement('td');
+    const idStrong = document.createElement('strong');
+    idStrong.textContent = task.id || 'n/a';
+    idCell.append(idStrong);
+
+    const statementCell = document.createElement('td');
+    statementCell.textContent = task.task_statement || '';
+
+    const classCell = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = task.classification || 'unknown';
+    classCell.append(badge);
+
+    const scoreCell = document.createElement('td');
+    scoreCell.textContent = round(task.composite_score);
+
+    const rationaleCell = document.createElement('td');
+    rationaleCell.textContent = task.rationale || '';
+
+    tr.append(idCell, statementCell, classCell, scoreCell, rationaleCell);
+    tbody.append(tr);
+  }
+  table.append(tbody);
+  tableWrap.append(table);
+  reportView.append(tableWrap);
+
+  const nextStepsHeading = document.createElement('h3');
+  nextStepsHeading.textContent = 'Next steps';
+  reportView.append(nextStepsHeading);
+
+  const nextStepsList = document.createElement('ul');
+  for (const step of (data.next_steps || [])) {
+    const item = document.createElement('li');
+    item.textContent = step;
+    nextStepsList.append(item);
+  }
+  reportView.append(nextStepsList);
 }
 
 function summarizeReport(report) {
@@ -358,33 +438,69 @@ function renderOverviewPage() {
 
   overviewCount.textContent = `${summaries.length} reports • ${totalTasks} tasks analyzed`;
 
-  overviewStats.innerHTML = [
+  overviewStats.replaceChildren();
+  const overviewCards = [
     ['Average Report Score', round(avgScore)],
     ['Top Classified Tasks', topTasks],
     ['Secondary Tasks', secondaryTasks],
     ['Tiny Tasks', tinyTasks]
-  ].map(([label, value]) => `
-    <article class="card stat-card">
-      <p class="subtle">${label}</p>
-      <p class="big-number">${value}</p>
-    </article>
-  `).join('');
+  ];
+  for (const [label, value] of overviewCards) {
+    const card = document.createElement('article');
+    card.className = 'card stat-card';
+    const subtle = document.createElement('p');
+    subtle.className = 'subtle';
+    subtle.textContent = label;
+    const bigNumber = document.createElement('p');
+    bigNumber.className = 'big-number';
+    bigNumber.textContent = String(value);
+    card.append(subtle, bigNumber);
+    overviewStats.append(card);
+  }
 
-  overviewTableBody.innerHTML = summaries
-    .sort((a, b) => b.avgScore - a.avgScore)
-    .map((report) => `
-      <tr>
-        <td><a href="./reports/">${report.title}</a></td>
-        <td>${reportStatus(report)}</td>
-        <td>${report.data.meta?.audience || 'n/a'}</td>
-        <td>${report.totalTasks}</td>
-        <td>${round(report.avgScore)}</td>
-        <td>${report.topTasks}</td>
-        <td>${report.secondaryTasks}</td>
-        <td>${report.tinyTasks}</td>
-      </tr>
-    `)
-    .join('');
+  overviewTableBody.replaceChildren();
+  for (const report of summaries.sort((a, b) => b.avgScore - a.avgScore)) {
+    const tr = document.createElement('tr');
+
+    const titleCell = document.createElement('td');
+    const reportLink = document.createElement('a');
+    reportLink.href = './reports/';
+    reportLink.textContent = report.title;
+    titleCell.append(reportLink);
+
+    const statusCell = document.createElement('td');
+    statusCell.textContent = reportStatus(report);
+
+    const audienceCell = document.createElement('td');
+    audienceCell.textContent = report.data.meta?.audience || 'n/a';
+
+    const totalTasksCell = document.createElement('td');
+    totalTasksCell.textContent = String(report.totalTasks);
+
+    const avgScoreCell = document.createElement('td');
+    avgScoreCell.textContent = round(report.avgScore);
+
+    const topTasksCell = document.createElement('td');
+    topTasksCell.textContent = String(report.topTasks);
+
+    const secondaryTasksCell = document.createElement('td');
+    secondaryTasksCell.textContent = String(report.secondaryTasks);
+
+    const tinyTasksCell = document.createElement('td');
+    tinyTasksCell.textContent = String(report.tinyTasks);
+
+    tr.append(
+      titleCell,
+      statusCell,
+      audienceCell,
+      totalTasksCell,
+      avgScoreCell,
+      topTasksCell,
+      secondaryTasksCell,
+      tinyTasksCell
+    );
+    overviewTableBody.append(tr);
+  }
 }
 
 
