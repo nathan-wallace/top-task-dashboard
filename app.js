@@ -417,10 +417,6 @@ function renderReport() {
   heading.textContent = selectedReport.title;
   reportView.append(heading);
 
-  const summary = document.createElement('p');
-  summary.textContent = data.summary || 'No summary available for this report.';
-  reportView.append(summary);
-
   const metaCard = document.createElement('div');
   metaCard.className = 'report-meta-card card';
   const metaList = document.createElement('dl');
@@ -453,6 +449,14 @@ function renderReport() {
   }
   metaCard.append(metaList);
   reportView.append(metaCard);
+
+  const summaryHeading = document.createElement('h3');
+  summaryHeading.textContent = 'Research Summary';
+  reportView.append(summaryHeading);
+
+  const summary = document.createElement('p');
+  summary.textContent = data.summary || 'No summary available for this report.';
+  reportView.append(summary);
 
   const scoreHeading = document.createElement('h3');
   scoreHeading.textContent = 'Score overview';
