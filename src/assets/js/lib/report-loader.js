@@ -9,6 +9,9 @@ export function getReportContext() {
 export async function loadReports() {
   const { reportsBase, forcedReportFile } = getReportContext();
   const response = await fetch(`${reportsBase}/index.json`);
+  if (!response.ok) {
+    throw new Error(`Failed to load report index (HTTP ${response.status})`);
+  }
   const reportIndex = await response.json();
   const indexEntries = reportIndex.map((entry) => {
     if (typeof entry === 'string') {
@@ -30,9 +33,25 @@ export async function loadReports() {
   }
 
   const settledReports = await Promise.allSettled(filesToLoad.map(async (entry) => {
-    const reportResponse = await fetch(`${reportsBase}/${entry.file}`);
-    if (!reportResponse.ok) {
-      throw new Error(`HTTP ${reportResponse.status}`);
+    const normalizedPath = String(entry.path || './').replace(/\/+$/, '');
+    const pathCandidate = normalizedPath === '.'
+      ? `${reportsBase}/${entry.file}`
+      : `${reportsBase}/${normalizedPath.replace(/^\.\//, '')}/${entry.file}`;
+    const urlCandidates = [...new Set([`${reportsBase}/${entry.file}`, pathCandidate])];
+    let lastStatus = 0;
+    let reportResponse = null;
+
+    for (const url of urlCandidates) {
+      const attemptedResponse = await fetch(url);
+      if (attemptedResponse.ok) {
+        reportResponse = attemptedResponse;
+        break;
+      }
+      lastStatus = attemptedResponse.status;
+    }
+
+    if (!reportResponse) {
+      throw new Error(`HTTP ${lastStatus || 'fetch failed'}`);
     }
 
     const data = await reportResponse.json();
