@@ -24,5 +24,9 @@
   "devDependencies": {
     "sass": "^1.93.2",
     "vite": "^7.1.10"
+  },
+  "overrides": {
+    "liquidjs": "^10.25.7",
+    "postcss": "^8.5.10"
   }
 }
