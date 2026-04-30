@@ -1,7 +1,6 @@
 {
 "meta": {
-"url": "https://www.hhs.gov/
-",
+"url": "https://www.hhs.gov/",
 "audience": "General Public",
 "scope": "entire site",
 "analyzed_at": "2026-04-30",
@@ -21,14 +20,12 @@
 "user_intent_category": "health coverage",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Health Insurance > Find Health Insurance Coverage",
 "note": "Homepage exposes health insurance as a primary service pathway and links directly to HealthCare.gov."
 },
 {
-"source_url": "https://www.healthcare.gov/
-",
+"source_url": "https://www.healthcare.gov/",
 "element": "Get Coverage / Enroll in health insurance",
 "note": "Destination site prominently supports coverage discovery, enrollment, savings, local help, and appeals."
 }
@@ -49,14 +46,12 @@
 "user_intent_category": "care and support",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/programs/index.html
-",
+"source_url": "https://www.hhs.gov/programs/index.html",
 "element": "Featured Topics > Find Support",
 "note": "Programs page features support for mental health, drugs, or alcohol as a highlighted user need."
 },
 {
-"source_url": "https://www.samhsa.gov/find-support
-",
+"source_url": "https://www.samhsa.gov/find-support",
 "element": "In Crisis / Helplines / Treatment Locators",
 "note": "Destination includes 988, helplines, treatment locators, payment guidance, and support group pathways."
 }
@@ -77,14 +72,12 @@
 "user_intent_category": "care access",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Health Care > Find a Health Center",
 "note": "Homepage places the locator in primary service navigation."
 },
 {
-"source_url": "https://www.hhs.gov/programs/index.html
-",
+"source_url": "https://www.hhs.gov/programs/index.html",
 "element": "Featured Topics > Find a Health Center",
 "note": "Programs page describes a nationwide clinic locator for cities, rural areas, and territories."
 }
@@ -105,14 +98,12 @@
 "user_intent_category": "rights and complaints",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Laws & Regulations > Complaints and Appeals > File a HIPAA Complaint",
 "note": "Homepage directly exposes the complaint pathway."
 },
 {
-"source_url": "https://www.hhs.gov/hipaa/filing-a-complaint/index.html
-",
+"source_url": "https://www.hhs.gov/hipaa/filing-a-complaint/index.html",
 "element": "File a Complaint Online / Complaint Process / What to Expect",
 "note": "Complaint page explains eligibility, submission methods, and next steps."
 }
@@ -133,14 +124,12 @@
 "user_intent_category": "social services",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/programs/social-services/index.html
-",
+"source_url": "https://www.hhs.gov/programs/social-services/index.html",
 "element": "Social Services > LIHEAP / TANF / Child Care / Benefits finder",
 "note": "Social services landing page bundles family assistance, energy aid, welfare, and benefits discovery."
 },
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Social Services",
 "note": "Homepage presents programs for children and families, people with disabilities, older adults, and caregivers."
 }
@@ -161,14 +150,12 @@
 "user_intent_category": "health coverage",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Health Insurance > Medicare - 65+ or With Disability",
 "note": "Homepage explicitly frames Medicare around age/disability eligibility."
 },
 {
-"source_url": "https://www.hhs.gov/about/contact-us/index.html
-",
+"source_url": "https://www.hhs.gov/about/contact-us/index.html",
 "element": "Also see Medicare.gov or call 1-800-MEDICARE",
 "note": "Contact page reinforces Medicare as a top public inquiry route."
 }
@@ -189,14 +176,12 @@
 "user_intent_category": "health coverage",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Health Insurance > Medicaid / CHIP",
 "note": "Homepage exposes both programs in primary navigation."
 },
 {
-"source_url": "https://www.samhsa.gov/find-support
-",
+"source_url": "https://www.samhsa.gov/find-support",
 "element": "State Medicaid or CHIP links",
 "note": "Related HHS pathways repeatedly route users to Medicaid/CHIP state information."
 }
@@ -217,14 +202,12 @@
 "user_intent_category": "safety complaint",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html
-",
+"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html",
 "element": "Food and drugs > Report a problem",
 "note": "Complaints page lists FDA-regulated product problems including food, devices, medicine, cosmetics, tobacco, and VAERS."
 },
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Laws & Regulations > Complaints and Appeals > Report a Problem to the FDA",
 "note": "Homepage directly links to FDA problem reporting."
 }
@@ -245,14 +228,12 @@
 "user_intent_category": "public health preparedness",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/programs/index.html
-",
+"source_url": "https://www.hhs.gov/programs/index.html",
 "element": "How HHS Can Help > Emergency Preparedness and Response",
 "note": "Programs page highlights emergency preparedness as a primary assistance topic."
 },
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Programs & Services > Public Health and Prevention > Emergency Preparedness and Response",
 "note": "Homepage places emergency preparedness in major navigation."
 }
@@ -273,14 +254,12 @@
 "user_intent_category": "funding opportunity",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/grants-contracts/index.html
-",
+"source_url": "https://www.hhs.gov/grants-contracts/index.html",
 "element": "Prospective or Current Grantees / How to get a grant",
 "note": "Grants section is designed around grant application and management."
 },
 {
-"source_url": "https://www.grants.gov/search-grants
-",
+"source_url": "https://www.grants.gov/search-grants",
 "element": "Search Grants",
 "note": "Destination provides searchable federal grant opportunities with filters and registration."
 }
@@ -301,14 +280,12 @@
 "user_intent_category": "rights information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/programs/hipaa/index.html
-",
+"source_url": "https://www.hhs.gov/programs/hipaa/index.html",
 "element": "HIPAA & Your Health Rights",
 "note": "Landing page explains HIPAA Privacy Rule protections and where to learn more."
 },
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "Laws & Regulations > Civil Rights > Health Information Privacy",
 "note": "Homepage exposes privacy information under rights and regulations."
 }
@@ -329,14 +306,12 @@
 "user_intent_category": "general contact",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/about/contact-us/index.html
-",
+"source_url": "https://www.hhs.gov/about/contact-us/index.html",
 "element": "Headquarters address, toll-free call center, contact lists",
 "note": "Contact page offers phone, mailing address, and contact directories."
 },
 {
-"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html
-",
+"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html",
 "element": "How to report other problems > Contact HHS",
 "note": "Generic contact is available but often secondary to program-specific routes."
 }
@@ -357,14 +332,12 @@
 "user_intent_category": "organizational information",
 "evidence": [
 {
-"source_url": "https://www.hhs.gov/
-",
+"source_url": "https://www.hhs.gov/",
 "element": "HHS Leadership / HHS Agencies",
 "note": "Homepage dedicates substantial space to leadership and agency links."
 },
 {
-"source_url": "https://www.hhs.gov/about/contact-us/index.html
-",
+"source_url": "https://www.hhs.gov/about/contact-us/index.html",
 "element": "Leadership / HHS Divisions / Organizational Chart",
 "note": "About-area navigation supports org-structure exploration."
 }

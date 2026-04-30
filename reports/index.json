@@ -1,5 +1,11 @@
 [
   {
+    "file": "DAB-Section.json",
+    "slug": "DAB-Section",
+    "title": "Dab Section",
+    "path": "./DAB-Section/"
+  },
+  {
     "file": "foia-landing-page.json",
     "slug": "foia-landing-page",
     "title": "FOIA Landing Page",
@@ -40,6 +46,12 @@
     "slug": "hhs-press-room-media",
     "title": "HHS Press Room Media",
     "path": "./hhs-press-room-media/"
+  },
+  {
+    "file": "MM1-Homepage.json",
+    "slug": "MM1-Homepage",
+    "title": "Mm1 Homepage",
+    "path": "./MM1-Homepage/"
   },
   {
     "file": "one-year-of-maha-page.json",

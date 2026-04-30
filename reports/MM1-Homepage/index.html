@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mm1 Homepage | Top Task Dashboard</title>
+    <link rel="stylesheet" href="../../styles.css" />
+  </head>
+  <body data-reports-base=".." data-report-file="MM1-Homepage.json">
+    <!-- generated-report-page -->
+    <header class="site-header">
+      <div class="brand">
+        <h1><a href="../../index.html">Top Task Dashboard</a></h1>
+        <p>Top task analysis report view.</p>
+      </div>
+      <nav class="site-nav" aria-label="Main">
+        <a href="../../index.html">Overview</a>
+        <a href="../../prompt.html">Build a Prompt</a>
+      </nav>
+    </header>
+
+    <main class="layout reports-layout" id="reports-layout">
+      <aside class="panel report-panel" id="report-panel" aria-label="Reports navigation">
+        <div class="report-panel-header">
+          <h2 id="report-panel-title">Reports</h2>
+          <button
+            id="toggle-report-panel"
+            class="panel-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="report-panel-content"
+            aria-label="Collapse reports panel"
+            title="Collapse reports panel"
+          >
+            <span class="panel-toggle-icon" aria-hidden="true">←</span>
+            <span class="panel-toggle-text">Collapse</span>
+          </button>
+        </div>
+
+        <div id="report-panel-content" class="report-panel-content">
+          <input id="report-search" type="search" placeholder="Search reports" />
+          <ul id="report-list"></ul>
+        </div>
+      </aside>
+
+      <section class="panel content">
+        <div class="toolbar">
+          <button id="download-pdf" type="button">Download PDF</button>
+          <button id="download-report-workbook" type="button">Download Report Workbook</button>
+        </div>
+
+        <article id="report-view" aria-live="polite">
+          <p>Loading report…</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <small>
+        Top Tasks Dashboard — HHS website top task repository. A WebFirst project.<br />
+        <a href="https://github.com/nathan-wallace-hhs/top-task-dashboard">View source on GitHub</a>
+        ·
+        <a href="https://github.com/nathan-wallace-hhs/top-task-dashboard/issues/new">Report an issue</a>
+      </small>
+    </footer>
+
+    <script type="module" src="../../app.js"></script>
+  </body>
+</html>
