@@ -48,7 +48,7 @@ npm run dev:vite
 ## CI/CD (GitHub Pages + nojekyll)
 
 - CI workflow (`.github/workflows/ci.yml`) validates the reports.
-- Deploy workflow (`.github/workflows/deploy-pages.yml`) runs `npm run build:site`, publishes to GitHub Pages, and creates `.nojekyll` in the artifact.
+- Deploy workflow (`.github/workflows/deploy-pages.yml`) now reuses the `site-build` artifact from CI (rather than rebuilding), then publishes it to GitHub Pages with `.nojekyll` in the artifact.
 
 ## Expected report shape
 

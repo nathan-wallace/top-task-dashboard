@@ -27,26 +27,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - name: Download build artifact from CI
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
-          cache: npm
+          name: site-build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: _site
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site for GitHub Pages
-        run: npm run build
-
-      - name: Disable Jekyll processing
-        run: touch _site/.nojekyll
+      - name: Verify artifact is available
+        if: github.event_name == 'workflow_run'
+        run: test -f _site/.nojekyll || touch _site/.nojekyll
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v4
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
