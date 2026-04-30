@@ -1,0 +1,463 @@
+{
+  "meta": {
+    "url": "https://www.hhs.gov/about/agencies/dab/",
+    "audience": "General Public",
+    "scope": "entire section",
+    "analyzed_at": "2026-04-30T00:00:00-04:00",
+    "analyst_confidence": "medium",
+    "evidence_gaps": [
+      "No analytics, search logs, support tickets, or prior research were provided.",
+      "Primary audience was broad ('General Public'); actual DAB visitors likely include providers, suppliers, attorneys, beneficiaries, and representatives with different task priorities.",
+      "Several core content pages were last reviewed in 2016-2017, so current usage patterns and policy wording may not be fully reflected.",
+      "The public pages show pathways and information architecture, but they do not expose completion data, abandonment points, or search demand."
+    ],
+    "report_status": "Unreviewed"
+  },
+  "task_longlist": [
+    {
+      "id": "T01",
+      "task_statement": "Figure out if DAB handles my case.",
+      "user_intent_category": "wayfinding",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Introductory case-type checklist",
+          "note": "Homepage asks users to examine their paperwork and match it to listed federal offices and document types."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/index.html",
+          "element": "Different Appeals at DAB overview",
+          "note": "Explains that the kind of decision determines which judges hear the appeal."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "This is the gateway task for nearly every visitor with an appeal need. The homepage strongly foregrounds it, and failure blocks all downstream actions."
+    },
+    {
+      "id": "T02",
+      "task_statement": "Know which DAB appeal path applies.",
+      "user_intent_category": "wayfinding",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/index.html",
+          "element": "Three appeal paths",
+          "note": "Separates appeals to Board, DAB ALJs, and Medicare Appeals Council."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/appeals-to-board/index.html",
+          "element": "Board jurisdiction content",
+          "note": "Lists decision types reviewed by the Board."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/appeals-to-council/index.html",
+          "element": "Council filing guidance",
+          "note": "Shows path differences by contractor and decision type."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 4,
+        "completability": 3
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Users must route themselves correctly before filing. The section supports the task, but path logic is distributed across multiple pages."
+    },
+    {
+      "id": "T03",
+      "task_statement": "File my appeal online.",
+      "user_intent_category": "transaction",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Homepage filing callouts",
+          "note": "Prominent links to DAB E-File and MOD E-File."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/filing-an-appeal-online/index.html",
+          "element": "Filing an Appeal Online",
+          "note": "Provides two online filing entry points for most appeal types."
+        }
+      ],
+      "scores": {
+        "frequency": 5,
+        "impact": 5,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.75,
+      "classification": "top",
+      "rationale": "This is the clearest end-state transaction in the section and is strongly emphasized in navigation and homepage content."
+    },
+    {
+      "id": "T04",
+      "task_statement": "Find the right filing portal.",
+      "user_intent_category": "transaction support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Separate portal links",
+          "note": "Homepage distinguishes DAB E-File from Medicare Operations Division E-File."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/filing-an-appeal-online/index.html",
+          "element": "Portal descriptions",
+          "note": "Explains one portal is for Board/ALJ appeals and the other for Council review requests."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.5,
+      "classification": "top",
+      "rationale": "Portal selection is a critical subtask of filing, with high consequence if users choose the wrong system."
+    },
+    {
+      "id": "T05",
+      "task_statement": "Find procedures for my appeal type.",
+      "user_intent_category": "information",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Navigation to procedures/guidelines/regulations",
+          "note": "Global left navigation exposes procedures and guidance under specific appeal types."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/appeals-to-council/index.html",
+          "element": "Procedure branching",
+          "note": "Council page contains multiple procedural branches depending on case circumstances."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.75,
+      "classification": "top",
+      "rationale": "Procedure-finding is essential for successful filing and review, but the information is fragmented and may be difficult for lay users to interpret."
+    },
+    {
+      "id": "T06",
+      "task_statement": "Search past decisions like my case.",
+      "user_intent_category": "research",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Homepage 'I would like info on...' links",
+          "note": "Direct links to search Board, ALJ, and Council decisions."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/decisions/index.html",
+          "element": "Decision collections",
+          "note": "Decision libraries are available by division and year."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 5,
+        "completability": 4
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "Decision lookup is prominently supported and likely important for represented parties, providers, and researchers preparing appeals."
+    },
+    {
+      "id": "T07",
+      "task_statement": "Get contact help for my case.",
+      "user_intent_category": "support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/index.html",
+          "element": "Contact DAB entry",
+          "note": "About page explicitly directs users to contact information."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/contact-dab/index.html",
+          "element": "Division contacts",
+          "note": "Detailed phone, email, mailing address, and staff listings by division."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 4.25,
+      "classification": "top",
+      "rationale": "When users are unsure about jurisdiction or process, contact routes are well supported and can resolve blockers."
+    },
+    {
+      "id": "T08",
+      "task_statement": "Find forms for my appeal.",
+      "user_intent_category": "transaction support",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Forms links in local navigation",
+          "note": "Forms are exposed under ALJ and Council appeal sections."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/index.html",
+          "element": "Appeal-type submenu",
+          "note": "Subnavigation indicates forms are part of specific appeal workflows."
+        }
+      ],
+      "scores": {
+        "frequency": 4,
+        "impact": 4,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Forms are important, but they appear subordinate to understanding jurisdiction and filing path."
+    },
+    {
+      "id": "T09",
+      "task_statement": "See if Board reviews my dispute.",
+      "user_intent_category": "eligibility",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/appeals-to-board/index.html",
+          "element": "Board jurisdiction page",
+          "note": "Explains eligible dispute types and provides contact for current jurisdiction questions."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "High stakes for a narrower audience segment, especially grant and program disputes."
+    },
+    {
+      "id": "T10",
+      "task_statement": "See if Council reviews my claim.",
+      "user_intent_category": "eligibility",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/different-appeals-at-dab/appeals-to-council/index.html",
+          "element": "Council appeal page",
+          "note": "Explains when parties may request Council review after an ALJ decision or dismissal."
+        }
+      ],
+      "scores": {
+        "frequency": 3,
+        "impact": 5,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 3.5,
+      "classification": "secondary",
+      "rationale": "Critical for Medicare appellants, but not universal across all DAB visitors."
+    },
+    {
+      "id": "T11",
+      "task_statement": "Ask for mediation or ADR help.",
+      "user_intent_category": "service",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Alternative Dispute Resolution Services navigation",
+          "note": "Local navigation includes mediation, ADR training, and other ADR services."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/contact-dab/index.html",
+          "element": "ADR Division contact info",
+          "note": "Dedicated ADR phone and email are provided."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 4,
+        "findability": 3,
+        "completability": 4
+      },
+      "composite_score": 3.25,
+      "classification": "secondary",
+      "rationale": "Meaningful for some users, but clearly a smaller audience than filing or decision lookup."
+    },
+    {
+      "id": "T12",
+      "task_statement": "Learn who the judges are.",
+      "user_intent_category": "orientation",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/index.html",
+          "element": "Who are the Judges",
+          "note": "About page links to judge bios."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.25,
+      "classification": "tiny",
+      "rationale": "Available and easy to find, but usually not core to completing an appeal."
+    },
+    {
+      "id": "T13",
+      "task_statement": "Understand how DAB is organized.",
+      "user_intent_category": "orientation",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/index.html",
+          "element": "Organizational Overview and DAB Divisions",
+          "note": "About page offers mission/history and division explanations."
+        }
+      ],
+      "scores": {
+        "frequency": 2,
+        "impact": 2,
+        "findability": 4,
+        "completability": 5
+      },
+      "composite_score": 3.25,
+      "classification": "tiny",
+      "rationale": "Useful background, but not a likely priority for most visitors with urgent case needs."
+    },
+    {
+      "id": "T14",
+      "task_statement": "Send feedback on DAB procedures.",
+      "user_intent_category": "feedback",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/stakeholders.html",
+          "element": "Stakeholder Feedback page",
+          "note": "Invites comments by email from parties, representatives, and interested organizations."
+        }
+      ],
+      "scores": {
+        "frequency": 1,
+        "impact": 2,
+        "findability": 2,
+        "completability": 5
+      },
+      "composite_score": 2.5,
+      "classification": "tiny",
+      "rationale": "Valuable institutionally, but probably a niche task compared with appeal execution."
+    },
+    {
+      "id": "T15",
+      "task_statement": "Suggest a precedential Council decision.",
+      "user_intent_category": "feedback",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/stakeholders.html",
+          "element": "Suggestions for precedential decisions",
+          "note": "Stakeholders may email suggestions for Medicare Appeals Council decisions to be designated precedential."
+        }
+      ],
+      "scores": {
+        "frequency": 1,
+        "impact": 2,
+        "findability": 2,
+        "completability": 5
+      },
+      "composite_score": 2.5,
+      "classification": "tiny",
+      "rationale": "A specialized expert/stakeholder task, not a mainstream public need."
+    },
+    {
+      "id": "T16",
+      "task_statement": "Find DAB jobs or internships.",
+      "user_intent_category": "careers",
+      "evidence": [
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/index.html",
+          "element": "Careers navigation",
+          "note": "Local navigation includes open career opportunities and internships/externships."
+        },
+        {
+          "source_url": "https://www.hhs.gov/about/agencies/dab/about-dab/index.html",
+          "element": "About DAB careers mention",
+          "note": "About page links to career opportunities."
+        }
+      ],
+      "scores": {
+        "frequency": 1,
+        "impact": 2,
+        "findability": 3,
+        "completability": 3
+      },
+      "composite_score": 2.25,
+      "classification": "tiny",
+      "rationale": "Useful to a minority audience and peripheral to the section's main appeal-related purpose."
+    }
+  ],
+  "top_tasks": [
+    "T03",
+    "T01",
+    "T04",
+    "T02",
+    "T06",
+    "T07",
+    "T05"
+  ],
+  "tiny_tasks": [
+    "T12",
+    "T13",
+    "T14",
+    "T15",
+    "T16"
+  ],
+  "recommended_survey": {
+    "instructions": "Ask respondents to pick the five tasks that matter most to them on this DAB section, then pick the single most important task from those five. Randomize task order, use plain-language task labels only, and avoid exposing site structure terms such as 'Board' or 'Council' unless needed for comprehension. Include a screener for audience type and case type.",
+    "task_list_for_voting": [
+      "Figure out if DAB handles my case.",
+      "Know which DAB appeal path applies.",
+      "File my appeal online.",
+      "Find the right filing portal.",
+      "Find procedures for my appeal type.",
+      "Search past decisions like my case.",
+      "Get contact help for my case.",
+      "Find forms for my appeal.",
+      "See if Board reviews my dispute.",
+      "See if Council reviews my claim.",
+      "Ask for mediation or ADR help.",
+      "Learn who the judges are.",
+      "Understand how DAB is organized.",
+      "Send feedback on DAB procedures.",
+      "Suggest a precedential Council decision.",
+      "Find DAB jobs or internships."
+    ],
+    "recommended_sample_size": 200,
+    "target_segments": [
+      "Medicare appellants and representatives",
+      "Providers, suppliers, and facilities facing enforcement or enrollment actions",
+      "Grant/program dispute participants",
+      "Attorneys or professional representatives",
+      "Members of the general public arriving from notices or decision letters"
+    ]
+  },
+  "next_steps": [
+    "Validate the longlist with a Top Tasks vote using segmented sampling by case type.",
+    "Review search logs, referral URLs, and E-File entry analytics to confirm whether filing, routing, and decision lookup dominate demand.",
+    "Test whether users can distinguish DAB E-File from MOD E-File without legal assistance.",
+    "Simplify jurisdiction language on the homepage into a shorter decision tree based on document type and issuing office.",
+    "Audit old pages last reviewed in 2016-2017 for outdated wording, broken assumptions, and missed plain-language opportunities.",
+    "Create a clearer task-based entry page that starts with 'What notice did you receive?' and routes to the correct path, forms, and contacts."
+  ],
+  "summary": "The strongest top tasks are filing an appeal online, figuring out whether DAB handles the case, choosing the correct appeal path or filing portal, and searching past decisions. The main UX risk is misrouting: users must interpret legal or administrative distinctions before they can file, and those distinctions are spread across multiple pages. Contact information is strong, but procedure-finding and path selection remain cognitively heavy. Next, validate whether routing, filing, and decision lookup truly dominate demand across audience segments, and test whether users can correctly choose between DAB E-File and MOD E-File."
+}
