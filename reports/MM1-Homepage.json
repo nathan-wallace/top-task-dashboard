@@ -1,0 +1,430 @@
+{
+"meta": {
+"url": "https://www.hhs.gov/
+",
+"audience": "General Public",
+"scope": "entire site",
+"analyzed_at": "2026-04-30",
+"analyst_confidence": "medium",
+"evidence_gaps": [
+"No analytics, site search logs, support/contact center data, or task completion data were provided.",
+"This analysis is based on visible public IA and key landing pages, not a full crawl of all HHS subdomains and transactional systems.",
+"Some high-value tasks route users to external HHS component sites or other federal sites, so end-to-end completion on HHS.gov itself is only partially observable.",
+"Relative demand between broad public-health information tasks and benefits/coverage tasks cannot be validated without traffic and search data."
+],
+"report_status": "Unreviewed"
+},
+"task_longlist": [
+{
+"id": "T01",
+"task_statement": "Find health insurance coverage options",
+"user_intent_category": "health coverage",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Health Insurance > Find Health Insurance Coverage",
+"note": "Homepage exposes health insurance as a primary service pathway and links directly to HealthCare.gov."
+},
+{
+"source_url": "https://www.healthcare.gov/
+",
+"element": "Get Coverage / Enroll in health insurance",
+"note": "Destination site prominently supports coverage discovery, enrollment, savings, local help, and appeals."
+}
+],
+"scores": {
+"frequency": 5,
+"impact": 5,
+"findability": 5,
+"completability": 5
+},
+"composite_score": 5.0,
+"classification": "top",
+"rationale": "Highly salient life task with severe user consequences if unmet. The pathway is prominent on HHS.gov and appears strongly supported end-to-end through HealthCare.gov."
+},
+{
+"id": "T02",
+"task_statement": "Find mental health or addiction help",
+"user_intent_category": "care and support",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/programs/index.html
+",
+"element": "Featured Topics > Find Support",
+"note": "Programs page features support for mental health, drugs, or alcohol as a highlighted user need."
+},
+{
+"source_url": "https://www.samhsa.gov/find-support
+",
+"element": "In Crisis / Helplines / Treatment Locators",
+"note": "Destination includes 988, helplines, treatment locators, payment guidance, and support group pathways."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 4,
+"completability": 5
+},
+"composite_score": 4.5,
+"classification": "top",
+"rationale": "Critical support-seeking task with urgent consequences and a robust destination experience. Slightly less prominent than insurance but still strongly signposted."
+},
+{
+"id": "T03",
+"task_statement": "Find a nearby health center",
+"user_intent_category": "care access",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Health Care > Find a Health Center",
+"note": "Homepage places the locator in primary service navigation."
+},
+{
+"source_url": "https://www.hhs.gov/programs/index.html
+",
+"element": "Featured Topics > Find a Health Center",
+"note": "Programs page describes a nationwide clinic locator for cities, rural areas, and territories."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 5,
+"completability": 4
+},
+"composite_score": 4.5,
+"classification": "top",
+"rationale": "Finding care is a common, high-stakes need. It is easy to discover from HHS.gov, though full completion happens on a separate locator tool."
+},
+{
+"id": "T04",
+"task_statement": "File a HIPAA privacy complaint",
+"user_intent_category": "rights and complaints",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Laws & Regulations > Complaints and Appeals > File a HIPAA Complaint",
+"note": "Homepage directly exposes the complaint pathway."
+},
+{
+"source_url": "https://www.hhs.gov/hipaa/filing-a-complaint/index.html
+",
+"element": "File a Complaint Online / Complaint Process / What to Expect",
+"note": "Complaint page explains eligibility, submission methods, and next steps."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 5,
+"findability": 4,
+"completability": 5
+},
+"composite_score": 4.25,
+"classification": "top",
+"rationale": "Less frequent than coverage or care-finding, but very consequential and well supported once users reach the page."
+},
+{
+"id": "T05",
+"task_statement": "Find government benefits and family support",
+"user_intent_category": "social services",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/programs/social-services/index.html
+",
+"element": "Social Services > LIHEAP / TANF / Child Care / Benefits finder",
+"note": "Social services landing page bundles family assistance, energy aid, welfare, and benefits discovery."
+},
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Social Services",
+"note": "Homepage presents programs for children and families, people with disabilities, older adults, and caregivers."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 3,
+"completability": 4
+},
+"composite_score": 4.0,
+"classification": "top",
+"rationale": "High-value support task for many households, but the pathway is distributed across several programs and external destinations, which may reduce findability."
+},
+{
+"id": "T06",
+"task_statement": "Find out if I qualify for Medicare",
+"user_intent_category": "health coverage",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Health Insurance > Medicare - 65+ or With Disability",
+"note": "Homepage explicitly frames Medicare around age/disability eligibility."
+},
+{
+"source_url": "https://www.hhs.gov/about/contact-us/index.html
+",
+"element": "Also see Medicare.gov or call 1-800-MEDICARE",
+"note": "Contact page reinforces Medicare as a top public inquiry route."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 4.25,
+"classification": "secondary",
+"rationale": "Likely a major task for older adults and disabled users, but narrower than general coverage and mostly completed on Medicare.gov."
+},
+{
+"id": "T07",
+"task_statement": "Find Medicaid or CHIP information",
+"user_intent_category": "health coverage",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Health Insurance > Medicaid / CHIP",
+"note": "Homepage exposes both programs in primary navigation."
+},
+{
+"source_url": "https://www.samhsa.gov/find-support
+",
+"element": "State Medicaid or CHIP links",
+"note": "Related HHS pathways repeatedly route users to Medicaid/CHIP state information."
+}
+],
+"scores": {
+"frequency": 4,
+"impact": 5,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 4.0,
+"classification": "secondary",
+"rationale": "High-stakes and broadly relevant, but completion often depends on state-specific systems outside HHS.gov."
+},
+{
+"id": "T08",
+"task_statement": "Report a problem with a medical product",
+"user_intent_category": "safety complaint",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html
+",
+"element": "Food and drugs > Report a problem",
+"note": "Complaints page lists FDA-regulated product problems including food, devices, medicine, cosmetics, tobacco, and VAERS."
+},
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Laws & Regulations > Complaints and Appeals > Report a Problem to the FDA",
+"note": "Homepage directly links to FDA problem reporting."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 5,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 4.0,
+"classification": "secondary",
+"rationale": "Strong safety and accountability task, though less frequent for the average visitor than coverage and care tasks."
+},
+{
+"id": "T09",
+"task_statement": "Prepare for a public health emergency",
+"user_intent_category": "public health preparedness",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/programs/index.html
+",
+"element": "How HHS Can Help > Emergency Preparedness and Response",
+"note": "Programs page highlights emergency preparedness as a primary assistance topic."
+},
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Programs & Services > Public Health and Prevention > Emergency Preparedness and Response",
+"note": "Homepage places emergency preparedness in major navigation."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 5,
+"findability": 4,
+"completability": 3
+},
+"composite_score": 3.75,
+"classification": "secondary",
+"rationale": "Important but episodic. HHS surfaces it clearly, yet full completion is more informational than transactional."
+},
+{
+"id": "T10",
+"task_statement": "Find and apply for an HHS grant",
+"user_intent_category": "funding opportunity",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/grants-contracts/index.html
+",
+"element": "Prospective or Current Grantees / How to get a grant",
+"note": "Grants section is designed around grant application and management."
+},
+{
+"source_url": "https://www.grants.gov/search-grants
+",
+"element": "Search Grants",
+"note": "Destination provides searchable federal grant opportunities with filters and registration."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 5,
+"findability": 4,
+"completability": 4
+},
+"composite_score": 3.75,
+"classification": "secondary",
+"rationale": "Very important for organizations, but not a general-public task for most visitors."
+},
+{
+"id": "T11",
+"task_statement": "Learn my HIPAA health privacy rights",
+"user_intent_category": "rights information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/programs/hipaa/index.html
+",
+"element": "HIPAA & Your Health Rights",
+"note": "Landing page explains HIPAA Privacy Rule protections and where to learn more."
+},
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "Laws & Regulations > Civil Rights > Health Information Privacy",
+"note": "Homepage exposes privacy information under rights and regulations."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 4,
+"findability": 3,
+"completability": 3
+},
+"composite_score": 3.25,
+"classification": "tiny",
+"rationale": "Important informational task, but likely subordinate to the more action-oriented complaint task and less clearly surfaced as a primary journey."
+},
+{
+"id": "T12",
+"task_statement": "Contact HHS for help",
+"user_intent_category": "general contact",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/about/contact-us/index.html
+",
+"element": "Headquarters address, toll-free call center, contact lists",
+"note": "Contact page offers phone, mailing address, and contact directories."
+},
+{
+"source_url": "https://www.hhs.gov/regulations/complaints-and-appeals/index.html
+",
+"element": "How to report other problems > Contact HHS",
+"note": "Generic contact is available but often secondary to program-specific routes."
+}
+],
+"scores": {
+"frequency": 3,
+"impact": 3,
+"findability": 3,
+"completability": 3
+},
+"composite_score": 3.0,
+"classification": "tiny",
+"rationale": "Common fallback behavior, but usually a symptom of unmet findability on higher-value tasks rather than a true top task itself."
+},
+{
+"id": "T13",
+"task_statement": "Learn about HHS leadership and agencies",
+"user_intent_category": "organizational information",
+"evidence": [
+{
+"source_url": "https://www.hhs.gov/
+",
+"element": "HHS Leadership / HHS Agencies",
+"note": "Homepage dedicates substantial space to leadership and agency links."
+},
+{
+"source_url": "https://www.hhs.gov/about/contact-us/index.html
+",
+"element": "Leadership / HHS Divisions / Organizational Chart",
+"note": "About-area navigation supports org-structure exploration."
+}
+],
+"scores": {
+"frequency": 2,
+"impact": 2,
+"findability": 5,
+"completability": 4
+},
+"composite_score": 3.25,
+"classification": "tiny",
+"rationale": "Easy to find and well supported, but probably not among the highest-value public outcomes compared with care, coverage, benefits, and complaint tasks."
+}
+],
+"top_tasks": [
+"T01",
+"T02",
+"T03",
+"T04",
+"T05"
+],
+"tiny_tasks": [
+"T11",
+"T12",
+"T13"
+],
+"recommended_survey": {
+"instructions": "Ask respondents to pick the 5 tasks most important to them on HHS.gov, then the single most important. Randomize task order for every respondent, show plain-language tasks only, avoid grouping by department labels, and include an optional 'None of these / another task' field for missed intents.",
+"task_list_for_voting": [
+"Find health insurance coverage options",
+"Find mental health or addiction help",
+"Find a nearby health center",
+"File a HIPAA privacy complaint",
+"Find government benefits and family support",
+"Find out if I qualify for Medicare",
+"Find Medicaid or CHIP information",
+"Report a problem with a medical product",
+"Prepare for a public health emergency",
+"Find and apply for an HHS grant",
+"Learn my HIPAA health privacy rights",
+"Contact HHS for help",
+"Learn about HHS leadership and agencies"
+],
+"recommended_sample_size": 400,
+"target_segments": [
+"People seeking health coverage or care",
+"People seeking mental health or substance use support",
+"Families seeking benefits or child/family services",
+"Older adults, caregivers, and people with disabilities",
+"People trying to file complaints or appeals",
+"Organizations seeking grants or contracts"
+]
+},
+"next_steps": [
+"Validate the longlist with a Top Tasks voting survey using randomized order and segmented analysis.",
+"Compare homepage prominence against the validated top 3 to 5 tasks and reduce leadership/news/promotional emphasis if those tasks underperform.",
+"Measure end-to-end findability and completion for coverage, support, locator, and complaint pathways, including handoffs to external HHS component sites.",
+"Review whether social services and benefits content needs a clearer cross-program entry point for the general public.",
+"Use site search logs, call-center topics, and referral analytics to confirm whether Medicare/Medicaid/benefits tasks should move into the final top tier."
+],
+"summary": "The strongest likely top tasks on HHS.gov are finding health insurance coverage, getting mental health or addiction help, finding a nearby health center, filing a HIPAA privacy complaint, and finding benefits or family support. The main risk is that HHS.gov mixes high-value public tasks with organizational, leadership, news, and promotional content, which may dilute priority pathways. Another risk is fragmented completion because many journeys hand off to component or external federal sites. Next, validate the longlist with a Top Tasks survey and then test end-to-end findability and completion for the top pathways, especially coverage, support, benefits, and complaints."
+}
